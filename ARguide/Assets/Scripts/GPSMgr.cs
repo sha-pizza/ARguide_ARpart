@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GPSMgr : MonoBehaviour
 {
+    // 자바 인스턴스
+    private AndroidJavaObject m_JavaObject;
 
     // VAR : GET loation info
     private Text GPSText;
@@ -55,6 +57,10 @@ public class GPSMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // 자바 클래스, 인스턴스 생성
+        var jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        m_JavaObject = jc.GetStatic<AndroidJavaObject>("currentActivity");
+
         // 카메라 받기
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
         ARCameraTransform = GameObject.Find("First Person Camera").transform;
@@ -126,12 +132,20 @@ public class GPSMgr : MonoBehaviour
 
             if(Input.location.isEnabledByUser){
                 // 좌표 및 방향 확인
+                /*
                 LOC = Input.location.lastData;
                 LAT = LOC.latitude;
                 LON = LOC.longitude;
                 compass_headingAccu = Input.compass.headingAccuracy;
                 compass_trueHeading = Input.compass.trueHeading;
+                */
+                compass_headingAccu = Input.compass.headingAccuracy;
                 validCount++;
+
+                compass_trueHeading = (float)m_JavaObject.Call<double>("getAzimuth");
+                var locations = m_JavaObject.Call<double[]>("getLocation");
+                LAT = (float)locations[0];
+                LON = (float)locations[1];
 
                 LOCtext = "GPS is available ! vC:"+validCount;
                 LOCtext += "\nstatus: "+Input.location.status;
