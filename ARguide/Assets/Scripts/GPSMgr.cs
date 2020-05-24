@@ -9,6 +9,9 @@ public class GPSMgr : MonoBehaviour
     // 자바 인스턴스
     private AndroidJavaObject m_JavaObject;
 
+    // 경로
+    double[] route;
+
     // VAR : GET loation info
     private Text GPSText;
     private bool gpsInit;
@@ -147,12 +150,22 @@ public class GPSMgr : MonoBehaviour
                 LAT = (float)locations[0];
                 LON = (float)locations[1];
 
+                // 루트 받아오기
+                //string destination = "신관";
+                route = m_JavaObject.Call<double[]>("getRoute");
+                
                 LOCtext = "GPS is available ! vC:"+validCount;
                 LOCtext += "\nstatus: "+Input.location.status;
                 LOCtext += "\nLAT: "+LAT;
                 LOCtext += "\nLON: "+LON;
                 LOCtext += "\ncompAccu: "+compass_headingAccu;
                 LOCtext += "\ncompHead: "+compass_trueHeading;
+                
+                for (int i = 0; i < route.Length / 2; i++)
+                {
+                    LOCtext += "\nroute - lat: " + route[i*2+0] + " lon: " + route[i*2+1];
+                }
+                
                 GPSText.text = LOCtext;
 
             } else {
