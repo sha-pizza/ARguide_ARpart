@@ -1,0 +1,208 @@
+fileFormatVersion: 2
+guid: ec2c879c1fb672a439d8cc7b0f71d7c1
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: arm
+    100002: body
+    100004: body_2
+    100006: ear
+    100008: face
+    100010: face_2
+    100012: git
+    100014: hair_back
+    100016: hair_front
+    100018: hair_side
+    100020: hair_tail
+    100022: hand
+    100024: hat
+    100026: hat_2
+    100028: hat_line
+    100030: head
+    100032: Lankle
+    100034: Larm
+    100036: Lclav
+    100038: Lhand
+    100040: Lknee
+    100042: Lshol
+    100044: Lthigh
+    100046: Ltoe
+    100048: Lwrist
+    100050: //RootNode
+    100052: neck
+    100054: pants
+    100056: pelvis
+    100058: Rankle
+    100060: Rarm
+    100062: Rclav
+    100064: Rhand
+    100066: Rknee
+    100068: root
+    100070: Rshol
+    100072: Rthigh
+    100074: Rtoe
+    100076: Rwrist
+    100078: shoe
+    100080: spine1
+    100082: spine2
+    400000: arm
+    400002: body
+    400004: body_2
+    400006: ear
+    400008: face
+    400010: face_2
+    400012: git
+    400014: hair_back
+    400016: hair_front
+    400018: hair_side
+    400020: hair_tail
+    400022: hand
+    400024: hat
+    400026: hat_2
+    400028: hat_line
+    400030: head
+    400032: Lankle
+    400034: Larm
+    400036: Lclav
+    400038: Lhand
+    400040: Lknee
+    400042: Lshol
+    400044: Lthigh
+    400046: Ltoe
+    400048: Lwrist
+    400050: //RootNode
+    400052: neck
+    400054: pants
+    400056: pelvis
+    400058: Rankle
+    400060: Rarm
+    400062: Rclav
+    400064: Rhand
+    400066: Rknee
+    400068: root
+    400070: Rshol
+    400072: Rthigh
+    400074: Rtoe
+    400076: Rwrist
+    400078: shoe
+    400080: spine1
+    400082: spine2
+    2100000: MR_facemat
+    2100002: MR_hatmat
+    2100004: MR_bodymat
+    4300000: ear
+    4300002: face_2
+    4300004: hair_side
+    4300006: hair_back
+    4300008: hair_front
+    4300010: hair_tail
+    4300012: hat_line
+    4300014: hat_2
+    4300016: git
+    4300018: body_2
+    4300020: pants
+    4300022: shoe
+    4300024: arm
+    4300026: hand
+    9500000: //RootNode
+    13700000: arm
+    13700002: body_2
+    13700004: ear
+    13700006: face_2
+    13700008: git
+    13700010: hair_back
+    13700012: hair_front
+    13700014: hair_side
+    13700016: hair_tail
+    13700018: hand
+    13700020: hat_2
+    13700022: hat_line
+    13700024: pants
+    13700026: shoe
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 3
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
