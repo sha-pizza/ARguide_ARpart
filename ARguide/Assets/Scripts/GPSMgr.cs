@@ -12,6 +12,16 @@ public class GPSMgr : MonoBehaviour
     // 경로
     double[] route;
 
+    // 드롭다운 & 길 찾기 버튼
+    private Dropdown dropdown;
+    private Button findRouteBtn;
+
+    // 경로 찾았는 지
+    private bool didFoundRoute = false;
+
+    // 백그라운드 이미지
+    private Image backgroundImage;
+
     // VAR : GET loation info
     private Text GPSText;
     private bool gpsInit;
@@ -64,6 +74,19 @@ public class GPSMgr : MonoBehaviour
         var jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         m_JavaObject = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
+        backgroundImage = transform.Find("Canvas").Find("Image").GetComponent<Image>();
+
+        // Dropdown part
+        dropdown = transform.Find("Canvas").Find("Dropdown").GetComponent<Dropdown>();
+        dropdown.onValueChanged.AddListener(delegate
+
+        {
+            DropdownValueChangedHandler(dropdown);
+
+        }); 
+        findRouteBtn = transform.Find("Canvas").Find("Button_Find_Route").GetComponent<Button>();
+        findRouteBtn.onClick.AddListener(Find_Route);
+
         // 카메라 받기
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
         ARCameraTransform = GameObject.Find("First Person Camera").transform;
@@ -105,6 +128,11 @@ public class GPSMgr : MonoBehaviour
         }
         // 나침반을 카메라의 child 로 생성
         obj_Compass = Instantiate(compassObj, ARCameraTransform.position, Quaternion.identity, ARCameraTransform);
+    }
+
+    public void SelectButton()// SelectButton을 누름으로써 값 테스트.
+    {
+        Debug.Log("Dropdown Value: " + dropdown.value + ", List Selected: " + (dropdown.value + 1));
     }
 
     // Update is called once per frame
@@ -149,10 +177,6 @@ public class GPSMgr : MonoBehaviour
                 var locations = m_JavaObject.Call<double[]>("getLocation");
                 LAT = (float)locations[0];
                 LON = (float)locations[1];
-
-                // 루트 받아오기
-                //string destination = "신관";
-                route = m_JavaObject.Call<double[]>("getRoute");
                 
                 LOCtext = "GPS is available ! vC:"+validCount;
                 LOCtext += "\nstatus: "+Input.location.status;
@@ -160,12 +184,19 @@ public class GPSMgr : MonoBehaviour
                 LOCtext += "\nLON: "+LON;
                 LOCtext += "\ncompAccu: "+compass_headingAccu;
                 LOCtext += "\ncompHead: "+compass_trueHeading;
-                
-                for (int i = 0; i < route.Length / 2; i++)
+
+                if (didFoundRoute)
                 {
-                    LOCtext += "\nroute - lat: " + route[i*2+0] + " lon: " + route[i*2+1];
+                    // 루트 받아오기
+                    //string destination = "신관";
+                    route = m_JavaObject.Call<double[]>("getRoute");
+
+                    for (int i = 0; i < route.Length / 2; i++)
+                    {
+                        LOCtext += "\nroute - lat: " + route[i * 2 + 0] + " lon: " + route[i * 2 + 1];
+                    }
                 }
-                
+
                 GPSText.text = LOCtext;
 
             } else {
@@ -256,6 +287,46 @@ public class GPSMgr : MonoBehaviour
         return (float)Math.Truncate(value*100)/100;
     }
 
+    // 드롭다운 메뉴 선택했을 때 콜백
+    private void DropdownValueChangedHandler(Dropdown target)
 
+    {
+        switch (target.value)
+        {
+            case 0:
+                m_JavaObject.Call("setDestination", "생명공학관61동 입구 1");
+                break;
+            case 1:
+                m_JavaObject.Call("setDestination", "제2공학관 26동 입구 1");
+                break;
+            case 2:
+                m_JavaObject.Call("setDestination", "제1공학관 23동 입구 1");
+                break;
+            case 3:
+                m_JavaObject.Call("setDestination", "제1공학관 22동 입구 1");
+                break;
+            case 4:
+                m_JavaObject.Call("setDestination", "제1공학관 23동 입구 2");
+                break;
+            default:
+                break;
+        }
+    }
+
+    // 길 찾기 메소드
+    private void Find_Route()
+    {
+        // 길 찾기
+        m_JavaObject.Call("findRoute");
+
+        // 카메라 화면으로 전환
+        backgroundImage.enabled = false;
+        findRouteBtn.enabled = false;
+        dropdown.enabled = false;
+        findRouteBtn.gameObject.SetActive(false);
+        dropdown.gameObject.SetActive(false);
+
+        didFoundRoute = true;
+    }
 }
 

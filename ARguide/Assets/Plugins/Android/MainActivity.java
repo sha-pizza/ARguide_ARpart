@@ -85,7 +85,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         Timber.i("hi it is test");
 
  */
-
+/*
         setDestination("신관");
 
         Handler handler1 = new Handler();
@@ -104,7 +104,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
                 Log.d("asdf",""+route1[0]);
             }
         }, 4000);
-
+ */
     }
 
     public void setDestination(String destination) {
