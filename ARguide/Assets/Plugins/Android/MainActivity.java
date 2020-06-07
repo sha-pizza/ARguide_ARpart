@@ -113,6 +113,35 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         bthread.start();
     }
 
+//검색용으로 추가된 함수
+public String[] getLocationsName(){
+	  String name[] = new String[data.size()];
+	  
+                for(int i=0;i<data.size();i++){
+                    name[i] = data.get(i).getName();
+                }
+	return name;
+}
+
+public double[] getLocationsLat(){
+	  double lat[] = new double[data.size()];
+	  
+                for(int i=0;i<data.size();i++){
+                    lat[i] = data.get(i).getLatitude();
+                }
+	return lat;
+}
+
+public double[] getLocationsLog(){
+	  double log[] = new double[data.size()];
+	  
+                for(int i=0;i<data.size();i++){
+                    log[i] = data.get(i).getLongitude();
+                }
+	return log;
+}
+
+
     public void findRoute() {
         //목적지를 고른다
         // TODO: 원래 리스트 UI 부분인데 지금은 임의로 가장 앞에 있는 것 가져옴. 수정필요

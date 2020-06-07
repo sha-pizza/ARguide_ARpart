@@ -3,11 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading;
 
 public class GPSMgr : MonoBehaviour
 {
     // 자바 인스턴스
     private AndroidJavaObject m_JavaObject;
+
+    //public InputField InputText;
+    //검색된 목적지 리스트들의 위도 경도를 담는다
+    public int searchcount = 0;
+    public List<double> latslist = new List<double>();
+    public List<double> longslist = new List<double>();
+    
 
     // 경로
     double[] route;
@@ -74,6 +82,9 @@ public class GPSMgr : MonoBehaviour
         var jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         m_JavaObject = jc.GetStatic<AndroidJavaObject>("currentActivity");
 
+        
+        
+
         backgroundImage = transform.Find("Canvas").Find("Image").GetComponent<Image>();
 
         // Dropdown part
@@ -86,6 +97,7 @@ public class GPSMgr : MonoBehaviour
         }); 
         findRouteBtn = transform.Find("Canvas").Find("Button_Find_Route").GetComponent<Button>();
         findRouteBtn.onClick.AddListener(Find_Route);
+
 
         // 카메라 받기
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
@@ -138,6 +150,7 @@ public class GPSMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         // ARCamera의 각도 - 나침반 각도 계산
         // 이 각도로 배치한 사물은 북쪽을 가리킵니다!
         Heading = ARCameraTransform.eulerAngles.y - compass_trueHeading;
@@ -152,6 +165,7 @@ public class GPSMgr : MonoBehaviour
                 StartCoroutine(GuideToTarget());
             }
         }
+        
         
     }
 
@@ -291,6 +305,7 @@ public class GPSMgr : MonoBehaviour
     private void DropdownValueChangedHandler(Dropdown target)
 
     {
+        
         switch (target.value)
         {
             case 0:
@@ -311,6 +326,8 @@ public class GPSMgr : MonoBehaviour
             default:
                 break;
         }
+        
+
     }
 
     // 길 찾기 메소드
@@ -327,6 +344,80 @@ public class GPSMgr : MonoBehaviour
         dropdown.gameObject.SetActive(false);
 
         didFoundRoute = true;
+    }
+
+    
+
+    public void Searchdropdown(Dropdown dropdown, InputField InputText)
+    {
+        //검색하기
+        string query;
+        query = InputText.text;
+        //Debug.Log("passed:search ");
+        //배열 초기화
+        latslist.Clear();
+        longslist.Clear();
+        searchcount = 0;
+        //이름 검색하기
+        m_JavaObject.Call("setDestination", query);
+        //Debug.Log("passed3:search " + query);
+        //싱크맞추기
+        Thread.Sleep(5000);
+        //검색한 이름 결과 받아오기
+        var locations = m_JavaObject.Call<string[]>("getLocationsName");
+        var locations2 = m_JavaObject.Call<double[]>("getLocationsLat");
+        var locations3 = m_JavaObject.Call<double[]>("getLocationsLog");
+        Debug.Log("location size: " + locations.Length);
+        Debug.Log("location2 size: " + locations2.Length);
+        Debug.Log("location3 size: " + locations3.Length);
+        for (int i = 0; i < locations.Length; i++)
+        {
+            if (locations[i] != null & locations[i] != "")
+            {
+                //Debug.Log("succeed location: " + i);
+                //Debug.Log("succeed location: " + locations[i]);
+                searchcount++;
+                dropdown.options.Add(new Dropdown.OptionData(locations[i]));
+                Debug.Log("location name: " + locations[i]);
+
+
+            }
+
+        }
+
+        for (int i = 0; i < locations2.Length; i++)
+        {
+            Debug.Log("lat i number: " + i);
+            Debug.Log("lat: " + locations2[i]);
+            
+            if (locations2[i] != 0)
+            {
+                //Debug.Log("succeed location: " + i);
+                //Debug.Log("succeed location: " + locations[i]);
+                latslist.Add(locations2[i]);
+                Debug.Log("lat succeed: " + latslist[i]);
+            }
+
+        }
+
+        for (int i = 0; i < locations3.Length; i++)
+        {
+            if (locations3[i] != 0)
+            {
+                //Debug.Log("succeed location: " + i);
+                //Debug.Log("succeed location: " + locations[i]);
+                
+                longslist.Add(locations3[i]);
+                Debug.Log("long succeed: " + longslist[i]);
+            }
+
+        }
+        /*
+        double LAT = (float)locations[0];
+        double LON = (float)locations[1];
+
+        text.text = LAT.ToString() + LON.ToString();
+        */
     }
 }
 
