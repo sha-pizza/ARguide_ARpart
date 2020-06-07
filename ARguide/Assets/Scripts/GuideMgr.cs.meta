@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: c73903f6950eb654b894802f2ee0091a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Mascot_MRPrefab: {fileID: 6045556871280975501, guid: e66fdbaf70cccd849b501f1b0d4d6ec6,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

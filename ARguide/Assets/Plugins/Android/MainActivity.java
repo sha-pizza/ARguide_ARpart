@@ -81,13 +81,10 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-
         Timber.i("hi it is test");
-
  */
 /*
         setDestination("신관");
-
         Handler handler1 = new Handler();
         handler1.postDelayed(new Runnable() {
             @Override
@@ -95,7 +92,6 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
                 findRoute();
             }
         }, 1000);
-
         Handler handler2 = new Handler();
         handler2.postDelayed(new Runnable() {
             @Override
@@ -229,20 +225,14 @@ public double[] getLocationsLog(){
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         AutoPermissions.Companion.parsePermissions(this, requestCode, permissions, this);
     }
-
     @Override
     public void onDenied(int i, String[] strings) {
-
     }
-
     @Override
     public void onGranted(int i, String[] strings) {
-
     }
-
  */
     // 핸들러
     @SuppressLint("HandlerLeak")
@@ -299,6 +289,5 @@ public double[] getLocationsLog(){
         }
     };
 }
-
 
 
