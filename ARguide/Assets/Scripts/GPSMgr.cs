@@ -21,8 +21,8 @@ public class GPSMgr : MonoBehaviour
     double[] route;
 
     // 드롭다운 & 길 찾기 버튼
-    private Dropdown dropdown;
-    private Button findRouteBtn;
+    public Dropdown dropdown2;
+    public Button findRouteBtn;
 
     // 경로 찾았는 지
     private bool didFoundRoute = false;
@@ -88,16 +88,9 @@ public class GPSMgr : MonoBehaviour
         backgroundImage = transform.Find("Canvas").Find("Image").GetComponent<Image>();
 
         // Dropdown part
-        dropdown = transform.Find("Canvas").Find("Dropdown").GetComponent<Dropdown>();
-        dropdown.onValueChanged.AddListener(delegate
 
-        {
-            DropdownValueChangedHandler(dropdown);
-
-        }); 
-        findRouteBtn = transform.Find("Canvas").Find("Button_Find_Route").GetComponent<Button>();
-        findRouteBtn.onClick.AddListener(Find_Route);
-
+        
+        
 
         // 카메라 받기
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
@@ -144,13 +137,13 @@ public class GPSMgr : MonoBehaviour
 
     public void SelectButton()// SelectButton을 누름으로써 값 테스트.
     {
-        Debug.Log("Dropdown Value: " + dropdown.value + ", List Selected: " + (dropdown.value + 1));
+        Debug.Log("Dropdown Value: " + dropdown2.value + ", List Selected: " + (dropdown2.value + 1));
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        /*
         // ARCamera의 각도 - 나침반 각도 계산
         // 이 각도로 배치한 사물은 북쪽을 가리킵니다!
         Heading = ARCameraTransform.eulerAngles.y - compass_trueHeading;
@@ -165,7 +158,7 @@ public class GPSMgr : MonoBehaviour
                 StartCoroutine(GuideToTarget());
             }
         }
-        
+        */
         
     }
 
@@ -302,6 +295,7 @@ public class GPSMgr : MonoBehaviour
     }
 
     // 드롭다운 메뉴 선택했을 때 콜백
+    /*
     private void DropdownValueChangedHandler(Dropdown target)
 
     {
@@ -329,23 +323,43 @@ public class GPSMgr : MonoBehaviour
         
 
     }
+    */
 
     // 길 찾기 메소드
-    private void Find_Route()
+    public void Find_Route()
     {
         // 길 찾기
-        m_JavaObject.Call("findRoute");
+        Debug.Log("setmap start: dropdown value in find route" + dropdown2.value);
+        m_JavaObject.Call("findRoute", dropdown2.value);
+        
+        
+    }
+
+    public void Get_Route()
+    {
+        var route = m_JavaObject.Call<double[]>("getRoute");
+        for (int i = 0; i < route.Length; i++)
+        {
+            if (route[i] != 0)
+            {
+                
+
+                
+                Debug.Log("route " + i + " " + route[i]);
+            }
+
+        }
 
         // 카메라 화면으로 전환
         backgroundImage.enabled = false;
         findRouteBtn.enabled = false;
-        dropdown.enabled = false;
+        dropdown2.enabled = false;
         findRouteBtn.gameObject.SetActive(false);
-        dropdown.gameObject.SetActive(false);
+        dropdown2.gameObject.SetActive(false);
 
         didFoundRoute = true;
-    }
 
+    }
     
 
     public void Searchdropdown(Dropdown dropdown, InputField InputText)
@@ -362,7 +376,7 @@ public class GPSMgr : MonoBehaviour
         m_JavaObject.Call("setDestination", query);
         //Debug.Log("passed3:search " + query);
         //싱크맞추기
-        Thread.Sleep(5000);
+        Thread.Sleep(3000);
         //검색한 이름 결과 받아오기
         var locations = m_JavaObject.Call<string[]>("getLocationsName");
         var locations2 = m_JavaObject.Call<double[]>("getLocationsLat");
@@ -412,12 +426,9 @@ public class GPSMgr : MonoBehaviour
             }
 
         }
-        /*
-        double LAT = (float)locations[0];
-        double LON = (float)locations[1];
-
-        text.text = LAT.ToString() + LON.ToString();
-        */
+        
     }
+
+    
 }
 

@@ -142,10 +142,10 @@ public double[] getLocationsLog(){
 }
 
 
-    public void findRoute() {
+    public void findRoute(int i) {
         //목적지를 고른다
         // TODO: 원래 리스트 UI 부분인데 지금은 임의로 가장 앞에 있는 것 가져옴. 수정필요
-        dest = data.get(0);
+        dest = data.get(i);
 
         if (latitude != 0) {
             lat = latitude;
