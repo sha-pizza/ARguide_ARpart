@@ -23,8 +23,13 @@ public class GPSMgr : MonoBehaviour
     double[] route;
 
     // 드롭다운 & 길 찾기 버튼
-    public Dropdown dropdown2;
-    public Button findRouteBtn;
+    public Dropdown dropdown2;  // Dropdown2
+    public Button findRouteBtn; // Button_Find_Route
+    public GameObject Button2;  // button2
+    public GameObject Button3;  // Button3
+    public GameObject RawImage; // rawimage
+    public GameObject Inputobj; // Input
+
 
     // 경로 찾았는지
     // 0530SA : guide시작할 때 접근해야해서 프라이빗 -> 퍼블릿스태틱으로 변경했습니다
@@ -269,13 +274,14 @@ public class GPSMgr : MonoBehaviour
     public void Get_Route()
     {
         var route = m_JavaObject.Call<double[]>("getRoute");
+        GPSText.text = "route : ";
         for (int i = 0; i < route.Length; i++)
         {
             if (route[i] != 0)
             {
                 Debug.Log("route " + i + " " + route[i]);
+                GPSText.text += "route " + i + " " + route[i] ;
             }
-
         }
 
         // 카메라 화면으로 전환
@@ -284,6 +290,10 @@ public class GPSMgr : MonoBehaviour
         dropdown2.enabled = false;
         findRouteBtn.gameObject.SetActive(false);
         dropdown2.gameObject.SetActive(false);
+        Button2.SetActive(false);
+        Button3.SetActive(false);
+        RawImage.SetActive(false);
+        Inputobj.SetActive(false);
 
         didFoundRoute = true;
     }

@@ -7582,6 +7582,9 @@ MonoBehaviour:
   longslist: []
   dropdown2: {fileID: 373935086}
   findRouteBtn: {fileID: 88990387}
+  Button3: {fileID: 463096327}
+  RawImage: {fileID: 1733868364}
+  Inputobj: {fileID: 1257993024}
 --- !u!4 &1966646947
 Transform:
   m_ObjectHideFlags: 0
