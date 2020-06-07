@@ -13,12 +13,12 @@ public class GuideMgr : MonoBehaviour
     // 경로!!
     // 테스트용으로 설정해둠
     //double[] route;     
-    public static float[] route = {37.600000f, 126.905700f, 37.600000f, 126.905500f, 37.600200f, 126.905300f };        
+    public static float[] route = {37.521189f, 126.969062f, 37.521234f, 126.968782f, 37.520939f, 126.968630f };        
     public static int nowPointNum = 0;  // 현재 향하는 좌표! nowPoint0일때 rount0,1지점으로 향한다
     int lastPointNum;                   // 마지막 좌표! 전체 좌표들의 개수와도 같다
     
     [Header ("안내 관련 값")]
-    public float minD = 0.00008f;              // 목표 좌표의 +=minD 거리에 도달하면 도착한것으로!
+    public float minD = 0.0001f;              // 목표 좌표의 +=minD 거리에 도달하면 도착한것으로!
 
     public float dist_wait = 2.4f;             // 마스코트가 유저와 이만큼 떨어져 있을 경우 기다림
     public float dist_warning = 7.0f;          // 마스코트가 유저와 이만큼 떨어져 있을 경우 종료 방지 위해 안내
