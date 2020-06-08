@@ -29,7 +29,7 @@ public class googlemapscript : MonoBehaviour
         url = "https://maps.googleapis.com/maps/api/staticmap?";
         center = "center=37.294429%2c%20126.974268";
         zoom = "zoom=16";
-        size = "size=700x700";
+        size = "size=1200x1200";
         key = "key=AIzaSyCkT-dh4GaQ4uPTCsWva84lg1D84BJemd0";
         markers = "markers=color:blue";
         StartCoroutine(GetTexture());
@@ -66,7 +66,8 @@ public class googlemapscript : MonoBehaviour
         {
             Texture myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
             img.texture = myTexture;
-            img.SetNativeSize();
+            //img.SetNativeSize();
+            img.rectTransform.sizeDelta = new Vector2(1000, 1000);
         }
 
 
