@@ -45,11 +45,11 @@ public class DestinationMgr : MonoBehaviour
             transform.position = new Vector3(ARCameraTransform.position.x, 0, ARCameraTransform.position.z);
             transform.rotation = Quaternion.Euler(0, GPSMgr.Heading, 0);
             //현재 파트의 목표지점으로 destination 오브젝트 이동
-            float targetLAT = GuideMgr.route[GuideMgr.nowPointNum] - (float)GPSMgr.LAT;
-            float targetLON = GuideMgr.route[(GuideMgr.nowPointNum)+1] - (float)GPSMgr.LON;
+            double targetLAT = GuideMgr.route[GuideMgr.nowPointNum] - (float)GPSMgr.LAT;
+            double targetLON = GuideMgr.route[(GuideMgr.nowPointNum)+1] - (float)GPSMgr.LON;
 
-            double cosValue = targetLON / Mathf.Sqrt(targetLAT*targetLAT + targetLON*targetLON);
-            double sinValue = targetLAT / Mathf.Sqrt(targetLAT*targetLAT + targetLON*targetLON);
+            double cosValue = targetLON / Mathf.Sqrt((float)(targetLAT*targetLAT + targetLON*targetLON));
+            double sinValue = targetLAT / Mathf.Sqrt((float)(targetLAT*targetLAT + targetLON*targetLON));
             
             
             destination.transform.localPosition = new Vector3(Bumper*(float)cosValue, -1.2f, Bumper*(float)sinValue);

@@ -20,7 +20,11 @@ public class GPSMgr : MonoBehaviour
     public List<double> longslist = new List<double>();
 
     // 경로
-    double[] route;
+    public static double[] route;
+
+
+    // 목적기 (가이드 후 안내용)
+    public static string finalDestination = "";
 
     // 드롭다운 & 길 찾기 버튼
     public Dropdown dropdown2;  // Dropdown2
@@ -191,23 +195,23 @@ public class GPSMgr : MonoBehaviour
                 
                 // 좌표 및 방향 확인
                 // 유니티 기본 리소스로
-                /*
+                
                 LOC = Input.location.lastData;
                 LAT = LOC.latitude;
                 LON = LOC.longitude;
                 compass_headingAccu = Input.compass.headingAccuracy;
                 compass_trueHeading = Input.compass.trueHeading;
-                */
+                
                 
 
                 // android java object 사용해서
-                
+                /*
                 compass_headingAccu = Input.compass.headingAccuracy;
                 compass_trueHeading = (float)m_JavaObject.Call<double>("getAzimuth");
                 var locations = m_JavaObject.Call<double[]>("getLocation");
                 LAT = (float)locations[0];
                 LON = (float)locations[1];
-                
+                */
                 // --> 텍스트박스 넘쳐서 잠시 비활성화했습니다
                 
                 if (didFoundRoute)
@@ -262,6 +266,28 @@ public class GPSMgr : MonoBehaviour
     }
     */
 
+    // 입력받은 목표지 저장
+    public void Set_Destin(){
+
+        finalDestination  = dropdown2.options[dropdown2.value].text;
+        string editedDestin="";
+
+        // '입구' 글자 자르기
+        if (finalDestination != ""){
+            for (int i = 0 ; i < finalDestination.Length ; i++){
+                if (finalDestination[i] == '입'){
+                    break;
+                } else {
+                    editedDestin += finalDestination[i];
+                }
+            }
+        }
+
+        finalDestination = editedDestin;
+        GPSText.text = finalDestination;
+    }
+
+
     // 길 찾기 메소드
     public void Find_Route()
     {
@@ -274,13 +300,13 @@ public class GPSMgr : MonoBehaviour
     public void Get_Route()
     {
         var route = m_JavaObject.Call<double[]>("getRoute");
-        GPSText.text = "route : ";
+        //GPSText.text = "route : ";
         for (int i = 0; i < route.Length; i++)
         {
             if (route[i] != 0)
             {
                 Debug.Log("route " + i + " " + route[i]);
-                GPSText.text += "route " + i + " " + route[i] ;
+                GPSText.text += "\nroute " + i + " " + route[i] ;
             }
         }
 
