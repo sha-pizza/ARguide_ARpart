@@ -116,7 +116,7 @@ public class GPSMgr : MonoBehaviour
         // Debug.Log("camera : "+ARCameraTransform.eulerAngles.y);
 
         // 받아온 gps 방향정보 띄워주는 텍스트
-        GPSText = transform.Find("Canvas").Find("GPSText").GetComponent<Text>();
+        //GPSText = transform.Find("Canvas").Find("GPSText").GetComponent<Text>();
 
         // targetLATLON 받아오는 InputField 및 버튼과 디버깅용 텍스트오브젝트 불러오기
         /* >> DEPRECATED
@@ -195,24 +195,24 @@ public class GPSMgr : MonoBehaviour
                 
                 // 좌표 및 방향 확인
                 // 유니티 기본 리소스로
-                
+                /*
                 LOC = Input.location.lastData;
                 LAT = LOC.latitude;
                 LON = LOC.longitude;
                 compass_headingAccu = Input.compass.headingAccuracy;
                 compass_trueHeading = Input.compass.trueHeading;
-                
+                */
                 
 
                 // android java object 사용해서
-                /*
+                
                 compass_headingAccu = Input.compass.headingAccuracy;
                 compass_trueHeading = (float)m_JavaObject.Call<double>("getAzimuth");
                 var locations = m_JavaObject.Call<double[]>("getLocation");
                 LAT = (float)locations[0];
                 LON = (float)locations[1];
-                */
-                // --> 텍스트박스 넘쳐서 잠시 비활성화했습니다
+                
+                
                 
                 if (didFoundRoute)
                 {
@@ -222,7 +222,7 @@ public class GPSMgr : MonoBehaviour
 
                     for (int i = 0; i < route.Length / 2; i++)
                     {
-                        GPSText.text += "\nroute - lat: " + route[i * 2 + 0] + " lon: " + route[i * 2 + 1];
+                        //GPSText.text += "\nroute - lat: " + route[i * 2 + 0] + " lon: " + route[i * 2 + 1];
                     }
                 }
                 
@@ -284,7 +284,7 @@ public class GPSMgr : MonoBehaviour
         }
 
         finalDestination = editedDestin;
-        GPSText.text = finalDestination;
+        //GPSText.text = finalDestination;
     }
 
 
@@ -306,7 +306,7 @@ public class GPSMgr : MonoBehaviour
             if (route[i] != 0)
             {
                 Debug.Log("route " + i + " " + route[i]);
-                GPSText.text += "\nroute " + i + " " + route[i] ;
+                //GPSText.text += "\nroute " + i + " " + route[i] ;
             }
         }
 

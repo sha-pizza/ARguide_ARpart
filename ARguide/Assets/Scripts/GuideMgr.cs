@@ -12,18 +12,20 @@ public class GuideMgr : MonoBehaviour
 
     // 경로!!
     // 테스트용으로 설정해둠
-    //double[] route;     
-    public static double[] route = {37.600000f, 126.9060f, 37.600000f, 126.9060f, 37.600000f, 126.9056f, 37.600000f, 126.9060f};       
-    //public static double[] route = {37.600000f, 126.9056f, 37.600000f, 126.9060f, 37.600000f, 126.9060f, 37.600000f, 126.9060f};        
+    //double[] route;        
+    
+    //public static double[] route = {37.295600, 126.976000, 37.295400, 126.976000, 37.295400, 126.976200}; 
+    public static double[] route = {37.295400, 126.976000, 37.295400, 126.976200}; 
+    //public static double[] route = {37.296363, 126.975296, 37.296363, 126.975296};       
     public static int nowPointNum = 0;  // 현재 향하는 좌표! nowPoint0일때 rount0,1지점으로 향한다
     int lastPointNum;                   // 마지막 좌표! 전체 좌표들의 개수와도 같다
     
     [Header ("안내 관련 값")]
-    public float minD = 0.0001f;              // 목표 좌표의 +=minD 거리에 도달하면 도착한것으로!
+    private double minD = 0.000100;              // 목표 좌표의 +=minD 거리에 도달하면 도착한것으로!
 
-    public float dist_wait = 2.4f;             // 마스코트가 유저와 이만큼 떨어져 있을 경우 기다림
-    public float dist_warning = 7.0f;          // 마스코트가 유저와 이만큼 떨어져 있을 경우 종료 방지 위해 안내
-    public float dist_disable = 10.0f;         // 마스코트가 유저와 이만큼 떨어져 있을 경우 비활성화 및 컨텐츠 종료
+    public double dist_wait = 2.4;             // 마스코트가 유저와 이만큼 떨어져 있을 경우 기다림
+    public double dist_warning = 7.0;          // 마스코트가 유저와 이만큼 떨어져 있을 경우 종료 방지 위해 안내
+    public double dist_disable = 10.0;         // 마스코트가 유저와 이만큼 떨어져 있을 경우 비활성화 및 컨텐츠 종료
 
 
 
@@ -77,7 +79,8 @@ public class GuideMgr : MonoBehaviour
 
         // 디버깅용 텍스트 찾기 - 디버깅용이므로 exception 처리해둠
         try{
-            routeInfo = GameObject.Find("DebugCanvas/Routeinfo").GetComponent<Text>();
+            
+            //routeInfo = GameObject.Find("DebugCanvas/Routeinfo").GetComponent<Text>();
             guideInfo = GameObject.Find("DebugCanvas/Guideinfo").GetComponent<Text>();
             guideUI = GameObject.Find("DebugCanvas/GuideUI/GuideUIText").GetComponent<Text>();
             guideBack = GameObject.Find("DebugCanvas/GuideUI");
@@ -100,7 +103,7 @@ public class GuideMgr : MonoBehaviour
             didGuideStart = true;
 
             // 경로 가져오기
-            //route = GPSMgr.route;
+            route = GPSMgr.route;
 
             // 전체 좌표 수 계산
             lastPointNum = route.Length  ;
@@ -202,16 +205,17 @@ public class GuideMgr : MonoBehaviour
         spchBubble.gameObject.SetActive(false);
         yield return new WaitForSeconds (2.0f);
 
+        Mascot_anim.SetBool("isStartGuide", true);
 
         /* oldscript !
         spchText.text = "좋아,출발해보자!";
         StartCoroutine(SpchBubble_Fadein(0.2f, 1.0f, 0.03f));
         yield return new WaitForSeconds(2.0f);
         StartCoroutine(SpchBubble_Fadeout(1.0f, 0.2f, 0.03f));
-        yield return new WaitForSeconds(0.4f);
-        */
+        yield return new WaitForSeconds(0.4f);*/
         
-        Mascot_anim.SetBool("isStartGuide", true);
+        
+        
 
         spchText.text = "어디보자...";
         spchBubble.gameObject.SetActive(true);
@@ -233,36 +237,37 @@ public class GuideMgr : MonoBehaviour
         yield return new WaitForSeconds (0.1f);
         */
 
-        routeInfo.text = "guide to : "+nowPointNum+"->"+lastPointNum;
+        /*routeInfo.text = "guide to : "+nowPointNum+"->"+lastPointNum;
         for (int i = nowPointNum ; i < lastPointNum ; i = i+2 ){
             routeInfo.text += "\n"+i+" : "+(float)route[i]+"/"+(float)route[i+1];
-        }
+        }*/
        
         // 파트 이동 코루틴 호출
         //guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
-        //StartCoroutine(Guide_Part((float)GPSMgr.LAT, (float)GPSMgr.LON, route[0], route[1]));
+        
 
         guideInfo.text = "start guide coroutine2";
-        /*
-        for (int i = 0 ; i<=lastPointNum ; i = i+2){
-            if (i == 0){
-                nowPointNum = 0;
-                StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[0], route[1]));
-            } else if (i==lastPointNum) {
-                guideInfo.text = "~!~!~!";
-                break;
-            } else {
-                nowPointNum = i;
-                StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[i], route[i+1]));
-            }
-        }
-        */
-        
+        nowPointNum = 0;
         int nowPointNumSaver=0;
+        //StartCoroutine(Guide_Part((float)GPSMgr.LAT, (float)GPSMgr.LON, route[0], route[1]));
+        
         // 0->2 안내 np=0 nps=0
         // 0->2 안내 코루틴 끝날 때 np+2 / np=2 nps=0
         // while 돌리면서, if (np > nps) 이면 nps+2 하고
         // 2->4 안내 코루틴 시작
+        
+        for (int i = 0 ; i<lastPointNum ; i = i+2){
+            while (nowPointNum != i){
+                yield return new WaitForSeconds(0.5f);
+            }
+            guideInfo.text = "np:"+nowPointNum+"/ nps:"+nowPointNumSaver+"/ lp:"+lastPointNum;
+            // nowPointnum은 Guide_Part 코루틴 안에서 바꿔줄 예정
+            StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[i], route[i+1]));
+            
+        }
+        
+        
+        /*
         StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[0], route[1]));
         
 
@@ -282,8 +287,13 @@ public class GuideMgr : MonoBehaviour
         }
         
         guideInfo.text = "~np:"+nowPointNum+"/ nps:"+nowPointNumSaver;
+        */
+        
+        while (nowPointNum != lastPointNum){
+            yield return new WaitForSeconds(5f);
+        }
 
-        guideInfo.text += "\n end guiding";
+        guideInfo.text = "end guiding";
         StartCoroutine(Guide_End());
         
           
@@ -296,9 +306,9 @@ public class GuideMgr : MonoBehaviour
 
 
         Mascot_anim.SetBool("isMove", true);
-        guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
+        /*guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
         guideInfo.text += "\nlat abs : "+Mathf.Abs((float)(GPSMgr.LAT - eLAT));
-        guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));
+        guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));*/
 
 
                                                  
@@ -306,21 +316,22 @@ public class GuideMgr : MonoBehaviour
         // 마스코트가 while 타겟오브젝트와 충분히 가까이 있지 않은 동안
         // DestinationMgr 의 Destination 오브젝트를 향해
         // Lerp회전 하면서 MoveToward한다
-        while ( Mathf.Abs((float)(GPSMgr.LAT - eLAT)) > minD && Mathf.Abs((float)(GPSMgr.LON - eLON)) > minD ){
+        while (  ( Mathf.Abs((float)(GPSMgr.LAT - eLAT)) > minD ) && ( Mathf.Abs((float)(GPSMgr.LON - eLON)) > minD ) ){
             yield return new WaitForSeconds(0.05f);
-            guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
-            guideInfo.text += "\nlat abs : "+Mathf.Abs((float)(GPSMgr.LAT - eLAT));
-            guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));
+            //guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
+            //guideInfo.text += "\nlat abs : "+Mathf.Abs((float)(GPSMgr.LAT - eLAT));
+            //guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));
             //guideInfo.text += "\n"+(float)GPSMgr.LAT+" - "+eLAT;
 
       
+            guideInfo.text = "np:"+nowPointNum+"/ lp:"+lastPointNum;
             // 사용자와의 거리 확인
             float dist = Vector3.Distance( ARCamera.transform.position, Mascot_MR.transform.position );
             guideInfo.text += "\ndistance :"+dist;
 
             if (dist > dist_disable) {
                 // dist_disable 보다 멀리 떨어질 경우 : 모든 코루틴 종료 및 ui 안내
-                guideInfo.text += "\n dist_disable";
+                //guideInfo.text += "\n dist_disable";
                 //guideUI.gameObject.SetActive(true);
                 guideBack.gameObject.SetActive(true);
                 guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n서비스가 종료됩니다.";
@@ -329,7 +340,7 @@ public class GuideMgr : MonoBehaviour
 
             } else if (dist > dist_warning ) {
                 // if dist_warning 보다 멀리 떨어질 경우 : 일단 ui로 안내
-                guideInfo.text += "\n dist_warning";
+                //guideInfo.text += "\n dist_warning";
                 //guideUI.gameObject.SetActive(true);
                 guideBack.gameObject.SetActive(true);
                 guideUI.text = "마스코트 캐릭터\n가까이로 이동해 주세요.\n더 멀어질 경우\n서비스가 종료될 수 있습니다.";
@@ -342,7 +353,7 @@ public class GuideMgr : MonoBehaviour
                 // dist_wait 보다 멀리 떨어져 있고 마스코트가 뒤에 있을 경우 ( 마스코트 > 나 > 목표지점 ) : 뛴다
                 if ( Vector3.Distance(ARCamera.transform.position, DestinationMgr.destination.position) >
                       Vector3.Distance(Mascot_MR.transform.position, DestinationMgr.destination.position)  ){
-                    guideInfo.text += "\n dist_wait";
+                    //guideInfo.text += "\n dist_wait";
                     guideUI.text = "";
                     //guideUI.gameObject.SetActive(false);
                     guideBack.gameObject.SetActive(false);
@@ -364,7 +375,7 @@ public class GuideMgr : MonoBehaviour
                     spchBubble.transform.localPosition = new Vector3(0, 0, 0);
 
                 } else {
-                    guideInfo.text += "\n dist_run";
+                    //guideInfo.text += "\n dist_run";
                     guideUI.text = "";
                     //guideUI.gameObject.SetActive(false);
                     guideBack.gameObject.SetActive(false);
@@ -387,7 +398,7 @@ public class GuideMgr : MonoBehaviour
 
             } else {
                 // 가까이에 있을 경우 : 목표지점으로 걷는다
-                guideInfo.text += "\n dist_walk";
+                //guideInfo.text += "\n dist_walk";
                 guideUI.text = "";
                 //guideUI.gameObject.SetActive(false);
                 guideBack.gameObject.SetActive(false);
@@ -411,14 +422,14 @@ public class GuideMgr : MonoBehaviour
 
         }
         nowPointNum += 2;
-        guideInfo.text += "\n while - end! nP+2";
+        //guideInfo.text += "\n while - end! nP+2";
 
     }
 
 
     private IEnumerator Guide_End(){
         yield return new WaitForSeconds(0.5f);
-        guideInfo.text = "end guide and give info about "+GPSMgr.finalDestination;
+        //guideInfo.text = "end guide and give info about "+GPSMgr.finalDestination;
 
         string endSpch = GPSMgr.finalDestination;
         string endInfo = "";
@@ -437,7 +448,7 @@ public class GuideMgr : MonoBehaviour
             endInfo = "제2공학관은 25동부터 27동까지로 나뉘며 ‘ㄷ’자 형태로 연결되어 있습니다. 25동에는 다양한 연구실과 실험실, 회의실 등의 시설을 갖추고 있습니다.";
         } else if (endSpch == "제2공학관 26동 "){
             endInfo = "제2공학관은 25동부터 27동까지로 나뉘며 ‘ㄷ’자 형태로 연결되어 있습니다. 26동에는 공대식당을 비롯한 휴게실과 매점, 열람실 등의 편의시설과 첨단강의실, 연구공간이 마련되어 있습니다.";
-        } else if (endSpch == "제2공학관 27동 "){
+        } else if (endSpch == "제2공학관 27 "){
             endInfo = "제2공학관은 25동부터 27동까지로 나뉘며 ‘ㄷ’자 형태로 연결되어 있습니다. 27동에는 공학교육혁신센터와 성균어학원, 우주과학기술연구소, 창업기업 사무실 등이 자리하며, 다양한 세미나실, 연구실, 강의실을 갖추고 있습니다.";
         } else if (endSpch == "제1과학관 31동 "){
             endInfo = "제1과학관은 자연과학대학이 주로 사용하는 공간입니다. 제1과학관부터 제2과학관, 기초학문관, 생명공학관까지 연결되어 있어 건물 내에서 자유롭게 이동할 수 있습니다.";
@@ -465,6 +476,12 @@ public class GuideMgr : MonoBehaviour
         
         guideUI.text = endInfo;
 
+        // 유저 바라보기
+        var lookpos = ARCameraTransform.position - Mascot_MR.transform.position;
+        lookpos.y = 0;
+        var rotation = Quaternion.LookRotation(lookpos);
+        Mascot_MR.transform.rotation = rotation; 
+
         // 말풍선 설정
 
         Mascot_anim.SetBool("isTalk", true);
@@ -472,17 +489,24 @@ public class GuideMgr : MonoBehaviour
         spchText.text = endSpch + "에 도착했어!";
         spchBubble.gameObject.SetActive(true);
         Invoke("spchBubbleFadein", 0f);
-        /*
         yield return new WaitForSeconds (2.4f);
         Invoke("spchBubbleFadeout", 0f);
         yield return new WaitForSeconds (0.36f);
         spchBubble.gameObject.SetActive(false);
         yield return new WaitForSeconds (0.1f);
-        */
 
-        var lookpos = ARCameraTransform.position - Mascot_MR.transform.position;
-        lookpos.y = 0;
-        var rotation = Quaternion.LookRotation(lookpos);
+        spchText.text = "이 장소에 대한 설명은 \n아래 ui를 참고해 줘 !";
+        spchBubble.gameObject.SetActive(true);
+        Invoke("spchBubbleFadein", 0f);
+        /*
+        yield return new WaitForSeconds (2.4f);
+        Invoke("spchBubbleFadeout", 0f);
+        yield return new WaitForSeconds (0.36f);
+        spchBubble.gameObject.SetActive(false);
+        yield return new WaitForSeconds (0.1f);*/
+        
+
+     
         
     }
 
