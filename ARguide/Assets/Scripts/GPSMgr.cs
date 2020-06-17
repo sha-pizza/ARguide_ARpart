@@ -27,6 +27,7 @@ public class GPSMgr : MonoBehaviour
     public static string finalDestination = "";
 
     // 드롭다운 & 길 찾기 버튼
+    public GameObject TapToStart;
     public Dropdown dropdown2;  // Dropdown2
     public Button findRouteBtn; // Button_Find_Route
     public GameObject Button2;  // button2
@@ -40,7 +41,7 @@ public class GPSMgr : MonoBehaviour
     public static bool didFoundRoute = false;
 
     // 백그라운드 이미지
-    private Image backgroundImage;
+    public Image backgroundImage;
 
     // VAR : GPS및 방위 관련 
     public static string GPSstatus = "";
@@ -95,7 +96,7 @@ public class GPSMgr : MonoBehaviour
         
         
         // UI
-        backgroundImage = transform.Find("Canvas").Find("Image").GetComponent<Image>();
+        //backgroundImage = transform.Find("Canvas").Find("Image").GetComponent<Image>();
         // Dropdown part
         /*
         dropdown = transform.Find("Canvas").Find("Dropdown").GetComponent<Dropdown>();
@@ -117,6 +118,7 @@ public class GPSMgr : MonoBehaviour
 
         // 받아온 gps 방향정보 띄워주는 텍스트
         //GPSText = transform.Find("Canvas").Find("GPSText").GetComponent<Text>();
+        GPSText = GameObject.Find("DebugCanvas/GPSText").GetComponent<Text>();
 
         // targetLATLON 받아오는 InputField 및 버튼과 디버깅용 텍스트오브젝트 불러오기
         /* >> DEPRECATED
@@ -222,7 +224,7 @@ public class GPSMgr : MonoBehaviour
 
                     for (int i = 0; i < route.Length / 2; i++)
                     {
-                        //GPSText.text += "\nroute - lat: " + route[i * 2 + 0] + " lon: " + route[i * 2 + 1];
+                        GPSText.text += "\nroute - lat: " + route[i * 2 + 0] + " lon: " + route[i * 2 + 1];
                     }
                 }
                 
@@ -393,6 +395,10 @@ public class GPSMgr : MonoBehaviour
         double LON = (float)locations[1];
         text.text = LAT.ToString() + LON.ToString();
         */
+    }
+
+    public void Erase_TapToStart(){
+        TapToStart.gameObject.SetActive(false);
     }
 }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GuideMgr : MonoBehaviour
 {
@@ -80,10 +81,11 @@ public class GuideMgr : MonoBehaviour
         // 디버깅용 텍스트 찾기 - 디버깅용이므로 exception 처리해둠
         try{
             
-            //routeInfo = GameObject.Find("DebugCanvas/Routeinfo").GetComponent<Text>();
+            //routeInfo = GameObject.Find("DebugCanvas/Routeinfo").GetComponent<Text>(); // erase Routeinfo
             guideInfo = GameObject.Find("DebugCanvas/Guideinfo").GetComponent<Text>();
             guideUI = GameObject.Find("DebugCanvas/GuideUI/GuideUIText").GetComponent<Text>();
             guideBack = GameObject.Find("DebugCanvas/GuideUI");
+            guideInfo.text = "find debugtext";
             //guideUI.gameObject.SetActive(false);
             guideBack.gameObject.SetActive(false);
         } catch(Exception e){
@@ -97,9 +99,11 @@ public class GuideMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        guideInfo.text = "route not yet";
         // 경로가 찾아진 경우 안내 시작!
-        if (GPSMgr.didFoundRoute && !didGuideStart){
-        //if (!didGuideStart){
+        //if (GPSMgr.didFoundRoute && !didGuideStart){
+            guideInfo.text = "route yes";
+        if (!didGuideStart){
             didGuideStart = true;
 
             // 경로 가져오기
@@ -334,9 +338,21 @@ public class GuideMgr : MonoBehaviour
                 //guideInfo.text += "\n dist_disable";
                 //guideUI.gameObject.SetActive(true);
                 guideBack.gameObject.SetActive(true);
-                guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n서비스가 종료됩니다.";
+                guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n곧 서비스가 종료됩니다.";
                 spchBubble.gameObject.SetActive(false);
+
                 // 실제 서비스 종료 추가
+                Destroy(Mascot_MR.gameObject);
+                for (int i = 10 ; i > 0 ; i--){
+                    yield return new WaitForSeconds(0.9f);
+                    guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n"+i+"초후 서비스가 종료됩니다.";
+                }
+
+                // 현재 씬 리로드
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+
+                
 
             } else if (dist > dist_warning ) {
                 // if dist_warning 보다 멀리 떨어질 경우 : 일단 ui로 안내
@@ -498,12 +514,17 @@ public class GuideMgr : MonoBehaviour
         spchText.text = "이 장소에 대한 설명은 \n아래 ui를 참고해 줘 !";
         spchBubble.gameObject.SetActive(true);
         Invoke("spchBubbleFadein", 0f);
-        /*
-        yield return new WaitForSeconds (2.4f);
-        Invoke("spchBubbleFadeout", 0f);
-        yield return new WaitForSeconds (0.36f);
-        spchBubble.gameObject.SetActive(false);
-        yield return new WaitForSeconds (0.1f);*/
+
+        // 종료후 메인으로
+        for (int i = 10 ; i > 0 ; i--){
+            yield return new WaitForSeconds(0.9f);
+            guideUI.text = endInfo+"\n"+i+"초후 안내를 종료합니다.";
+        }
+
+        // 현재 씬 리로드
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
+        
         
 
      
