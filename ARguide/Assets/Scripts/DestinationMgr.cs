@@ -41,7 +41,6 @@ public class DestinationMgr : MonoBehaviour
         while (true){
             yield return new WaitForSeconds(0.05f);
             //destinationMgr 오브젝트가 북쪽을 바라보도록 수정
-            //compassObject.rotation = Quaternion.Lerp(compassObject.rotation , Quaternion.Euler(0, GPSMgr.Heading, 0), 0.5f);
             transform.position = new Vector3(ARCameraTransform.position.x, 0, ARCameraTransform.position.z);
             transform.rotation = Quaternion.Euler(0, GPSMgr.Heading, 0);
             //현재 파트의 목표지점으로 destination 오브젝트 이동
@@ -51,10 +50,11 @@ public class DestinationMgr : MonoBehaviour
             double cosValue = targetLON / Mathf.Sqrt((float)(targetLAT*targetLAT + targetLON*targetLON));
             double sinValue = targetLAT / Mathf.Sqrt((float)(targetLAT*targetLAT + targetLON*targetLON));
             
-            
-            destination.transform.localPosition = new Vector3(Bumper*(float)cosValue, -1.2f, Bumper*(float)sinValue);
-            
-            //destination.transform.localPosition = new Vector3 (targetLON*10000,0,targetLAT*10000);
+            // dectination의 높이를 카메라 위치 -1.2f로 이동
+            //double destinY = -1.2f;
+            double destinY = ARCameraTransform.position.y - 1.2f;
+
+            destination.transform.localPosition = new Vector3(Bumper*(float)cosValue, (float)destinY, Bumper*(float)sinValue);
 
             /*
             camtext.text = "\nLAT :"+ GPSMgr.LAT + "\n->" + GuideMgr.route[GuideMgr.nowPointNum] ;

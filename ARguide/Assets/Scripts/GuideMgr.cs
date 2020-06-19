@@ -14,10 +14,8 @@ public class GuideMgr : MonoBehaviour
     // 경로!!
     // 테스트용으로 설정해둠
     //double[] route;        
-    
-    //public static double[] route = {37.295600, 126.976000, 37.295400, 126.976000, 37.295400, 126.976200}; 
     public static double[] route = {37.295400, 126.976000, 37.295400, 126.976200}; 
-    //public static double[] route = {37.296363, 126.975296, 37.296363, 126.975296};       
+           
     public static int nowPointNum = 0;  // 현재 향하는 좌표! nowPoint0일때 rount0,1지점으로 향한다
     int lastPointNum;                   // 마지막 좌표! 전체 좌표들의 개수와도 같다
     
@@ -64,6 +62,8 @@ public class GuideMgr : MonoBehaviour
     private Text guideUI;
     private GameObject guideBack;
 
+    
+
 
 
     // Start is called before the first frame update
@@ -91,19 +91,15 @@ public class GuideMgr : MonoBehaviour
         } catch(Exception e){
             Debug.Log(e);
         }
-
-        
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        guideInfo.text = "route not yet";
         // 경로가 찾아진 경우 안내 시작!
-        //if (GPSMgr.didFoundRoute && !didGuideStart){
+        if (GPSMgr.didFoundRoute && !didGuideStart){    
+        //if (!didGuideStart){
             guideInfo.text = "route yes";
-        if (!didGuideStart){
             didGuideStart = true;
 
             // 경로 가져오기
@@ -115,11 +111,10 @@ public class GuideMgr : MonoBehaviour
             // 가이드 코루틴 시작
             IEnumerator guide_findplane = Guide_FindPlane();
             StartCoroutine(guide_findplane);
-
-            
         }
     }
 
+    // 평면 찾아 마스코트 설치
     private IEnumerator Guide_FindPlane(){
         guideInfo.text = "find plane ...";
 
@@ -128,17 +123,14 @@ public class GuideMgr : MonoBehaviour
             Mascot_sample.rotation = Quaternion.Lerp(Mascot_sample.rotation,
                                                         Quaternion.Euler(0, ARCameraTransform.eulerAngles.y, 0), 0.3f);
             Mascot_sample.position = Vector3.Lerp(Mascot_sample.position,
-                                                        ARCameraTransform.position, 0.3f);
-
-            // UI 안내 - find horizontal plane
-            
+                                                        ARCameraTransform.position, 0.3f);            
         }
-
         guideInfo.text = "init guide";
 
         // 마스코트 생성후 방향설정
         Vector3 mascotpos = Mascot_samplemat.gameObject.transform.position;
-        mascotpos.y = -1.2f;
+        //mascotpos.y = -1.2f;
+        mascotpos.y = ARCameraTransform.position.y - 1.2f;
         var mascotrottmp = ARCameraTransform.position - mascotpos;
         mascotrottmp.y = 0;
         Quaternion mascotrot = Quaternion.LookRotation(mascotrottmp);
@@ -209,17 +201,7 @@ public class GuideMgr : MonoBehaviour
         spchBubble.gameObject.SetActive(false);
         yield return new WaitForSeconds (2.0f);
 
-        Mascot_anim.SetBool("isStartGuide", true);
-
-        /* oldscript !
-        spchText.text = "좋아,출발해보자!";
-        StartCoroutine(SpchBubble_Fadein(0.2f, 1.0f, 0.03f));
-        yield return new WaitForSeconds(2.0f);
-        StartCoroutine(SpchBubble_Fadeout(1.0f, 0.2f, 0.03f));
-        yield return new WaitForSeconds(0.4f);*/
-        
-        
-        
+        Mascot_anim.SetBool("isStartGuide", true);        
 
         spchText.text = "어디보자...";
         spchBubble.gameObject.SetActive(true);
@@ -230,30 +212,10 @@ public class GuideMgr : MonoBehaviour
         spchBubble.gameObject.SetActive(false);
         yield return new WaitForSeconds (0.1f);
 
-        /*
-        spchText.text = "이쪽이야 !";
-        spchBubble.gameObject.SetActive(true);
-        Invoke("spchBubbleFadein", 0f);
-        yield return new WaitForSeconds (1.9f);
-        Invoke("spchBubbleFadeout", 0f);
-        yield return new WaitForSeconds (0.36f);
-        spchBubble.gameObject.SetActive(false);
-        yield return new WaitForSeconds (0.1f);
-        */
-
-        /*routeInfo.text = "guide to : "+nowPointNum+"->"+lastPointNum;
-        for (int i = nowPointNum ; i < lastPointNum ; i = i+2 ){
-            routeInfo.text += "\n"+i+" : "+(float)route[i]+"/"+(float)route[i+1];
-        }*/
-       
-        // 파트 이동 코루틴 호출
-        //guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
-        
 
         guideInfo.text = "start guide coroutine2";
         nowPointNum = 0;
         int nowPointNumSaver=0;
-        //StartCoroutine(Guide_Part((float)GPSMgr.LAT, (float)GPSMgr.LON, route[0], route[1]));
         
         // 0->2 안내 np=0 nps=0
         // 0->2 안내 코루틴 끝날 때 np+2 / np=2 nps=0
@@ -270,28 +232,7 @@ public class GuideMgr : MonoBehaviour
             
         }
         
-        
-        /*
-        StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[0], route[1]));
-        
 
-        while (nowPointNum != lastPointNum){
-            yield return new WaitForSeconds(1.0f); 
-            guideInfo.text = "np:"+nowPointNum+"/ nps:"+nowPointNumSaver+"/ lp:"+lastPointNum;
-            if (nowPointNum == lastPointNum){
-                guideInfo.text += "!@!@!@!@";
-                break;
-            }
-
-            if (nowPointNum > nowPointNumSaver){
-                
-                nowPointNumSaver = nowPointNum;
-                StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[nowPointNum], route[nowPointNum+1]));
-            }
-        }
-        
-        guideInfo.text = "~np:"+nowPointNum+"/ nps:"+nowPointNumSaver;
-        */
         
         while (nowPointNum != lastPointNum){
             yield return new WaitForSeconds(5f);
@@ -313,9 +254,7 @@ public class GuideMgr : MonoBehaviour
         /*guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
         guideInfo.text += "\nlat abs : "+Mathf.Abs((float)(GPSMgr.LAT - eLAT));
         guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));*/
-
-
-                                                 
+                    
 
         // 마스코트가 while 타겟오브젝트와 충분히 가까이 있지 않은 동안
         // DestinationMgr 의 Destination 오브젝트를 향해
@@ -402,13 +341,24 @@ public class GuideMgr : MonoBehaviour
                     spchBubble.gameObject.SetActive(false);
 
                     // 각도수정 및 이동
-                    //Mascot_MR.transform.LookAt(DestinationMgr.destination.position);  
+                    // 유저쪽으로! 
+                    /*
                     var lookpos = DestinationMgr.destination.position - Mascot_MR.transform.position;
                     lookpos.y = 0;
                     var rotation = Quaternion.LookRotation(lookpos);
                     Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f);                                                          
                     Mascot_MR.transform.position = Vector3.MoveTowards (Mascot_MR.transform.position, 
                                                                         DestinationMgr.destination.position,
+                                                                        Mascot_runSpeed * Time.deltaTime);
+                                                                        */
+                    var lookpos = ARCameraTransform.position - Mascot_MR.transform.position;
+                    lookpos.y = 0;
+                    var rotation = Quaternion.LookRotation(lookpos);
+                    Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f); 
+
+                    var movepos = new Vector3(ARCameraTransform.position.x, ARCameraTransform.position.y-1.2f, ARCameraTransform.position.z);                                                         
+                    Mascot_MR.transform.position = Vector3.MoveTowards (Mascot_MR.transform.position, 
+                                                                        movepos,
                                                                         Mascot_runSpeed * Time.deltaTime);
                 }
 
