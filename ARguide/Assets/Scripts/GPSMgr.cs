@@ -11,7 +11,7 @@ public class GPSMgr : MonoBehaviour
     public Transform Nothing;
 
     // 자바 인스턴스
-    private AndroidJavaObject m_JavaObject;
+    static public AndroidJavaObject m_JavaObject;
 
     //public InputField InputText;
     //검색된 목적지 리스트들의 위도 경도를 담는다
