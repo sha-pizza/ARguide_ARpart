@@ -1,27 +1,12 @@
 package com.DefaultCompany.arguide;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Message;
 
-public class Location1 extends Thread {
+public class Location1 {
 
-    private Destination[] lists = new Destination[100];
-    private Handler mHandler;
-    private String query;
-
-    // 생성자
-    public Location1(Handler handler, String query) {
-        this.query = query;
-        this.mHandler = handler;
-    }
-
-
-    @Override
-    public void run() {
-
-        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-        //건물정보 저장
-        // 변수 이름은 엑셀에 저장된 번호
+    public void insertDataIntoTable(SQLiteDatabase destinationDatabase, String table) {
         Destination nine = new Destination("생명공학관61동 입구 1",61,37.296032, 126.975092);
         Destination thirteen = new Destination("제2공학관 26동 입구 1",26,37.2955584, 126.9774348);
         Destination fourteen = new Destination("제1공학관 23동 입구 1",23,37.2941397, 126.977208);
@@ -79,12 +64,6 @@ public class Location1 extends Thread {
 
 
         Destination[] buildings = new Destination[47];
-        //buildings 배열 초기화
-        for(int i=0;i<47;i++){
-            buildings[i] = new Destination("",0,0,0);
-        }
-
-
         buildings[0] = one;
         buildings[1] = two;
         buildings[2] = three;
@@ -134,49 +113,19 @@ public class Location1 extends Thread {
         buildings[46] = fourtyseven;
 
         Destination[] ATMs = new Destination[3];
-
         ATMs[0] = ATM1;
         ATMs[1] = ATM2;
         ATMs[2] = ATM3;
 
-
-
-        //마커 띄우기 써서 마커 뿌려주기, main에서 해야함 settag 써서 findPOIItemByTag(int)로 검색가능 혹은 이름으로 검색가능
-
-
-        //검색쿼리
-
-        String temp;
-
-        //lists 초기화
-        for(int i=0;i<10;i++){
-            lists[i] = new Destination("",0,0,0);
+        for (int i = 0 ; i < buildings.length ; i++) {
+            destinationDatabase.execSQL("insert into " + table + "(name, latitude, longitude) values ('"
+                    + buildings[i].getName() + "', " + buildings[i].getLatitude() + ", " + buildings[i].getLongitude() + ")");
         }
 
-        //이름으로 검색
-        int count= 0;
-        for (Destination building : buildings) {
-            temp = building.getName();
-            if (temp.contains(query)) {
-                //찾은 목록에 추가
-                lists[count] = building;
-                count++;
-            }
+        for (int i = 0 ; i < ATMs.length ; i++) {
+            destinationDatabase.execSQL("insert into " + table + "(name, latitude, longitude) values ('"
+                    + ATMs[i].getName() + "', " + ATMs[i].getLatitude() + ", " + ATMs[i].getLongitude() + ")");
         }
-
-        //결과 출력
-        Message m = new Message();
-        m.what = 0;
-        m.obj = lists;
-        mHandler.sendMessage(m);
-
-
-
 
     }
-
-
-
-
-
 }

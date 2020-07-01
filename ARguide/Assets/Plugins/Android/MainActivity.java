@@ -1,5 +1,7 @@
 package com.DefaultCompany.arguide;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -47,6 +49,9 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     private double longi;
     private double lat;
 
+    SQLiteDatabase destinationDatabase;
+    final String DATABASE_NAME = "Destinations";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,37 +81,25 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
         // 여기부터 Map 부분
         Mapbox.getInstance(this, "MAPBOX_ACCESS_TOKEN");
-/*
-        //timber 초기화
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+
+        destinationDatabase = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        destinationDatabase.execSQL("create table if not exists DestinationTable (name text PRIMARY KEY, latitude real, longitude real)");
+        Cursor cursor = destinationDatabase.rawQuery("select name, latitude, longitude from DestinationTable", null);
+        if (cursor.getCount() == 0) {
+            Location1 location1 = new Location1();
+            location1.insertDataIntoTable(destinationDatabase, "DestinationTable");
         }
-        Timber.i("hi it is test");
- */
-/*
-        setDestination("신관");
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                findRoute();
-            }
-        }, 1000);
-        Handler handler2 = new Handler();
-        handler2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                double[] route1 = getRoute();
-                Log.d("asdf",""+route1[0]);
-            }
-        }, 4000);
- */
     }
 
     public void setDestination(String destination) {
-        Location1 bthread = new Location1(mHandler, destination);
-        bthread.setDaemon(true);
-        bthread.start();
+        Cursor cursor = destinationDatabase.rawQuery("select name, latitude, longitude from DestinationTable where name like '%" + destination + "%'", null);
+        int recordCount = cursor.getCount();
+        for (int i = 0 ; i < recordCount ; i++) {
+            cursor.moveToNext();
+            data.add(new Destination(cursor.getString(0), 61, cursor.getDouble(1), cursor.getDouble(2)));
+        }
+
+        cursor.close();
     }
 
 //검색용으로 추가된 함수
@@ -234,37 +227,6 @@ public double[] getLocationsLog(){
     public void onGranted(int i, String[] strings) {
     }
  */
-    // 핸들러
-    @SuppressLint("HandlerLeak")
-    Handler mHandler = new Handler() {
-        public void handleMessage(Message m) {
-            if (m.what == 0) {
-
-                //data 초기화
-                data.clear();
-
-                Destination[] list;
-                list = (Destination[]) m.obj;
-                for (Destination destination : list) {
-                    if (destination != null) {
-                        data.add(destination);
-                    } else {
-                        break;
-                    }
-                }
-
-                ArrayList<String> name = new ArrayList<>();
-                for(int i=0;i<data.size();i++){
-                    name.add(data.get(i).getName());
-                }
-
-                adapter = new ArrayAdapter<>
-                        (getApplicationContext(),android.R.layout.simple_list_item_1,name);
-
-                //listView.setAdapter(adapter);
-            }
-        }
-    };
 
     // 핸들러
 

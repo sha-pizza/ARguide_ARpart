@@ -346,8 +346,7 @@ public class GPSMgr : MonoBehaviour
         //이름 검색하기
         m_JavaObject.Call("setDestination", query);
         //Debug.Log("passed3:search " + query);
-        //싱크맞추기
-        Thread.Sleep(3000);
+
         //검색한 이름 결과 받아오기
         var locations = m_JavaObject.Call<string[]>("getLocationsName");
         var locations2 = m_JavaObject.Call<double[]>("getLocationsLat");
