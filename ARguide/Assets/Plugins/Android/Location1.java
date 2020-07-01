@@ -153,17 +153,47 @@ public class Location1 extends Thread {
             lists[i] = new Destination("",0,0,0);
         }
 
+        boolean flag = false;
+        //건물번호 검색인지 아닌지 판별하기
+        for(int i=0;i<query.length();i++){
+	if(Character.isDigit(query.charAt(i)) == false){
+		flag = true;
+		break;
+	}
+        }
+
+	int count= 0;
+
         //이름으로 검색
-        int count= 0;
+
+        if(flag == true){
+        
         for (Destination building : buildings) {
             temp = building.getName();
             if (temp.contains(query)) {
                 //찾은 목록에 추가
                 lists[count] = building;
                 count++;
+            			}
+        		}
+	}
+
+        //건물번호로 검색
+	//query 길이 예외처리 필요
+
+	if(flag == false){
+	int temper;
+        for (Destination building : buildings) {
+             temper = building.getNumber();
+	temp = Integer.toString(temper);
+            query = query.substring(0,2);
+            if (query.equals(temp)) {
+                //찾은 목록에 추가
+                lists[count] = building;
+                count++;
             }
         }
-
+}
         //결과 출력
         Message m = new Message();
         m.what = 0;
