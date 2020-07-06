@@ -62,7 +62,11 @@ public class GuideMgr : MonoBehaviour
     private Text guideUI;
     private GameObject guideBack;
 
-    
+
+    // 학교와 너무 멀리 떨어져 있을 때 에러처리를 위한 상수
+    private const double COLLEGE_LAT = 37.293889;
+    private const double COLLEGE_LON = 126.974904;
+    private const double DISTANCE_LIMIT = 0.009; // 성균관대역보다 약간 먼 거리 (경우에 따라 수정)
 
 
 
@@ -177,69 +181,110 @@ public class GuideMgr : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
         RayMgr.isBubbleClicked = false;
-        
-        Invoke("spchBubbleFadeout", 0f);
-        yield return new WaitForSeconds (0.36f);
-        spchBubble.gameObject.SetActive(false);
-        yield return new WaitForSeconds (1.0f);
 
-        spchText.text = "좋아,출발해보자!";
-        spchBubble.gameObject.SetActive(true);
-        Invoke("spchBubbleFadein", 0f);
-        yield return new WaitForSeconds (2.4f); // between in-out
-        Invoke("spchBubbleFadeout", 0f);
-        yield return new WaitForSeconds (0.36f);
-        spchBubble.gameObject.SetActive(false);
-        yield return new WaitForSeconds (0.1f); // between active false-true
+        // 0706 학교에서 너무 멀리 떨어져 있는 지 확인 
+        if (!isWithinCollegeArea())
+        {
 
-        spchText.text = "너무 멀어지면\n종료될 수도 있으니까\n조심해야해!";
-        spchBubble.gameObject.SetActive(true);
-        Invoke("spchBubbleFadein", 0f);
-        yield return new WaitForSeconds (2.4f);
-        Invoke("spchBubbleFadeout", 0f);
-        yield return new WaitForSeconds (0.36f);
-        spchBubble.gameObject.SetActive(false);
-        yield return new WaitForSeconds (2.0f);
+            // 너무 멀리 떨어져 있으면 메인화면으로 돌아감
+            Invoke("spchBubbleFadeout", 0f);
+            spchBubble.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1.0f);
 
-        Mascot_anim.SetBool("isStartGuide", true);        
+            GPSMgr.didFoundRoute = false;
+            GPSMgr.route = null;
 
-        spchText.text = "어디보자...";
-        spchBubble.gameObject.SetActive(true);
-        Invoke("spchBubbleFadein", 0f);
-        yield return new WaitForSeconds (2.4f);
-        Invoke("spchBubbleFadeout", 0f);
-        yield return new WaitForSeconds (0.36f);
-        spchBubble.gameObject.SetActive(false);
-        yield return new WaitForSeconds (0.1f);
+            spchText.text = "학교와 너무 멀리\n떨어져 있어서\n가이드를\n진행할 수 없어 !\n다시 시도해 줘 !";
+            spchBubble.gameObject.SetActive(true);
+            Invoke("spchBubbleFadein", 0f);
+
+            // 안내문 설정
+            guideBack.gameObject.SetActive(true);
+            guideUI.fontSize = 40;
+
+            guideUI.text = "곧 메인화면으로 돌아갑니다.";
+
+            yield return new WaitForSeconds(2.4f);
+
+            Invoke("spchBubbleFadeout", 0f);
+            yield return new WaitForSeconds(0.36f);
+            spchBubble.gameObject.SetActive(false);
+
+            yield return new WaitForSeconds(2.0f);
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        else
+        {
+            // 기존 정상작동 코드
+            Invoke("spchBubbleFadeout", 0f);
+            yield return new WaitForSeconds(0.36f);
+            spchBubble.gameObject.SetActive(false);
+            yield return new WaitForSeconds(1.0f);
+
+            spchText.text = "좋아,출발해보자!";
+            spchBubble.gameObject.SetActive(true);
+            Invoke("spchBubbleFadein", 0f);
+            yield return new WaitForSeconds(2.4f); // between in-out
+            Invoke("spchBubbleFadeout", 0f);
+            yield return new WaitForSeconds(0.36f);
+            spchBubble.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.1f); // between active false-true
+
+            spchText.text = "너무 멀어지면\n종료될 수도 있으니까\n조심해야해!";
+            spchBubble.gameObject.SetActive(true);
+            Invoke("spchBubbleFadein", 0f);
+            yield return new WaitForSeconds(2.4f);
+            Invoke("spchBubbleFadeout", 0f);
+            yield return new WaitForSeconds(0.36f);
+            spchBubble.gameObject.SetActive(false);
+            yield return new WaitForSeconds(2.0f);
+
+            Mascot_anim.SetBool("isStartGuide", true);
+
+            spchText.text = "어디보자...";
+            spchBubble.gameObject.SetActive(true);
+            Invoke("spchBubbleFadein", 0f);
+            yield return new WaitForSeconds(2.4f);
+            Invoke("spchBubbleFadeout", 0f);
+            yield return new WaitForSeconds(0.36f);
+            spchBubble.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.1f);
 
 
-        guideInfo.text = "start guide coroutine2";
-        nowPointNum = 0;
-        int nowPointNumSaver=0;
-        
-        // 0->2 안내 np=0 nps=0
-        // 0->2 안내 코루틴 끝날 때 np+2 / np=2 nps=0
-        // while 돌리면서, if (np > nps) 이면 nps+2 하고
-        // 2->4 안내 코루틴 시작
-        
-        for (int i = 0 ; i<lastPointNum ; i = i+2){
-            while (nowPointNum != i){
-                yield return new WaitForSeconds(0.5f);
+            guideInfo.text = "start guide coroutine2";
+            nowPointNum = 0;
+            int nowPointNumSaver = 0;
+
+            // 0->2 안내 np=0 nps=0
+            // 0->2 안내 코루틴 끝날 때 np+2 / np=2 nps=0
+            // while 돌리면서, if (np > nps) 이면 nps+2 하고
+            // 2->4 안내 코루틴 시작
+
+            for (int i = 0; i < lastPointNum; i = i + 2)
+            {
+                while (nowPointNum != i)
+                {
+                    yield return new WaitForSeconds(0.5f);
+                }
+                guideInfo.text = "np:" + nowPointNum + "/ nps:" + nowPointNumSaver + "/ lp:" + lastPointNum;
+                // nowPointnum은 Guide_Part 코루틴 안에서 바꿔줄 예정
+                StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[i], route[i + 1]));
+
             }
-            guideInfo.text = "np:"+nowPointNum+"/ nps:"+nowPointNumSaver+"/ lp:"+lastPointNum;
-            // nowPointnum은 Guide_Part 코루틴 안에서 바꿔줄 예정
-            StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[i], route[i+1]));
-            
+
+
+
+            while (nowPointNum != lastPointNum)
+            {
+                yield return new WaitForSeconds(5f);
+            }
+
+            guideInfo.text = "end guiding";
+            StartCoroutine(Guide_End());
         }
         
-
         
-        while (nowPointNum != lastPointNum){
-            yield return new WaitForSeconds(5f);
-        }
-
-        guideInfo.text = "end guiding";
-        StartCoroutine(Guide_End());
         
           
     }
@@ -446,6 +491,20 @@ public class GuideMgr : MonoBehaviour
 
      
         
+    }
+
+    // 0706 학교에서 멀리 떨어져 있는 지 확인하는 메서드
+    private bool isWithinCollegeArea()
+    {
+        double distanceFromCollege = Math.Sqrt(Math.Pow(GPSMgr.LAT - COLLEGE_LAT, 2.0) + Math.Pow(GPSMgr.LON - COLLEGE_LON, 2.0));
+
+        if (distanceFromCollege < DISTANCE_LIMIT)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 
 
