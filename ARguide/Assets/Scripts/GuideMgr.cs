@@ -120,6 +120,7 @@ public class GuideMgr : MonoBehaviour
         }
     }
 
+    // Coroutine to find guide
     private IEnumerator Guide_FindPlane(){
         guideInfo.text = "find plane ...";
 
@@ -167,7 +168,7 @@ public class GuideMgr : MonoBehaviour
 
     }
 
-    // 가이드 코루틴
+    // Coroutine to start guide
     private IEnumerator Guide_Start(){
 
         guideInfo.text = "start guide coroutine1";
@@ -303,6 +304,7 @@ public class GuideMgr : MonoBehaviour
           
     }
 
+    // Coroutine to guide each part of route
     private IEnumerator Guide_Part(double sLAT, double sLON, double eLAT, double eLON){
         // start LAT LON , end LAT LON value of part
         //guideInfo.text = "\nkeep guide";
@@ -442,7 +444,7 @@ public class GuideMgr : MonoBehaviour
 
     }
 
-
+    // Coroutine to end guide process
     private IEnumerator Guide_End(){
         yield return new WaitForSeconds(0.5f);
         //guideInfo.text = "end guide and give info about "+GPSMgr.finalDestination;

@@ -1,0 +1,38 @@
+fileFormatVersion: 2
+guid: e696f786372459d409500532ab60b394
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - idle1: {fileID: 2800000, guid: 2747c878b004c114dad20741d8dbaaab, type: 3}
+  - idle2: {fileID: 2800000, guid: e98d11b5ea291564fa6bcf76b4a11a76, type: 3}
+  - idle3: {fileID: 2800000, guid: 8d65f96f7daa6cf428e8ca786fec3459, type: 3}
+  - idle4: {fileID: 2800000, guid: 53f7ec274e33eaf45babcfcda9e1ab2d, type: 3}
+  - talk1: {fileID: 2800000, guid: 6bb9923c853fbe947b56c8418cae549d, type: 3}
+  - talk2: {fileID: 2800000, guid: dfda79bc602e2ff4ca8b4fe9733a546a, type: 3}
+  - talk3: {fileID: 2800000, guid: b137ca72def402b4a9346084eb77d99c, type: 3}
+  - talk4: {fileID: 2800000, guid: 6bbaac99f8f0a8b479222f77ae45fa3d, type: 3}
+  - talk5: {fileID: 2800000, guid: d8379bd67b3e28040bb72cd9a553816b, type: 3}
+  - talk6: {fileID: 2800000, guid: 7c6adf9cc0aba3f4dbdd2ce286f238e2, type: 3}
+  - bling1: {fileID: 2800000, guid: fba28e80566b4f34db4314644d5aa706, type: 3}
+  - bling2: {fileID: 2800000, guid: e75f3ac51073a4d40a5db598cb18da98, type: 3}
+  - bling3: {fileID: 2800000, guid: 3bbe6902a7e117146a4913d7a36eae46, type: 3}
+  - bling4: {fileID: 2800000, guid: c4290351fc1c1eb4db439af625409cdb, type: 3}
+  - bling5: {fileID: 2800000, guid: feb64c9632208f844b2309ec1d2d98df, type: 3}
+  - talkOn01: {instanceID: 0}
+  - talkOn02: {instanceID: 0}
+  - talkOn03: {instanceID: 0}
+  - talkOn04: {instanceID: 0}
+  - talkOn05: {instanceID: 0}
+  - talkOn06: {instanceID: 0}
+  - talkOn07: {instanceID: 0}
+  - talkOn08: {instanceID: 0}
+  - talkOn09: {instanceID: 0}
+  - talkOn10: {instanceID: 0}
+  - talkOn11: {instanceID: 0}
+  - talkOn12: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,32 @@
+fileFormatVersion: 2
+guid: 377985287b1167e498bb45f141587566
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mascot_facemat: {fileID: 2100000, guid: 5cc52dc8cfba2e94d98e72969604fb65, type: 2}
+  - mascot_mousemat: {fileID: 2100000, guid: 4af16f6df7ef07841831afa230b59792, type: 2}
+  - idle1: {fileID: 2800000, guid: c036e62729ac7d443a34914158356649, type: 3}
+  - idle2: {fileID: 2800000, guid: 1a4970ad467f0fa40b106a59fda64c40, type: 3}
+  - idle3: {fileID: 2800000, guid: a14b1fa7bd52cc949b1cdef94bd1db8c, type: 3}
+  - idle4: {fileID: 2800000, guid: c6fb6ecf85285b44e8e185a0f72d167f, type: 3}
+  - bling1: {fileID: 2800000, guid: 40d983fe25c7aba469fff2fc93c6d840, type: 3}
+  - bling2: {fileID: 2800000, guid: 8305e621d63e6664e9e9ac836a2ea1a2, type: 3}
+  - bling3: {fileID: 2800000, guid: 73823b647f610c2408515f3a3250e168, type: 3}
+  - bling4: {fileID: 2800000, guid: 87ce3920773eec94a9ae822dd3e268b0, type: 3}
+  - bling5: {fileID: 2800000, guid: 93a95d96f6662eb4095121c0e1555f72, type: 3}
+  - smile1: {fileID: 2800000, guid: 29bd89b303bbb2c488af5c4b29ca8a17, type: 3}
+  - close1: {fileID: 2800000, guid: c6fb6ecf85285b44e8e185a0f72d167f, type: 3}
+  - idleM1: {fileID: 2800000, guid: 7bd5b0198232fe74b9a274d044b36a61, type: 3}
+  - talk1: {fileID: 2800000, guid: 7bd5b0198232fe74b9a274d044b36a61, type: 3}
+  - talk2: {fileID: 2800000, guid: 2e350f00b58a29446b78255a26519916, type: 3}
+  - talk3: {fileID: 2800000, guid: 49ccc52b74110af44a25fbcb627d9989, type: 3}
+  - talk4: {fileID: 2800000, guid: b48f8fd980300db458095ecd6bc9b014, type: 3}
+  - talk5: {fileID: 2800000, guid: 781869b6865894941a1b74c94e14f8a4, type: 3}
+  - talk6: {fileID: 2800000, guid: 7fe46f04030d8ed48b1bb8c7edecfe08, type: 3}
+  - closeM1: {fileID: 2800000, guid: 49ccc52b74110af44a25fbcb627d9989, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
