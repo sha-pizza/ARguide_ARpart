@@ -182,8 +182,8 @@ public class GuideMgr : MonoBehaviour
         }
         RayMgr.isBubbleClicked = false;
 
-        // 0706 학교에서 너무 멀리 떨어져 있는 지 확인 
-        if (!isWithinCollegeArea())
+        // 0706 학교에서 너무 멀리 떨어져 있는 지 확인 / 0713 위치 정보가 업데이트 되지 않고 있으면 종료
+        if (!isWithinCollegeArea() || GPSMgr.overNsecsNotLoadedLocation)
         {
 
             // 너무 멀리 떨어져 있으면 메인화면으로 돌아감
@@ -193,8 +193,12 @@ public class GuideMgr : MonoBehaviour
 
             GPSMgr.didFoundRoute = false;
             GPSMgr.route = null;
+            GPSMgr.overNsecsNotLoadedLocation = false;
+            GPSMgr.secsNotLoadedLocation = 0;
 
-            spchText.text = "학교와 너무 멀리\n떨어져 있어서\n가이드를\n진행할 수 없어 !\n다시 시도해 줘 !";
+            if (!isWithinCollegeArea()) spchText.text = "학교와 너무 멀리\n떨어져 있어서\n가이드를\n진행할 수 없어 !\n다시 시도해 줘 !";
+            else spchText.text = "위치 정보가\n업데이트 되지 않아\n가이드를\n진행할 수 없어 !\n건물 밖에서\n다시 시도해 줘 !";
+
             spchBubble.gameObject.SetActive(true);
             Invoke("spchBubbleFadein", 0f);
 
@@ -213,8 +217,7 @@ public class GuideMgr : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-        else
+        } else
         {
             // 기존 정상작동 코드
             Invoke("spchBubbleFadeout", 0f);

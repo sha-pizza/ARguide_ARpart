@@ -36,6 +36,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     double azimuth = 0;
     double latitude = 0;
     double longitude = 0;
+    int locationReloadedCount = 0;
 
     ArrayList<Destination> data = new ArrayList<>();
     ArrayList<Destination> route = new ArrayList<>();
@@ -183,7 +184,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     }
 
     public double[] getLocation() {
-        double[] location = {latitude, longitude};
+        double[] location = {latitude, longitude, locationReloadedCount};
         return location;
     }
 
@@ -212,6 +213,8 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
             latitude = latitude_temp;
             longitude = longitude_temp;
+
+            locationReloadedCount++;
         }
 
         @Override
