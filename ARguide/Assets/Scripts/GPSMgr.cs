@@ -11,7 +11,7 @@ public class GPSMgr : MonoBehaviour
     public Transform Nothing;
 
     // 자바 인스턴스
-    private AndroidJavaObject m_JavaObject;
+    static public AndroidJavaObject m_JavaObject;
 
     //public InputField InputText;
     //검색된 목적지 리스트들의 위도 경도를 담는다
@@ -55,6 +55,14 @@ public class GPSMgr : MonoBehaviour
     public static float compass_headingAccu;
     public static float compass_trueHeading;
     public static int validCount;
+
+    // 위치 못 가져오는 에러 처리
+    private int previousLocationLoadedCount = 0;
+    private int currentLocationLoadedCount = 0;
+    public static int secsNotLoadedLocation = 0;
+    private int secsNotLoadedTolerance = 10;
+    public static bool overNsecsNotLoadedLocation = false;
+
     // tmp obj that help to set GPS text >> DEPRECATED
     // private string LOCtext;
  
@@ -119,6 +127,7 @@ public class GPSMgr : MonoBehaviour
         // 받아온 gps 방향정보 띄워주는 텍스트
         //GPSText = transform.Find("Canvas").Find("GPSText").GetComponent<Text>();
         GPSText = GameObject.Find("DebugCanvas/GPSText").GetComponent<Text>();
+        GPSText.text = "";
 
         // targetLATLON 받아오는 InputField 및 버튼과 디버깅용 텍스트오브젝트 불러오기
         /* >> DEPRECATED
@@ -173,14 +182,6 @@ public class GPSMgr : MonoBehaviour
         // 나침반 각도 업데이트 (lerp 추가)
         //obj_Compass.transform.rotation = Quaternion.Euler(0, Heading, 0);
         obj_Compass.transform.rotation = Quaternion.Lerp(obj_Compass.transform.rotation, Quaternion.Euler(0, Heading, 0), 0.5f);
-
-        // 안내중이지 않고, targetLATLON 값이 있을 때 코루틴 시작!
-        if(isGuiding == false){
-            if(targetLAT != 0 && targetLON !=0 ){
-                isGuiding = true;
-                StartCoroutine(GuideToTarget());
-            }
-        }
         */
         
     }
@@ -213,20 +214,16 @@ public class GPSMgr : MonoBehaviour
                 var locations = m_JavaObject.Call<double[]>("getLocation");
                 LAT = (float)locations[0];
                 LON = (float)locations[1];
-                
-                
-                
-                if (didFoundRoute)
-                {
-                    // 루트 받아오기
-                    //string destination = "신관";
-                    route = m_JavaObject.Call<double[]>("getRoute");
 
-                    for (int i = 0; i < route.Length / 2; i++)
-                    {
-                        GPSText.text += "\nroute - lat: " + route[i * 2 + 0] + " lon: " + route[i * 2 + 1];
-                    }
-                }
+                // 위치 못 가져오는 에러 처리
+                previousLocationLoadedCount = currentLocationLoadedCount;
+                currentLocationLoadedCount = (int)locations[2];
+
+                if (previousLocationLoadedCount == currentLocationLoadedCount) secsNotLoadedLocation++;
+                else secsNotLoadedLocation = 0;
+
+                if (secsNotLoadedLocation >= secsNotLoadedTolerance) overNsecsNotLoadedLocation = true;
+                
                 
             } else {
                 GPSstatus = "GPS not available !"+"\nLAT: "+"\nLON:";
@@ -301,16 +298,35 @@ public class GPSMgr : MonoBehaviour
 
     public void Get_Route()
     {
-        var route = m_JavaObject.Call<double[]>("getRoute");
-        //GPSText.text = "route : ";
-        for (int i = 0; i < route.Length; i++)
-        {
-            if (route[i] != 0)
-            {
-                Debug.Log("route " + i + " " + route[i]);
-                //GPSText.text += "\nroute " + i + " " + route[i] ;
+        var routeTmp = m_JavaObject.Call<double[]>("getRoute");
+        
+        // route 전처리
+
+        // route 길이 찾기
+        int routeLen = 0;
+        for (int i = 0 ; i < routeTmp.Length ; i++){
+            if (routeTmp[i] == 0){
+                routeLen = i;
+                break;
             }
         }
+        route = new double[routeLen];
+
+        // route 옮기기
+        for (int i = 0 ; i < routeLen ; i++ ){
+            route[i] = routeTmp[i];
+        }
+
+    
+
+        // 받은 경로 값도 옮김
+        /*GPSText.text = "routeLen:"+routeLen;
+        for (int i = 0; i < route.Length / 2; i++)
+        {
+            GPSText.text += "\n"+(i*2)+"lat: " + route[i * 2 + 0] + " lon: " + route[i * 2 + 1];
+        }
+        */
+        
 
         // 카메라 화면으로 전환
         backgroundImage.enabled = false;
@@ -324,6 +340,12 @@ public class GPSMgr : MonoBehaviour
         Inputobj.SetActive(false);
 
         didFoundRoute = true;
+        /*
+        if (didFoundRoute){
+            //GPSText.text += "\ndidfoundroute !!";
+        }
+        */
+        
     }
 
      public void Searchdropdown(Dropdown dropdown, InputField InputText)
@@ -339,8 +361,7 @@ public class GPSMgr : MonoBehaviour
         //이름 검색하기
         m_JavaObject.Call("setDestination", query);
         //Debug.Log("passed3:search " + query);
-        //싱크맞추기
-        Thread.Sleep(3000);
+
         //검색한 이름 결과 받아오기
         var locations = m_JavaObject.Call<string[]>("getLocationsName");
         var locations2 = m_JavaObject.Call<double[]>("getLocationsLat");
