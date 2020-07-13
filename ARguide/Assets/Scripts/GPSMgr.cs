@@ -55,6 +55,14 @@ public class GPSMgr : MonoBehaviour
     public static float compass_headingAccu;
     public static float compass_trueHeading;
     public static int validCount;
+
+    // 위치 못 가져오는 에러 처리
+    private int previousLocationLoadedCount = 0;
+    private int currentLocationLoadedCount = 0;
+    public static int secsNotLoadedLocation = 0;
+    private int secsNotLoadedTolerance = 10;
+    public static bool overNsecsNotLoadedLocation = false;
+
     // tmp obj that help to set GPS text >> DEPRECATED
     // private string LOCtext;
  
@@ -206,8 +214,15 @@ public class GPSMgr : MonoBehaviour
                 var locations = m_JavaObject.Call<double[]>("getLocation");
                 LAT = (float)locations[0];
                 LON = (float)locations[1];
-                
-                
+
+                // 위치 못 가져오는 에러 처리
+                previousLocationLoadedCount = currentLocationLoadedCount;
+                currentLocationLoadedCount = (int)locations[2];
+
+                if (previousLocationLoadedCount == currentLocationLoadedCount) secsNotLoadedLocation++;
+                else secsNotLoadedLocation = 0;
+
+                if (secsNotLoadedLocation >= secsNotLoadedTolerance) overNsecsNotLoadedLocation = true;
                 
                 
             } else {
