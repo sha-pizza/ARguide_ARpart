@@ -1,5 +1,7 @@
 package com.DefaultCompany.arguide;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -26,8 +28,6 @@ import com.unity3d.player.UnityPlayerActivity;
 
 import java.util.ArrayList;
 
-import timber.log.Timber;
-
 public class MainActivity extends UnityPlayerActivity /*implements AutoPermissionsListener*/ {
     final int REQUEST_CODE = 101;
     final long minTime = 100;
@@ -36,6 +36,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     double azimuth = 0;
     double latitude = 0;
     double longitude = 0;
+    int locationReloadedCount = 0;
 
     ArrayList<Destination> data = new ArrayList<>();
     ArrayList<Destination> route = new ArrayList<>();
@@ -46,6 +47,9 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
     private double longi;
     private double lat;
+
+    SQLiteDatabase database;
+    final String DATABASE_NAME = "Database";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,71 +80,115 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
         // 여기부터 Map 부분
         Mapbox.getInstance(this, "MAPBOX_ACCESS_TOKEN");
-/*
-        //timber 초기화
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+
+        database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        database.execSQL("create table if not exists DestinationTable (name text PRIMARY KEY, number integer, latitude real, longitude real)");
+        database.execSQL("create table if not exists EndingMessageTable (building text PRIMARY KEY, message text)");
+        Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable", null);
+        if (cursor.getCount() == 0) {
+            DB db = new DB();
+            db.insertDataIntoTable(database, "DestinationTable");
         }
 
-        Timber.i("hi it is test");
+        Cursor cursor1 = database.rawQuery("select building, message from EndingMessageTable", null);
+        if (cursor1.getCount() == 0) {
+            DB db = new DB();
+            db.insertDataIntoTable(database, "EndingMessageTable");
+        }
+    }
 
- */
-/*
-        setDestination("신관");
-
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                findRoute();
-            }
-        }, 1000);
-
-        Handler handler2 = new Handler();
-        handler2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                double[] route1 = getRoute();
-                Log.d("asdf",""+route1[0]);
-            }
-        }, 4000);
- */
+    public String getEndingMessage(String destination) {
+        Cursor cursor1 = database.rawQuery("select building, message from EndingMessageTable where building = '" + destination +"'", null);
+        if (cursor1.getCount() > 0) {
+            cursor1.moveToNext();
+            return cursor1.getString(1);
+        } else {
+            return "도착하였습니다 !";
+        }
     }
 
     public void setDestination(String destination) {
-        Location1 bthread = new Location1(mHandler, destination);
-        bthread.setDaemon(true);
-        bthread.start();
+	data.clear();
+
+	
+	//길이 판별, 검색 결과가 없는 경우 예외처리 필요
+	//boolean flag2 = false;
+	if(destination.length()<2){
+		//flag2 = true;
+		data.add(new Destination("검색어 길이가 너무 짧습니다. 2글자 이상 입력해주세요.",0,0,0));
+		return;
+	}
+
+	if(destination.length()>15){
+		//flag2 = true;
+		data.add(new Destination("검색어 길이가 너무 깁니다. 15글자 이하로 입력해주세요.",0,0,0));
+		return;
+	}
+	
+	//건물번호 검색인지 건물이름 검색인지 판별하기
+	boolean flag = false;
+	for(int i=0;i<destination.length();i++){
+		if(Character.isDigit(destination.charAt(i)) == false){
+			flag=true;
+			break;
+		}
+	}
+
+	//건물이름으로 검색하는 경우
+	if(flag==true){
+        		Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where name like '%" + destination + "%'", null);
+        		int recordCount = cursor.getCount();
+        		for (int i = 0 ; i < recordCount ; i++) {
+            			cursor.moveToNext();
+            			data.add(new Destination(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3)));
+        		}
+		cursor.close();
+	}
+	//건물번호로 검색하는 경우
+	if(flag == false){
+		destination = destination.substring(0,2);
+		Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where number=" + destination, null);
+        		int recordCount = cursor.getCount();
+        		for (int i = 0 ; i < recordCount ; i++) {
+            			cursor.moveToNext();
+            			data.add(new Destination(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3)));
+        		}
+		cursor.close();
+	}
+	
+	//검색 결과가 없는 경우
+	if(data.size()==0){
+		data.add(new Destination("검색 결과가 없습니다. 다른 검색어로 다시 검색을 시도해주세요.",0,0,0));
+	}
     }
 
-//검색용으로 추가된 함수
-public String[] getLocationsName(){
-	  String name[] = new String[data.size()];
-	  
-                for(int i=0;i<data.size();i++){
-                    name[i] = data.get(i).getName();
-                }
-	return name;
-}
+    //검색용으로 추가된 함수
+    public String[] getLocationsName(){
+        String name[] = new String[data.size()];
 
-public double[] getLocationsLat(){
-	  double lat[] = new double[data.size()];
-	  
-                for(int i=0;i<data.size();i++){
-                    lat[i] = data.get(i).getLatitude();
-                }
-	return lat;
-}
+        for(int i=0;i<data.size();i++){
+            name[i] = data.get(i).getName();
+        }
+        return name;
+    }
 
-public double[] getLocationsLog(){
-	  double log[] = new double[data.size()];
-	  
-                for(int i=0;i<data.size();i++){
-                    log[i] = data.get(i).getLongitude();
-                }
-	return log;
-}
+    public double[] getLocationsLat(){
+        double lat[] = new double[data.size()];
 
+        for(int i=0;i<data.size();i++){
+            lat[i] = data.get(i).getLatitude();
+        }
+        return lat;
+    }
+
+    public double[] getLocationsLog(){
+        double log[] = new double[data.size()];
+
+        for(int i=0;i<data.size();i++){
+            log[i] = data.get(i).getLongitude();
+        }
+        return log;
+    }
 
     public void findRoute(int i) {
         //목적지를 고른다
@@ -179,7 +227,7 @@ public double[] getLocationsLog(){
     }
 
     public double[] getLocation() {
-        double[] location = {latitude, longitude};
+        double[] location = {latitude, longitude, locationReloadedCount};
         return location;
     }
 
@@ -208,6 +256,8 @@ public double[] getLocationsLog(){
 
             latitude = latitude_temp;
             longitude = longitude_temp;
+
+            locationReloadedCount++;
         }
 
         @Override
@@ -244,37 +294,6 @@ public double[] getLocationsLog(){
     }
 
  */
-    // 핸들러
-    @SuppressLint("HandlerLeak")
-    Handler mHandler = new Handler() {
-        public void handleMessage(Message m) {
-            if (m.what == 0) {
-
-                //data 초기화
-                data.clear();
-
-                Destination[] list;
-                list = (Destination[]) m.obj;
-                for (Destination destination : list) {
-                    if (destination != null) {
-                        data.add(destination);
-                    } else {
-                        break;
-                    }
-                }
-
-                ArrayList<String> name = new ArrayList<>();
-                for(int i=0;i<data.size();i++){
-                    name.add(data.get(i).getName());
-                }
-
-                adapter = new ArrayAdapter<>
-                        (getApplicationContext(),android.R.layout.simple_list_item_1,name);
-
-                //listView.setAdapter(adapter);
-            }
-        }
-    };
 
     // 핸들러
 
@@ -299,6 +318,5 @@ public double[] getLocationsLog(){
         }
     };
 }
-
 
 
