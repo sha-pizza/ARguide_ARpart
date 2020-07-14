@@ -48,10 +48,8 @@ public class Waypoint extends Thread{
     public void run() {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-        //lists 초기화
-        for(int i=0;i<100;i++){
-            wlists[i] = new Destination("",0,0,0);
-        }
+	wlists.clear();
+        
 
         String MAPBOX_ACCESS_TOKEN = "pk.eyJ1Ijoia2F0ZTk3MDgxOSIsImEiOiJjazllYXA4a20wMGJ5M3BxYm1kZHR5djF5In0.de_wnEWEQlNgLNSHM95dlg";
         NavigationRoute.builder(context)

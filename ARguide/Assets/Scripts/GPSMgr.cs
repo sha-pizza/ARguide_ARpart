@@ -305,10 +305,9 @@ public class GPSMgr : MonoBehaviour
         // route 길이 찾기
         int routeLen = 0;
         for (int i = 0 ; i < routeTmp.Length ; i++){
-            if (routeTmp[i] == 0){
-                routeLen = i;
-                break;
-            }
+            Debug.Log("!!route!! : " + routeTmp[i]);
+            routeLen = i;
+            
         }
         route = new double[routeLen];
 
