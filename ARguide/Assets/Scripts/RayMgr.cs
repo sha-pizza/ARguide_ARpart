@@ -25,15 +25,15 @@ public class RayMgr : MonoBehaviour
     {
         if(Input.touchCount > 0)
         {
-            // 터치 받아오기
+            // get touch
             Touch touch = Input.GetTouch(0); 
             Vector3 TouchPosition = new Vector3(touch.position.x, touch.position.y, 100);
-            // ray!
+            // cast a ray
             Ray ray = Camera.main.ScreenPointToRay(TouchPosition);
             RaycastHit hit;
 
             
-            // 누른 오브젝트 태그 확인
+            // check collided object
             if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
                 if (hit.collider.tag == "speechBubble"){
                     isBubbleClicked = true;
