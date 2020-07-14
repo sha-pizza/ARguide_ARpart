@@ -676,7 +676,7 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: "\uAC80\uC0C9 \uBC84\uD2BC\uC744 \uBA3C\uC800 \uC785\uB825\uD558\uC138\uC694."
+    - m_Text: "\uAC80\uC0C9\uC5B4\uB97C \uBA3C\uC800 \uC785\uB825\uD574\uC8FC\uC138\uC694."
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2751,7 +2751,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAC80\uC0C9 \uBC84\uD2BC\uC744 \uBA3C\uC800 \uC785\uB825\uD558\uC138\uC694."
+  m_Text: "\uAC80\uC0C9\uC5B4\uB97C \uBA3C\uC800 \uC785\uB825\uD574\uC8FC\uC138\uC694."
 --- !u!222 &522951307
 CanvasRenderer:
   m_ObjectHideFlags: 0

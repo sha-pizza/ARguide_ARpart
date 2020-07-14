@@ -81,9 +81,9 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         Mapbox.getInstance(this, "MAPBOX_ACCESS_TOKEN");
 
         database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-        database.execSQL("create table if not exists DestinationTable (name text PRIMARY KEY, latitude real, longitude real)");
+        database.execSQL("create table if not exists DestinationTable (name text PRIMARY KEY, number integer, latitude real, longitude real)");
         database.execSQL("create table if not exists EndingMessageTable (building text PRIMARY KEY, message text)");
-        Cursor cursor = database.rawQuery("select name, latitude, longitude from DestinationTable", null);
+        Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable", null);
         if (cursor.getCount() == 0) {
             DB db = new DB();
             db.insertDataIntoTable(database, "DestinationTable");
@@ -107,15 +107,58 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     }
 
     public void setDestination(String destination) {
-        data.clear();
-        Cursor cursor = database.rawQuery("select name, latitude, longitude from DestinationTable where name like '%" + destination + "%'", null);
-        int recordCount = cursor.getCount();
-        for (int i = 0 ; i < recordCount ; i++) {
-            cursor.moveToNext();
-            data.add(new Destination(cursor.getString(0), 61, cursor.getDouble(1), cursor.getDouble(2)));
-        }
+	data.clear();
 
-        cursor.close();
+	
+	//길이 판별, 검색 결과가 없는 경우 예외처리 필요
+	//boolean flag2 = false;
+	if(destination.length()<2){
+		//flag2 = true;
+		data.add(new Destination("검색어 길이가 너무 짧습니다. 2글자 이상 입력해주세요.",0,0,0));
+		return;
+	}
+
+	if(destination.length()>15){
+		//flag2 = true;
+		data.add(new Destination("검색어 길이가 너무 깁니다. 15글자 이하로 입력해주세요.",0,0,0));
+		return;
+	}
+	
+	//건물번호 검색인지 건물이름 검색인지 판별하기
+	boolean flag = false;
+	for(int i=0;i<destination.length();i++){
+		if(Character.isDigit(destination.charAt(i)) == false){
+			flag=true;
+			break;
+		}
+	}
+
+	//건물이름으로 검색하는 경우
+	if(flag==true){
+        		Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where name like '%" + destination + "%'", null);
+        		int recordCount = cursor.getCount();
+        		for (int i = 0 ; i < recordCount ; i++) {
+            			cursor.moveToNext();
+            			data.add(new Destination(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3)));
+        		}
+		cursor.close();
+	}
+	//건물번호로 검색하는 경우
+	if(flag == false){
+		destination = destination.substring(0,2);
+		Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where number=" + destination, null);
+        		int recordCount = cursor.getCount();
+        		for (int i = 0 ; i < recordCount ; i++) {
+            			cursor.moveToNext();
+            			data.add(new Destination(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3)));
+        		}
+		cursor.close();
+	}
+	
+	//검색 결과가 없는 경우
+	if(data.size()==0){
+		data.add(new Destination("검색 결과가 없습니다. 다른 검색어로 다시 검색을 시도해주세요.",0,0,0));
+	}
     }
 
     //검색용으로 추가된 함수

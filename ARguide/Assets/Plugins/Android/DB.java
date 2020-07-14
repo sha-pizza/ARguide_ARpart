@@ -117,13 +117,13 @@ public class DB {
             ATMs[2] = ATM3;
 
             for (int i = 0 ; i < buildings.length ; i++) {
-                destinationDatabase.execSQL("insert into " + table + "(name, latitude, longitude) values ('"
-                        + buildings[i].getName() + "', " + buildings[i].getLatitude() + ", " + buildings[i].getLongitude() + ")");
+                destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
+                        + buildings[i].getName() + "', " + buildings[i].getNumber() + ", " + buildings[i].getLatitude() + ", " + buildings[i].getLongitude() + ")");
             }
 
             for (int i = 0 ; i < ATMs.length ; i++) {
-                destinationDatabase.execSQL("insert into " + table + "(name, latitude, longitude) values ('"
-                        + ATMs[i].getName() + "', " + ATMs[i].getLatitude() + ", " + ATMs[i].getLongitude() + ")");
+                destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
+                        + ATMs[i].getName() + "', " + ATMs[i].getNumber() + ", " +ATMs[i].getLatitude() + ", " + ATMs[i].getLongitude() + ")");
             }
         } else if (table.equals("EndingMessageTable")) {
             destinationDatabase.execSQL("insert into " + table +
