@@ -30,8 +30,7 @@ public class Waypoint extends Thread{
     private Point destination;
     private Context context;
 
-    private Destination a;
-    private Destination[] wlists = new Destination[100];
+    private ArrayList<Destination> wlists = new ArrayList<>(10);
 
     private final Object lock = new Object();
 
@@ -82,8 +81,8 @@ public class Waypoint extends Thread{
                                     lat = maneuver.location().latitude();
                                     lng = maneuver.location().longitude();
 
-                                    a = new Destination(null, 0, lat, lng);
-                                    wlists[n] = a;
+                                    Destination subRoute = new Destination(null, 0, lat, lng);
+                                    wlists.add(subRoute);
 
                                     //Timber.e(wlists[n].getLatitude() + " : " + wlists[n].getLongitude());
 
@@ -119,7 +118,12 @@ public class Waypoint extends Thread{
             //Timber.e(wlist.getLatitude() + " : " + wlist.getLongitude());
         }
 
-
+        // 목적지가 wlists에 포함 안 되어 있으면 추가
+        if (destination.latitude() != wlists.get(wlists.size() - 1).getLatitude() &&
+        destination.longitude() != wlists.get(wlists.size() - 1).getLongitude()) {
+            Destination subRoute = new Destination(null, 0, destination.latitude(), destination.longitude());
+            wlists.add(subRoute);
+        }
 
 
 
