@@ -12,11 +12,11 @@ public class Destination {
     private String name; //건물이름
 
 
-    Destination(String v,int v3, double v1, double v2) {
-        this.name = v;
-        this.latitude=v1;
-        this.longitude=v2;
-        this.number=v3;
+    Destination(String name, int number, double latitude, double longitude) {
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.number = number;
     }
 
     public int getNumber() {

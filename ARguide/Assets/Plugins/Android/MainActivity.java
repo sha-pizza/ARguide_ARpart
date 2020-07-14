@@ -190,9 +190,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         return log;
     }
 
-    public void findRoute(int i) {
-        //목적지를 고른다
-        // TODO: 원래 리스트 UI 부분인데 지금은 임의로 가장 앞에 있는 것 가져옴. 수정필요
+    public void findRoute(int i) {       
         dest = data.get(i);
 
         if (latitude != 0) {
@@ -302,18 +300,8 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     Handler wHandler = new Handler() {
         public void handleMessage(Message m) {
             if (m.what == 0) {
-                Log.d("asdf", "HI");
                 route.clear();
-                Destination[] list;
-                list = (Destination[]) m.obj;
-                Log.d("asdf", "BYE");
-                for (Destination destination : list) {
-                    if (destination != null) {
-                        route.add(destination);
-                    } else {
-                        break;
-                    }
-                }
+	route = (ArrayList<Destination>)m.obj;
             }
         }
     };
