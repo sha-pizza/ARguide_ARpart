@@ -184,7 +184,8 @@ public class GuideMgr : MonoBehaviour
         RayMgr.isBubbleClicked = false;
 
         // 0706 학교에서 너무 멀리 떨어져 있는 지 확인 / 0713 위치 정보가 업데이트 되지 않고 있으면 종료
-        if (!isWithinCollegeArea() || GPSMgr.overNsecsNotLoadedLocation)
+        if (false)
+        //if (!isWithinCollegeArea() || GPSMgr.overNsecsNotLoadedLocation)
         {
 
             // 너무 멀리 떨어져 있으면 메인화면으로 돌아감
@@ -404,7 +405,10 @@ public class GuideMgr : MonoBehaviour
                     var lookpos = ARCameraTransform.position - Mascot_MR.transform.position;
                     lookpos.y = 0;
                     var rotation = Quaternion.LookRotation(lookpos);
-                    Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f); 
+                    Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f);
+
+                    // 0715 y축 보정
+                    Mascot_MR.transform.position = new Vector3(Mascot_MR.transform.position.x, ARCameraTransform.position.y - 1.2f, Mascot_MR.transform.position.z);
 
                     var movepos = new Vector3(ARCameraTransform.position.x, ARCameraTransform.position.y-1.2f, ARCameraTransform.position.z);                                                         
                     Mascot_MR.transform.position = Vector3.MoveTowards (Mascot_MR.transform.position, 
@@ -423,6 +427,9 @@ public class GuideMgr : MonoBehaviour
                 Mascot_anim.SetBool("isMoveFast", false);
                 Mascot_anim.SetBool("isCute", false);
                 spchBubble.gameObject.SetActive(false);
+
+                // 0715 y축 보정
+                Mascot_MR.transform.position = new Vector3(Mascot_MR.transform.position.x, ARCameraTransform.position.y - 1.2f, Mascot_MR.transform.position.z);
 
                 // 각도수정 및 이동
                 //Mascot_MR.transform.LookAt(DestinationMgr.destination.position);  
