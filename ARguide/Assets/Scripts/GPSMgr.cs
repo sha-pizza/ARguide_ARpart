@@ -410,6 +410,9 @@ public class GPSMgr : MonoBehaviour
             }
 
         }
+
+        dropdown2.RefreshShownValue();
+
         /*
         double LAT = (float)locations[0];
         double LON = (float)locations[1];

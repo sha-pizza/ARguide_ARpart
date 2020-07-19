@@ -184,8 +184,7 @@ public class GuideMgr : MonoBehaviour
         RayMgr.isBubbleClicked = false;
 
         // 0706 학교에서 너무 멀리 떨어져 있는 지 확인 / 0713 위치 정보가 업데이트 되지 않고 있으면 종료
-        if (false)
-        //if (!isWithinCollegeArea() || GPSMgr.overNsecsNotLoadedLocation)
+        if (!isWithinCollegeArea() || GPSMgr.overNsecsNotLoadedLocation)
         {
 
             // 너무 멀리 떨어져 있으면 메인화면으로 돌아감
