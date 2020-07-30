@@ -27,6 +27,7 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.unity3d.player.UnityPlayerActivity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends UnityPlayerActivity /*implements AutoPermissionsListener*/ {
     final int REQUEST_CODE = 101;
@@ -50,6 +51,8 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
     SQLiteDatabase database;
     final String DATABASE_NAME = "Database";
+
+    private Language language = Language.KOREAN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +84,18 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         // 여기부터 Map 부분
         Mapbox.getInstance(this, "MAPBOX_ACCESS_TOKEN");
 
+
+        // 언어 설정
+        String lang = Locale.getDefault().getLanguage();
+        if (lang.equals("ko")) language = Language.KOREAN;
+        else if (lang.equals("en")) language = Language.ENGLISH;
+        else if (lang.equals("zh")) language = Language.CHINESE;
+        else language = Language.OTHERS;
+
         database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-        database.execSQL("create table if not exists DestinationTable (name text PRIMARY KEY, latitude real, longitude real)");
+        database.execSQL("create table if not exists DestinationTable (name text PRIMARY KEY, number integer, latitude real, longitude real)");
         database.execSQL("create table if not exists EndingMessageTable (building text PRIMARY KEY, message text)");
-        Cursor cursor = database.rawQuery("select name, latitude, longitude from DestinationTable", null);
+        Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable", null);
         if (cursor.getCount() == 0) {
             DB db = new DB();
             db.insertDataIntoTable(database, "DestinationTable");
@@ -109,14 +120,57 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
     public void setDestination(String destination) {
         data.clear();
-        Cursor cursor = database.rawQuery("select name, latitude, longitude from DestinationTable where name like '%" + destination + "%'", null);
-        int recordCount = cursor.getCount();
-        for (int i = 0 ; i < recordCount ; i++) {
-            cursor.moveToNext();
-            data.add(new Destination(cursor.getString(0), 61, cursor.getDouble(1), cursor.getDouble(2)));
+
+
+        //길이 판별, 검색 결과가 없는 경우 예외처리 필요
+        //boolean flag2 = false;
+        if(destination.length()<2){
+            //flag2 = true;
+            data.add(new Destination("검색어 길이가 너무 짧습니다. 2글자 이상 입력해주세요.",0,0,0));
+            return;
         }
 
-        cursor.close();
+        if(destination.length()>15){
+            //flag2 = true;
+            data.add(new Destination("검색어 길이가 너무 깁니다. 15글자 이하로 입력해주세요.",0,0,0));
+            return;
+        }
+
+        //건물번호 검색인지 건물이름 검색인지 판별하기
+        boolean flag = false;
+        for(int i=0;i<destination.length();i++){
+            if(Character.isDigit(destination.charAt(i)) == false){
+                flag=true;
+                break;
+            }
+        }
+
+        //건물이름으로 검색하는 경우
+        if(flag==true){
+            Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where name like '%" + destination + "%'", null);
+            int recordCount = cursor.getCount();
+            for (int i = 0 ; i < recordCount ; i++) {
+                cursor.moveToNext();
+                data.add(new Destination(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3)));
+            }
+            cursor.close();
+        }
+        //건물번호로 검색하는 경우
+        if(flag == false){
+            destination = destination.substring(0,2);
+            Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where number=" + destination, null);
+            int recordCount = cursor.getCount();
+            for (int i = 0 ; i < recordCount ; i++) {
+                cursor.moveToNext();
+                data.add(new Destination(cursor.getString(0), cursor.getInt(1), cursor.getDouble(2), cursor.getDouble(3)));
+            }
+            cursor.close();
+        }
+
+        //검색 결과가 없는 경우
+        if(data.size()==0){
+            data.add(new Destination("검색 결과가 없습니다. 다른 검색어로 다시 검색을 시도해주세요.",0,0,0));
+        }
     }
 
     //검색용으로 추가된 함수
@@ -148,8 +202,6 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     }
 
     public void findRoute(int i) {
-        //목적지를 고른다
-        // TODO: 원래 리스트 UI 부분인데 지금은 임의로 가장 앞에 있는 것 가져옴. 수정필요
         dest = data.get(i);
 
         if (latitude != 0) {
@@ -259,18 +311,8 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     Handler wHandler = new Handler() {
         public void handleMessage(Message m) {
             if (m.what == 0) {
-                Log.d("asdf", "HI");
                 route.clear();
-                Destination[] list;
-                list = (Destination[]) m.obj;
-                Log.d("asdf", "BYE");
-                for (Destination destination : list) {
-                    if (destination != null) {
-                        route.add(destination);
-                    } else {
-                        break;
-                    }
-                }
+                route = (ArrayList<Destination>)m.obj;
             }
         }
     };
