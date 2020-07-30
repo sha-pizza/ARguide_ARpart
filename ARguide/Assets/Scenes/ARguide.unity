@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 164876532}
   - component: {fileID: 164876531}
   m_Layer: 5
-  m_Name: Dropdown2
+  m_Name: Dropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -849,7 +849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &181648343
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2897,7 +2897,7 @@ GameObject:
   - component: {fileID: 564651882}
   - component: {fileID: 564651881}
   m_Layer: 0
-  m_Name: ui_backimg
+  m_Name: BackcolorPart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4379,7 +4379,7 @@ GameObject:
   - component: {fileID: 824767762}
   - component: {fileID: 824767760}
   m_Layer: 5
-  m_Name: Input
+  m_Name: InputText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5193,7 +5193,7 @@ GameObject:
   - component: {fileID: 1036933843}
   - component: {fileID: 1036933842}
   m_Layer: 5
-  m_Name: Button2
+  m_Name: InputButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10417,7 +10417,7 @@ GameObject:
   - component: {fileID: 2045655239}
   - component: {fileID: 2045655238}
   m_Layer: 5
-  m_Name: Button3
+  m_Name: Button_Draw_Route
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

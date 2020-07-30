@@ -29,6 +29,8 @@ import com.unity3d.player.UnityPlayerActivity;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import org.techtown.capstonedesign.Language;
+
 public class MainActivity extends UnityPlayerActivity /*implements AutoPermissionsListener*/ {
     final int REQUEST_CODE = 101;
     final long minTime = 100;
