@@ -158,7 +158,7 @@ public class DB {
                     "(building, message) values ('생명공학관 ', '생명공학관은 생명공학대학 학생들이 주로 이용하는 공간입니다. 생명공학관은 제1과학관과, 제2과학관, 기초학문관이 하나로 연결되어 있어 건물 내에서 자유롭게 이동할 수 있습니다.')");
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('산학협력센터 ', '산학협력센터는 산학협력단과 연구실, 세미나실이 있으며, 40여개의 창업보육기업 및 실습실 등이 위치해 있습니다.')");
-        } else if(table.equals("DestinationTable")){
+        } else if(table.equals("DestinationTable2")){
 	Destination nine = new Destination("Biotechnology Building 61 Entrance 1",61,37.296032, 126.975092);
             Destination thirteen = new Destination("Engineering Building 26, Entrance 1",26,37.2955584, 126.9774348);
             Destination fourteen = new Destination("Engineering Building 23, Entrance 1",23,37.2941397, 126.977208);
@@ -281,37 +281,37 @@ public class DB {
 
 	}else if(table.equals("EndingMessageTable2")){
 	destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('학생회관 ', 'The Student Hall is where the general administration room, student hall cafeteria, various club rooms, Sungdae newspapers, and press groups such as Sungkyun Times are located. If you are interested in clubs, try entering the student union!')");
+                    "(building, message) values ('Student Hall Entrance ', 'The Student Hall is where the general administration room, student hall cafeteria, various club rooms, Sungdae newspapers, and press groups such as Sungkyun Times are located. If you are interested in clubs, try entering the student union!')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('복지회관 ', 'Welfare Hall is a place where school facilities, faculty cafeteria, counseling center, health center, post office, bank, etc. are located.')");
+                    "(building, message) values ('Welfare Hall ', 'Welfare Hall is a place where school facilities, faculty cafeteria, counseling center, health center, post office, bank, etc. are located.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제1공학관 21동 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. In the building 21, there are various labs such as information and communication/software/technical administration offices, administrative offices, CAD labs, and facilities such as smart lounges and smart galleries.')");
+                    "(building, message) values ('Engineering Building 21 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. In the building 21, there are various labs such as information and communication/software/technical administration offices, administrative offices, CAD labs, and facilities such as smart lounges and smart galleries.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제1공학관 22동 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. In the building 22, there are various labs, ADIC center, presentation room, design room, advanced lecture room, and seminar room.')");
+                    "(building, message) values ('Engineering Hall 22 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. In the building 22, there are various labs, ADIC center, presentation room, design room, advanced lecture room, and seminar room.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제1공학관 23동 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. Building 23 has various research facilities, professor's lab, campus management team, and seminar room.')");
+                    "(building, message) values ('Engineering Hall 23 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. Building 23 has various research facilities, professor's lab, campus management team, and seminar room.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제2공학관 25동 ', 'The 2nd Engineering Building is divided into 25 and 27, and is connected in the form of ‘ㄷ’. The building 25 is equipped with various labs, laboratories and meeting rooms.')");
+                    "(building, message) values ('Engineering Building 25 ', 'The 2nd Engineering Building is divided into 25 and 27, and is connected in the form of ‘ㄷ’. The building 25 is equipped with various labs, laboratories and meeting rooms.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제2공학관 26동 ', 'The 2nd Engineering Building is divided into 25 and 27, and is connected in the form of ‘ㄷ’. In the building 26, there are common facilities such as public dining halls, convenience facilities such as kiosks, reading rooms, advanced lecture rooms, and research spaces.')");
+                    "(building, message) values ('Engineering Building 26 ', 'The 2nd Engineering Building is divided into 25 and 27, and is connected in the form of ‘ㄷ’. In the building 26, there are common facilities such as public dining halls, convenience facilities such as kiosks, reading rooms, advanced lecture rooms, and research spaces.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제2공학관 27 ', 'The 2nd Engineering Building is divided into 25 and 27, and is connected in the form of ‘ㄷ’. In the building 27, there is an Engineering Education Innovation Center, Sungkyunkwan Academy, Space Science and Technology Research Institute, and a start-up company office.')");
+                    "(building, message) values ('Engineering Building 27 ', 'The 2nd Engineering Building is divided into 25 and 27, and is connected in the form of ‘ㄷ’. In the building 27, there is an Engineering Education Innovation Center, Sungkyunkwan Academy, Space Science and Technology Research Institute, and a start-up company office.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제1과학관 ','The 1st Science Hall is a space mainly used by the College of Natural Sciences. It is connected to the 1st Science Hall, the 2nd Science Hall, the Basic Science Hall, and the Biotechnology Hall, so you can move freely within the building.')");
+                    "(building, message) values ('Science Hall 31 ','The 1st Science Hall is a space mainly used by the College of Natural Sciences. It is connected to the 1st Science Hall, the 2nd Science Hall, the Basic Science Hall, and the Biotechnology Hall, so you can move freely within the building.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제2과학관 ', 'The 2nd Science Hall is a space mainly used by the College of Natural Sciences. The 1st Science Hall, the Basic Academic Hall, and the Biotechnology Hall are connected as one, so you can move freely within the building.')");
+                    "(building, message) values ('Science Hall 32 ', 'The 2nd Science Hall is a space mainly used by the College of Natural Sciences. The 1st Science Hall, the Basic Academic Hall, and the Biotechnology Hall are connected as one, so you can move freely within the building.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('화학관 ', 'The Chemical Hall is a comprehensive lecture hall connecting the pharmaceutical hall and the semiconductor hall. It is equipped with state-of-the-art lecture rooms, labs, lounges, and super-computer labs, isotope labs, and cell culture labs.')");
+                    "(building, message) values ('Chemical building entrance ', 'The Chemical Hall is a comprehensive lecture hall connecting the pharmaceutical hall and the semiconductor hall. It is equipped with state-of-the-art lecture rooms, labs, lounges, and super-computer labs, isotope labs, and cell culture labs.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('반도체관 ', 'Semi-conductor hall is a comprehensive lecture hall connecting the pharmacy hall and semiconductor hall. It is equipped with state-of-the-art lecture halls, academic and research spaces such as labs, labs, workstation rooms, digital content studios, and SW studios.')");
+                    "(building, message) values ('Semiconductor tube entrance ', 'Semi-conductor hall is a comprehensive lecture hall connecting the pharmacy hall and semiconductor hall. It is equipped with state-of-the-art lecture halls, academic and research spaces such as labs, labs, workstation rooms, digital content studios, and SW studios.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('삼성학술정보관 ', 'Samsung Academic Information Center holds nearly 620,000 books with approximately 420,000 books in Korea and approximately 200,000 books in foreign countries.')");
+                    "(building, message) values ('Samsung Academic Information Center ', 'Samsung Academic Information Center holds nearly 620,000 books with approximately 420,000 books in Korea and approximately 200,000 books in foreign countries.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('기초학문관 ', 'The Basic Academic Center has administrative spaces such as the undergraduate/university college administration room, lecture rooms, and labs. The 1st Science Hall, the 2nd Science Hall, and the Biotechnology Hall are connected as one, so you can move freely within the building.')");
+                    "(building, message) values ('Basic Academic Hall ', 'The Basic Academic Center has administrative spaces such as the undergraduate/university college administration room, lecture rooms, and labs. The 1st Science Hall, the 2nd Science Hall, and the Biotechnology Hall are connected as one, so you can move freely within the building.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('생명공학관 ', 'The Biotechnology Hall is a space mainly used by students of the College of Biotechnology. The Biotechnology Hall is connected to the 1st Science Hall, the 2nd Science Hall, and the Basic Science Hall, so you can move freely within the building.')");
+                    "(building, message) values ('Biotechnology Building ', 'The Biotechnology Hall is a space mainly used by students of the College of Biotechnology. The Biotechnology Hall is connected to the 1st Science Hall, the 2nd Science Hall, and the Basic Science Hall, so you can move freely within the building.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('산학협력센터 ', 'The Industry-Academy Cooperation Center has an industry-academia cooperation group, a laboratory, and a seminar room, and there are about 40 start-up incubators and practice rooms.')");
+                    "(building, message) values ('Industry-University Cooperation Center ', 'The Industry-Academy Cooperation Center has an industry-academia cooperation group, a laboratory, and a seminar room, and there are about 40 start-up incubators and practice rooms.')");
 		
 	}
     }

@@ -96,18 +96,34 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
         database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
         database.execSQL("create table if not exists DestinationTable (name text PRIMARY KEY, number integer, latitude real, longitude real)");
+        database.execSQL("create table if not exists DestinationTable2 (name text PRIMARY KEY, number integer, latitude real, longitude real)");
         database.execSQL("create table if not exists EndingMessageTable (building text PRIMARY KEY, message text)");
-        Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable", null);
-        if (cursor.getCount() == 0) {
-            DB db = new DB();
-            db.insertDataIntoTable(database, "DestinationTable");
-        }
+        database.execSQL("create table if not exists EndingMessageTable2 (building text PRIMARY KEY, message text)");
+	
+	String table_name = "DestinationTable2";
+	String message_table_name = "EndingMessageTable2";
 
-        Cursor cursor1 = database.rawQuery("select building, message from EndingMessageTable", null);
-        if (cursor1.getCount() == 0) {
-            DB db = new DB();
-            db.insertDataIntoTable(database, "EndingMessageTable");
-        }
+	if(language == Language.KOREAN){
+		table_name = "DestinationTable";
+		message_table_name = "EndingMessageTable";
+	}
+	if(language == Language.ENGLISH){
+		table_name = "DestinationTable2";
+		message_table_name = "EndingMessageTable2";
+	}
+
+	Cursor cursor = database.rawQuery("select name, number, latitude, longitude from '" + table_name + "'", null);
+	if (cursor.getCount() == 0) {
+	     DB db = new DB();
+	     db.insertDataIntoTable(database, table_name);
+	 }
+
+	Cursor cursor1 = database.rawQuery("select building, message from '" + message_table_name + "'", null);
+ 	if (cursor1.getCount() == 0) {
+ 	     DB db = new DB();
+ 	     db.insertDataIntoTable(database, message_table_name);
+	}
+
     }
 
     public String getEndingMessage(String destination) {
