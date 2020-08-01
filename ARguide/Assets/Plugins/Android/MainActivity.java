@@ -56,6 +56,10 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
     private Language language = Language.KOREAN;
 
+
+    private String table_name = "DestinationTable2";
+    private String message_table_name = "EndingMessageTable2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,9 +103,6 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         database.execSQL("create table if not exists DestinationTable2 (name text PRIMARY KEY, number integer, latitude real, longitude real)");
         database.execSQL("create table if not exists EndingMessageTable (building text PRIMARY KEY, message text)");
         database.execSQL("create table if not exists EndingMessageTable2 (building text PRIMARY KEY, message text)");
-	
-	String table_name = "DestinationTable2";
-	String message_table_name = "EndingMessageTable2";
 
 	if(language == Language.KOREAN){
 		table_name = "DestinationTable";
@@ -127,7 +128,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     }
 
     public String getEndingMessage(String destination) {
-        Cursor cursor1 = database.rawQuery("select building, message from EndingMessageTable where building = '" + destination +"'", null);
+        Cursor cursor1 = database.rawQuery("select building, message from '" + message_table_name + "' where building = '" + destination +"'", null);
         if (cursor1.getCount() > 0) {
             cursor1.moveToNext();
             return cursor1.getString(1);
@@ -165,7 +166,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
 
         //건물이름으로 검색하는 경우
         if(flag==true){
-            Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where name like '%" + destination + "%'", null);
+            Cursor cursor = database.rawQuery("select name, number, latitude, longitude from '" + table_name + "' where name like '%" + destination + "%'", null);
             int recordCount = cursor.getCount();
             for (int i = 0 ; i < recordCount ; i++) {
                 cursor.moveToNext();
@@ -176,7 +177,7 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         //건물번호로 검색하는 경우
         if(flag == false){
             destination = destination.substring(0,2);
-            Cursor cursor = database.rawQuery("select name, number, latitude, longitude from DestinationTable where number=" + destination, null);
+            Cursor cursor = database.rawQuery("select name, number, latitude, longitude from '" + table_name + "' where number=" + destination, null);
             int recordCount = cursor.getCount();
             for (int i = 0 ; i < recordCount ; i++) {
                 cursor.moveToNext();
