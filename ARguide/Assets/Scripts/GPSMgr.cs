@@ -331,6 +331,8 @@ public class GPSMgr : MonoBehaviour
         backgroundImage.enabled = false;
         findRouteBtn.enabled = false;
         dropdown2.enabled = false;
+
+        backgroundImage.gameObject.SetActive(false);
         findRouteBtn.gameObject.SetActive(false);
         dropdown2.gameObject.SetActive(false);
         Button2.SetActive(false);
@@ -410,6 +412,9 @@ public class GPSMgr : MonoBehaviour
             }
 
         }
+
+        dropdown2.RefreshShownValue();
+
         /*
         double LAT = (float)locations[0];
         double LON = (float)locations[1];
