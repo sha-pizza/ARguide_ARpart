@@ -176,12 +176,12 @@ public class GuideMgr : MonoBehaviour
         spchText.text = "안녕!\n안내를 시작하려면\n말풍선을 눌러줘!";
         spchBubble.gameObject.SetActive(true);
         Invoke("spchBubbleFadein", 0f);
-
         
         while (!RayMgr.isBubbleClicked){
             yield return new WaitForSeconds(0.5f);
         }
         RayMgr.isBubbleClicked = false;
+
 
         // 0706 학교에서 너무 멀리 떨어져 있는 지 확인 / 0713 위치 정보가 업데이트 되지 않고 있으면 종료
         if (!isWithinCollegeArea() || GPSMgr.overNsecsNotLoadedLocation)
