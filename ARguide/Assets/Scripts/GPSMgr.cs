@@ -93,6 +93,7 @@ public class GPSMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("ARGUIDE_gps : start gpsmgr");
         // 자바 클래스, 인스턴스 생성
         // 0601SA : Exception처리함
         var jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -180,7 +181,7 @@ public class GPSMgr : MonoBehaviour
     {
         // ARCamera의 각도 - 나침반 각도 계산
         // 이 각도로 배치한 사물은 북쪽을 가리킵니다!
-        //Heading = ARCamera.transform.eulerAngles.y - compass_trueHeading;
+        Heading = ARCamera.transform.eulerAngles.y - compass_trueHeading;
 
         /* >> DEPRECATED
         // 나침반 각도 업데이트 (lerp 추가)
@@ -304,13 +305,6 @@ public class GPSMgr : MonoBehaviour
     public void Draw_Route()
     {
         // 경로 double 배열을 MaprouteMgr로 보냄
-
-        // TODO
-        // 1 done 임의 경로를 - start에서 draw_route call
-        // 2 done 버튼 눌럿을때 되는 걸로 수정
-        // 3 멀리 있을 때 ui표시 및 목적지만 표시하도록 수정
-        // 4 받아온 경로로 되는 걸로 수정
-
         
         //double[] routeToDraw = {37.2970, 126.9700, 37.2965, 126.9725, 37.2930, 126.9730, 37.2945, 126.9755, 37.295, 126.9745};
         //RouteMaker.drawRoute(routeToDraw);
@@ -324,11 +318,12 @@ public class GPSMgr : MonoBehaviour
         } catch (Exception e){
             double[] routeTmp = {};
             route = routeTmp;
-            Debug.Log("GPSroute : exception");
+            Debug.Log("ARGUIDE_gps : route : exception");
         }
         
-        Debug.Log("GPSroutelen : "+route.Length);
-        Debug.Log("GPSfindestin : "+finalDestination);
+        Debug.Log("ARGUIDE_gps : routelen : "+route.Length);
+        Debug.Log("ARGUIDE_gps : findestin : "+finalDestination);
+        Debug.Log("ARGUIDE_gps : route0 : "+route[0]);
         
         // 입력 없음 경로 없음 : 아무것도 하지 말기
         // 입력 있음 경로 40 이상 : 너무 먼 것 같으니 목적지만 표시
@@ -337,9 +332,9 @@ public class GPSMgr : MonoBehaviour
 
         if (route.Length < 1){
             if (dropdowntxt == "검색 결과가 없습니다. 다른 검색어로 다시 검색을 시도해주세요." || dropdowntxt == "검색어를 먼저 입력해주세요."){
-                Debug.Log("GPSdrawroute : no input");
+                Debug.Log("ARGUIDE_gps : drawroute : no input");
             } else {
-                Debug.Log("GPSdrawroute : error");
+                Debug.Log("ARGUIDE_gps : drawroute : error");
             }
         } else if (route.Length >= 40){
             double lastlat = route[route.Length-2];
@@ -355,6 +350,7 @@ public class GPSMgr : MonoBehaviour
     // 하단 안내 시작하기 버튼
     public void Get_Route()
     {
+        Debug.Log("ARGUIDE_gps : getroute : and start guide!!");
         var routeTmp = m_JavaObject.Call<double[]>("getRoute");
         
         // route 전처리
@@ -372,6 +368,8 @@ public class GPSMgr : MonoBehaviour
         for (int i = 0 ; i < routeLen ; i++ ){
             route[i] = routeTmp[i];
         }
+
+        Debug.Log("ARGUIDE_gps : getroute : success to get route");
 
     
 
@@ -399,6 +397,8 @@ public class GPSMgr : MonoBehaviour
         Inputobj.SetActive(false);
 
         didFoundRoute = true;
+
+        Debug.Log("ARGUIDE_gps : getroute : camera on");
         /*
         if (didFoundRoute){
             //GPSText.text += "\ndidfoundroute !!";

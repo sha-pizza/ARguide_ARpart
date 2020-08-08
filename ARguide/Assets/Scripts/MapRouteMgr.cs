@@ -35,7 +35,7 @@ public class MapRouteMgr : MonoBehaviour
         routeLineRect = routeLine.GetComponent<RectTransform>();
 
         float parentWidth = transform.parent.GetComponent<RectTransform>().rect.width;
-        Debug.Log("parwidth:"+parentWidth);
+        Debug.Log("ARGUIDE_maproute : parwidth:"+parentWidth);
 
         // 화면 사이즈에 맞게 set scale
         routePointRect.localScale = new Vector3(parentWidth/1100, (float)(parentWidth/1100*1.26), parentWidth/1100);
@@ -54,7 +54,8 @@ public class MapRouteMgr : MonoBehaviour
 
     // 받은 더블 배열의 루트 그리기
     public void drawRoute(double[] route){
-        Debug.Log("routelen : "+route.Length);
+        Debug.Log("ARGUIDE_maproute : drawroute");
+        Debug.Log("ARGUIDE_maproute : routelen : "+route.Length);
         int routeLen = route.Length;
 
         // routemaker / liner 의 모든 자식 삭제
@@ -73,7 +74,7 @@ public class MapRouteMgr : MonoBehaviour
             calculed_route[i+1] = (route[i+1] - 126.969) * 100000;
             tester = tester + (int)calculed_route[i] + "," + (int)calculed_route[i+1] + " / "; 
         }
-        Debug.Log(tester);
+        Debug.Log("ARGUIDE_maproute : "+tester);
 
         // 라인 생성
         /*LineRenderer newline = Instantiate(rLine_obj, new Vector3(0,0,0), Quaternion.identity);
@@ -102,6 +103,13 @@ public class MapRouteMgr : MonoBehaviour
 
     // 경로의 각 노드 포인트 찍기 (연산된 lat, 연산된 lon, 설치할 게임오브젝트)
     public void setRoutePoint(double c_lat, double c_lon, GameObject obj){
+        Debug.Log("ARGUIDE_maproute : setRoutePoint - calculedP("+c_lat+","+c_lon+") - "+obj);
+
+        // 원래의 위도경도 테스트출력
+        float realLat = (float)(c_lat/100000+37.298);
+        float realLon = (float)(c_lon/100000+126.969);
+        Debug.Log("ARGUIDE_maproute : setRoutePoint - realP("+realLat+","+realLon+")");
+        
         // 오브젝트 생성하고 route 게임오브젝트 자식으로 설정
         GameObject newpoint = Instantiate(obj, new Vector3(0,0,0), Quaternion.identity);
         newpoint.transform.parent = routePoint.transform;
@@ -148,13 +156,8 @@ public class MapRouteMgr : MonoBehaviour
         double c_lat = (d_lat - 37.298) * 100000;
         double c_lon = (d_lon - 126.969) * 100000;
 
-        // 오브젝트 생성하고 route 게임오브젝트 자식으로 설정
-        GameObject newpoint = Instantiate(rEnd_failfindobj, new Vector3(0,0,0), Quaternion.identity);
-        newpoint.transform.parent = routePoint.transform;
-
-        // 적당한 위치로 이동 : localposition 수정
-        RectTransform pointRT = newpoint.GetComponent<RectTransform>();
-        pointRT.localPosition = new Vector3((float)c_lon, (float)(c_lat*1.26), 0);
-        pointRT.localRotation = Quaternion.identity;
+        // 오브젝트 놓기
+        setRoutePoint(c_lat, c_lon, rEnd_failfindobj);
+        
     }
 }
