@@ -192,6 +192,7 @@ public class GuideMgr : MonoBehaviour
         while (!RayMgr.isBubbleClicked){
             yield return new WaitForSeconds(0.5f);
         }
+        SoundManager.instance.PlaySound();
         RayMgr.isBubbleClicked = false;
 
         Invoke("spchBubbleFadeout", 0f);
