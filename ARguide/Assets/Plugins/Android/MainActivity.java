@@ -273,6 +273,14 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         return location;
     }
 
+   public String getLanguage(){
+	if(language == Language.KOREAN){
+            		return "korean";
+	}else{
+		return "english";
+	}
+
+    }
     class OrientationListener implements SensorEventListener {
 
         @Override

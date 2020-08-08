@@ -52,7 +52,7 @@ public class GuideMgr : MonoBehaviour
     private Renderer Mascot_samplemat;
     private Collider Mascot_samplecollider;
 
-
+    String language = "korean";
 
 
     // 디버그용 로그
@@ -73,6 +73,7 @@ public class GuideMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         // 카메라 받기
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
         ARCameraTransform = GameObject.Find("First Person Camera").transform;
@@ -172,8 +173,17 @@ public class GuideMgr : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
 
         spchCanvas.gameObject.SetActive(true);
-       
-        spchText.text = "안녕!\n안내를 시작하려면\n말풍선을 눌러줘!";
+
+        language = GameObject.Find("GPSMgr").GetComponent<GPSMgr>().Language_Update();
+
+        if (language == "korean")
+        {
+            spchText.text = "안녕!\n안내를 시작하려면\n말풍선을 눌러줘!";
+        }
+        else {
+            spchText.text = "Hello!\nTo start the guide\nTap the message!";
+        }
+        
         spchBubble.gameObject.SetActive(true);
         Invoke("spchBubbleFadein", 0f);
 
@@ -197,9 +207,30 @@ public class GuideMgr : MonoBehaviour
             GPSMgr.overNsecsNotLoadedLocation = false;
             GPSMgr.secsNotLoadedLocation = 0;
 
-            if (!isWithinCollegeArea()) spchText.text = "학교와 너무 멀리\n떨어져 있어서\n가이드를\n진행할 수 없어 !\n다시 시도해 줘 !";
-            else spchText.text = "위치 정보가\n업데이트 되지 않아\n가이드를\n진행할 수 없어 !\n건물 밖에서\n다시 시도해 줘 !";
+            if (!isWithinCollegeArea())
+            {
+                if (language == "korean")
+                {
+                    spchText.text = "학교와 너무 멀리\n떨어져 있어서\n가이드를\n진행할 수 없어 !\n다시 시도해 줘 !";
+                }
+                else
+                {
+                    spchText.text = "Because it is\ntoo far from \nUniversity,\nWe can't guide !\nTry Again !";
+                }
+            }
 
+            else
+            {
+                if (language == "korean")
+                {
+                    spchText.text = "위치 정보가\n업데이트 되지 않아\n가이드를\n진행할 수 없어 !\n건물 밖에서\n다시 시도해 줘 !";
+                }
+                else
+                {
+                    spchText.text = "Because Location info!\nis not updated,\nTry again Outside of buliding!";
+                }
+                
+            }
             spchBubble.gameObject.SetActive(true);
             Invoke("spchBubbleFadein", 0f);
 
@@ -207,7 +238,15 @@ public class GuideMgr : MonoBehaviour
             guideBack.gameObject.SetActive(true);
             guideUI.fontSize = 40;
 
-            guideUI.text = "곧 메인화면으로 돌아갑니다.";
+            
+            if (language == "korean")
+            {
+                guideUI.text = "곧 메인화면으로 돌아갑니다.";
+            }
+            else
+            {
+                guideUI.text = "Back main page soon.";
+            }
 
             yield return new WaitForSeconds(2.4f);
 
@@ -226,7 +265,15 @@ public class GuideMgr : MonoBehaviour
             spchBubble.gameObject.SetActive(false);
             yield return new WaitForSeconds(1.0f);
 
-            spchText.text = "좋아,출발해보자!";
+            
+            if (language == "korean")
+            {
+                spchText.text = "좋아,출발해보자!";
+            }
+            else
+            {
+                spchText.text = "Okay, Let's go!";
+            }
             spchBubble.gameObject.SetActive(true);
             Invoke("spchBubbleFadein", 0f);
             yield return new WaitForSeconds(2.4f); // between in-out
@@ -235,7 +282,15 @@ public class GuideMgr : MonoBehaviour
             spchBubble.gameObject.SetActive(false);
             yield return new WaitForSeconds(0.1f); // between active false-true
 
-            spchText.text = "너무 멀어지면\n종료될 수도 있으니까\n조심해야해!";
+            if (language == "korean")
+            {
+                spchText.text = "너무 멀어지면\n종료될 수도 있으니까\n조심해야해!";
+            }
+            else
+            {
+                spchText.text = "If you far away from me,\n it can be quit,\n so be careful!";
+            }
+            
             spchBubble.gameObject.SetActive(true);
             Invoke("spchBubbleFadein", 0f);
             yield return new WaitForSeconds(2.4f);
@@ -246,7 +301,15 @@ public class GuideMgr : MonoBehaviour
 
             Mascot_anim.SetBool("isStartGuide", true);
 
-            spchText.text = "어디보자...";
+            if (language == "korean")
+            {
+                spchText.text = "어디보자...";
+            }
+            else
+            {
+                spchText.text = "Let me see...";
+            }
+            
             spchBubble.gameObject.SetActive(true);
             Invoke("spchBubbleFadein", 0f);
             yield return new WaitForSeconds(2.4f);
@@ -327,14 +390,30 @@ public class GuideMgr : MonoBehaviour
                 //guideInfo.text += "\n dist_disable";
                 //guideUI.gameObject.SetActive(true);
                 guideBack.gameObject.SetActive(true);
-                guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n곧 서비스가 종료됩니다.";
+                if (language == "korean")
+                {
+                    guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n곧 서비스가 종료됩니다.";
+                }
+                else
+                {
+                    guideUI.text = "It is too far \nfrom mascot!\nService will quit.";
+                }
+                
                 spchBubble.gameObject.SetActive(false);
 
                 // 실제 서비스 종료 추가
                 Destroy(Mascot_MR.gameObject);
                 for (int i = 10 ; i > 0 ; i--){
                     yield return new WaitForSeconds(0.9f);
-                    guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n"+i+"초후 서비스가 종료됩니다.";
+                    if (language == "korean")
+                    {
+                        guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n" + i + "초후 서비스가 종료됩니다.";
+                    }
+                    else
+                    {
+                        guideUI.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
+                    }
+                    
                 }
 
                 // 현재 씬 리로드
@@ -348,7 +427,15 @@ public class GuideMgr : MonoBehaviour
                 //guideInfo.text += "\n dist_warning";
                 //guideUI.gameObject.SetActive(true);
                 guideBack.gameObject.SetActive(true);
-                guideUI.text = "마스코트 캐릭터\n가까이로 이동해 주세요.\n더 멀어질 경우\n서비스가 종료될 수 있습니다.";
+                if (language == "korean")
+                {
+                    guideUI.text = "마스코트 캐릭터\n가까이로 이동해 주세요.\n더 멀어질 경우\n서비스가 종료될 수 있습니다.";
+                }
+                else
+                {
+                    guideUI.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
+                }
+                
                 spchBubble.gameObject.SetActive(false);
                 // 이후 추가!!
 
@@ -371,10 +458,17 @@ public class GuideMgr : MonoBehaviour
                     var lookpos = ARCameraTransform.position - Mascot_MR.transform.position;
                     lookpos.y = 0;
                     var rotation = Quaternion.LookRotation(lookpos);
-                    Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f);                                                            
+                    Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f);
+
+                    if (language == "korean")
+                    {
+                        spchText.text = "얼른와 !";
+                    }
+                    else
+                    {
+                        spchText.text = "Come fast !";
+                    }
                     
-                    
-                    spchText.text = "얼른와 !";
                     spchBubble.gameObject.SetActive(true);
                     spchBubble.transform.localScale = new Vector3(1.0f, 1.0f, 0);
                     spchBubble.transform.localPosition = new Vector3(0, 0, 0);
@@ -474,8 +568,15 @@ public class GuideMgr : MonoBehaviour
         // 말풍선 설정
 
         Mascot_anim.SetBool("isTalk", true);
-
-        spchText.text = endSpch + "에 도착했어!";
+        if (language == "korean")
+        {
+            spchText.text = endSpch + "에 도착했어!";
+        }
+        else
+        {
+            spchText.text = "We arrived to " + endSpch;
+        }
+        
         spchBubble.gameObject.SetActive(true);
         Invoke("spchBubbleFadein", 0f);
         yield return new WaitForSeconds (2.4f);
@@ -484,14 +585,30 @@ public class GuideMgr : MonoBehaviour
         spchBubble.gameObject.SetActive(false);
         yield return new WaitForSeconds (0.1f);
 
-        spchText.text = "이 장소에 대한 설명은 \n아래 ui를 참고해 줘 !";
+        if (language == "korean")
+        {
+            spchText.text = "이 장소에 대한 설명은 \n아래 ui를 참고해 줘 !";
+        }
+        else
+        {
+            spchText.text = "To know explanation of here \nSee below UI !";
+        }
+        
         spchBubble.gameObject.SetActive(true);
         Invoke("spchBubbleFadein", 0f);
 
         // 종료후 메인으로
         for (int i = 10 ; i > 0 ; i--){
             yield return new WaitForSeconds(0.9f);
-            guideUI.text = endInfo+"\n"+i+"초후 안내를 종료합니다.";
+            if (language == "korean")
+            {
+                guideUI.text = endInfo + "\n" + i + "초후 안내를 종료합니다.";
+            }
+            else
+            {
+                guideUI.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
+            }
+            
         }
 
         // 현재 씬 리로드
