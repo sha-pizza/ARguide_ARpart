@@ -42,7 +42,6 @@ public class GPSMgr : MonoBehaviour
 
 
     // 경로 찾았는지
-    // 0530SA : guide시작할 때 접근해야해서 프라이빗 -> 퍼블릿스태틱으로 변경했습니다
     public static bool didFoundRoute = false;
 
     
@@ -328,6 +327,7 @@ public class GPSMgr : MonoBehaviour
         // 입력 없음 경로 없음 : 아무것도 하지 말기
         // 입력 있음 경로 40 이상 : 너무 먼 것 같으니 목적지만 표시
         // 입력 있음 경로 40 이하 : 경로 그리기
+        // 0824SA : 테스팅 위해 경로 150이하일때 표시하는걸로 수정
         string dropdowntxt = dropdown2.options[dropdown2.value].text;
 
         if (route.Length < 1){
@@ -336,7 +336,7 @@ public class GPSMgr : MonoBehaviour
             } else {
                 Debug.Log("ARGUIDE_gps : drawroute : error");
             }
-        } else if (route.Length >= 40){
+        } else if (route.Length >= 150){
             double lastlat = route[route.Length-2];
             double lastlon = route[route.Length-1];
             RouteMaker.drawDestin(lastlat, lastlon);
@@ -350,7 +350,15 @@ public class GPSMgr : MonoBehaviour
     // 하단 안내 시작하기 버튼
     public void Get_Route()
     {
-        Debug.Log("ARGUIDE_gps : getroute : and start guide!!");
+        // 목적지가 정해져있는지 확인
+        Debug.Log("ARGUIDE_gps : getroute : check finaldestination");
+        if ( finalDestination == ""){
+            Debug.Log("ARGUIDE_gps : getroute : finaldestination does not exist");
+            return;
+        } else {
+            Debug.Log("ARGUIDE_gps : getroute : finaldestination exist - start guide!!");
+        }
+
         var routeTmp = m_JavaObject.Call<double[]>("getRoute");
         
         // route 전처리
