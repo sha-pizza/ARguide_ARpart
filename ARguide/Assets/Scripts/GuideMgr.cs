@@ -69,8 +69,8 @@ public class GuideMgr : MonoBehaviour
     // 학교와 너무 멀리 떨어져 있을 때 에러처리를 위한 상수
     private const double COLLEGE_LAT = 37.293889;
     private const double COLLEGE_LON = 126.974904;
-    private const double DISTANCE_LIMIT = 0.009; // 성균관대역보다 약간 먼 거리 (경우에 따라 수정)
-
+    //private const double DISTANCE_LIMIT = 0.009; // 성균관대역보다 약간 먼 거리 (경우에 따라 수정)
+    private const double DISTANCE_LIMIT = 0.75; // 베타버전 원거리 허용
 
 
     // Start is called before the first frame update
