@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class DB {
 
     public void insertDataIntoTable(SQLiteDatabase destinationDatabase, String table) {
-        if (table.equals("DestinationTable")) {
+        if (table.equals("DestinationTable_KR")) {
             Destination nine = new Destination("생명공학관61동 입구 1",61,37.296032, 126.975092);
             Destination thirteen = new Destination("제2공학관 26동 입구 1",26,37.2955584, 126.9774348);
             Destination fourteen = new Destination("제1공학관 23동 입구 1",23,37.2941397, 126.977208);
@@ -125,7 +125,7 @@ public class DB {
                 destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
                         + ATMs[i].getName() + "', " + ATMs[i].getNumber() + ", " +ATMs[i].getLatitude() + ", " + ATMs[i].getLongitude() + ")");
             }
-        } else if (table.equals("EndingMessageTable")) {
+        } else if (table.equals("EndingMessageTable_KR")) {
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('학생회관 ', '학생회관은 종합행정실, 학생회관식당, 각종 동아리방과 성대 신문사, 성균 Times 등의 언론반 등이 위치해 있는 곳입니다. 만약 동아리에 관심이 있다면 학생회관에 들어가보세요!')");
             destinationDatabase.execSQL("insert into " + table +
@@ -143,9 +143,9 @@ public class DB {
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('제2공학관 27 ', '제2공학관은 25동부터 27동까지로 나뉘며 ‘ㄷ’자 형태로 연결되어 있습니다. 27동에는 공학교육혁신센터와 성균어학원, 우주과학기술연구소, 창업기업 사무실 등이 자리하며, 다양한 세미나실, 연구실, 강의실을 갖추고 있습니다.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제1과학관', '제1과학관은 자연과학대학이 주로 사용하는 공간입니다. 제1과학관부터 제2과학관, 기초학문관, 생명공학관까지 연결되어 있어 건물 내에서 자유롭게 이동할 수 있습니다.')");
+                    "(building, message) values ('제1과학관 31동 ', '제1과학관은 자연과학대학이 주로 사용하는 공간입니다. 제1과학관부터 제2과학관, 기초학문관, 생명공학관까지 연결되어 있어 건물 내에서 자유롭게 이동할 수 있습니다.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('제2과학관', '제2과학관은 자연과학대학이 주로 사용하는 공간입니다. 제1과학관과 기초학문관, 생명공학관이 하나로 연결되어 있어 건물 내에서 자유롭게 이동할 수 있습니다.')");
+                    "(building, message) values ('제2과학관 32동 ', '제2과학관은 자연과학대학이 주로 사용하는 공간입니다. 제1과학관과 기초학문관, 생명공학관이 하나로 연결되어 있어 건물 내에서 자유롭게 이동할 수 있습니다.')");
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('화학관 ', '화학관은 약학관과 반도체관을 잇는 종합강의동입니다. 이곳은 첨단강의실과 연구실, 라운지 등의 공간과 슈퍼컴퓨터실, 동위원소실험실, 세포배양실 등 연구에 필요한 최신식 시설을 갖추고 있습니다.')");
             destinationDatabase.execSQL("insert into " + table +
@@ -158,8 +158,9 @@ public class DB {
                     "(building, message) values ('생명공학관 ', '생명공학관은 생명공학대학 학생들이 주로 이용하는 공간입니다. 생명공학관은 제1과학관과, 제2과학관, 기초학문관이 하나로 연결되어 있어 건물 내에서 자유롭게 이동할 수 있습니다.')");
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('산학협력센터 ', '산학협력센터는 산학협력단과 연구실, 세미나실이 있으며, 40여개의 창업보육기업 및 실습실 등이 위치해 있습니다.')");
-        } else if(table.equals("DestinationTable2")){
-	Destination nine = new Destination("Biotechnology Building 61 Entrance 1",61,37.296032, 126.975092);
+
+        } else if(table.equals("DestinationTable_EN")){
+            Destination nine = new Destination("Biotechnology Building 61 Entrance 1",61,37.296032, 126.975092);
             Destination thirteen = new Destination("Engineering Building 26, Entrance 1",26,37.2955584, 126.9774348);
             Destination fourteen = new Destination("Engineering Building 23, Entrance 1",23,37.2941397, 126.977208);
             Destination fifteen = new Destination("Engineering Building 22, Entrance 1", 22, 37.29409879, 126.97723441);
@@ -277,10 +278,10 @@ public class DB {
             for (int i = 0 ; i < ATMs.length ; i++) {
                 destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
                         + ATMs[i].getName() + "', " + ATMs[i].getNumber() + ", " +ATMs[i].getLatitude() + ", " + ATMs[i].getLongitude() + ")");
-	}
+            }
 
-	}else if(table.equals("EndingMessageTable2")){
-	destinationDatabase.execSQL("insert into " + table +
+        } else if (table.equals("EndingMessageTable_EN")){
+            destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('Student Hall Entrance ', 'The Student Hall is where the general administration room, student hall cafeteria, various club rooms, Sungdae newspapers, and press groups such as Sungkyun Times are located. If you are interested in clubs, try entering the student union!')");
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('Welfare Hall ', 'Welfare Hall is a place where school facilities, faculty cafeteria, counseling center, health center, post office, bank, etc. are located.')");
@@ -312,7 +313,7 @@ public class DB {
                     "(building, message) values ('Biotechnology Building ', 'The Biotechnology Hall is a space mainly used by students of the College of Biotechnology. The Biotechnology Hall is connected to the 1st Science Hall, the 2nd Science Hall, and the Basic Science Hall, so you can move freely within the building.')");
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('Industry-University Cooperation Center ', 'The Industry-Academy Cooperation Center has an industry-academia cooperation group, a laboratory, and a seminar room, and there are about 40 start-up incubators and practice rooms.')");
-		
-	}
+
+        }
     }
 }
