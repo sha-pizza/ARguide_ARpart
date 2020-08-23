@@ -14,7 +14,8 @@ public class GuideMgr : MonoBehaviour
     // 경로!!
     // 테스트용으로 설정해둠
     //double[] route;        
-    public static double[] route = {37.295400, 126.976000, 37.295400, 126.976200}; 
+    //public static double[] route = {37.295400, 126.976000, 37.295400, 126.976200}; 
+    public static double[] route;
            
     public static int nowPointNum = 0;  // 현재 향하는 좌표! nowPoint0일때 rount0,1지점으로 향한다
     int lastPointNum;                   // 마지막 좌표! 전체 좌표들의 개수와도 같다
@@ -46,6 +47,8 @@ public class GuideMgr : MonoBehaviour
     private Animator Mascot_anim;
     private Canvas spchCanvas;
     private Transform spchBubble;
+
+    private string spchBubbleText;
     private Text spchText;
 
     private Transform Mascot_sample;
@@ -55,8 +58,8 @@ public class GuideMgr : MonoBehaviour
     String language = "korean";
 
 
-    // 디버그용 로그
-    private Text routeInfo;
+    // 하단 ui
+  
     private Text guideInfo;
 
     private Text guideUI;
@@ -73,7 +76,11 @@ public class GuideMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         
+
+        Debug.Log("ARGUIDE_guide : start()");
+
         // 카메라 받기
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
         ARCameraTransform = GameObject.Find("First Person Camera").transform;
@@ -83,19 +90,20 @@ public class GuideMgr : MonoBehaviour
         Mascot_samplemat = transform.Find("SampleMR/MASCOT_MR_sample/root_1").GetComponent<Renderer>();
         Mascot_samplecollider = transform.Find("SampleMR/MASCOT_MR_sample/root_1").GetComponent<Collider>();
 
-        // 디버깅용 텍스트 찾기 - 디버깅용이므로 exception 처리해둠
+        // 하단 ui 오브젝트 받기
+        guideUI = GameObject.Find("DebugCanvas/GuideUI/GuideUIText").GetComponent<Text>();
+        guideBack = GameObject.Find("DebugCanvas/GuideUI");
+
+        guideUI.gameObject.SetActive(false);
+        guideBack.gameObject.SetActive(false);
+
+        // 디버깅용 텍스트 찾기 - 디버깅용이므로 주석 처리해둠
         try{
-            
-            //routeInfo = GameObject.Find("DebugCanvas/Routeinfo").GetComponent<Text>(); // erase Routeinfo
-            guideInfo = GameObject.Find("DebugCanvas/Guideinfo").GetComponent<Text>();
-            guideUI = GameObject.Find("DebugCanvas/GuideUI/GuideUIText").GetComponent<Text>();
-            guideBack = GameObject.Find("DebugCanvas/GuideUI");
-            guideInfo.text = "find debugtext";
-            //guideUI.gameObject.SetActive(false);
-            guideBack.gameObject.SetActive(false);
+            //guideInfo = GameObject.Find("DebugCanvas/Guideinfo").GetComponent<Text>(); 
         } catch(Exception e){
-            Debug.Log(e);
+            Debug.Log("ARGUIDE_guide : "+e);
         }
+        Debug.Log("ARGUIDE_guide : start()_end");
     }
 
     // Update is called once per frame
@@ -104,16 +112,16 @@ public class GuideMgr : MonoBehaviour
         // 경로가 찾아진 경우 안내 시작!
         if (GPSMgr.didFoundRoute && !didGuideStart){    
         //if (!didGuideStart){
-            guideInfo.text = "route yes";
+            Debug.Log("ARGUIDE_guide : didFoundRoute & didGuideStart");
             didGuideStart = true;
-
+        
             // 경로 가져오기
             route = GPSMgr.route;
 
             // 전체 좌표 수 계산
-            lastPointNum = route.Length  ;
+            lastPointNum = route.Length;
 
-            // 가이드 코루틴 시작
+            // 가이드 코루틴 시작 (바닥면 찾기부터!)
             IEnumerator guide_findplane = Guide_FindPlane();
             StartCoroutine(guide_findplane);
         }
@@ -122,7 +130,7 @@ public class GuideMgr : MonoBehaviour
     // Coroutine to find guide
     // 평면 찾아 마스코트 설치
     private IEnumerator Guide_FindPlane(){
-        guideInfo.text = "find plane ...";
+        Debug.Log("ARGUIDE_guide : start coroutine : findplane");
 
         while (!MR_sample.isOnPlane){
             yield return new WaitForSeconds(0.05f);
@@ -131,7 +139,8 @@ public class GuideMgr : MonoBehaviour
             Mascot_sample.position = Vector3.Lerp(Mascot_sample.position,
                                                         ARCameraTransform.position, 0.3f);            
         }
-        guideInfo.text = "init guide";
+
+        Debug.Log("ARGUIDE_guide : instantiate mascot object");
 
         // 마스코트 생성후 방향설정
         Vector3 mascotpos = Mascot_samplemat.gameObject.transform.position;
@@ -161,18 +170,26 @@ public class GuideMgr : MonoBehaviour
         // 가이드 코루틴 시작
         IEnumerator guide_start = Guide_Start();
         StartCoroutine(guide_start);
-        
-
+    
     }
 
     // Coroutine to start guide
     private IEnumerator Guide_Start(){
-
-        guideInfo.text = "start guide coroutine1";
+        Debug.Log("ARGUIDE_guide : start coroutine : guide_start");
+        
+        /*
+        // Mascot : 대사 작성 시 아래 복붙
+        spchText.text = "대사\n5줄이내";
+        Invoke("spchBubbleFadein", 0f);
+        yield return new WaitForSeconds(2.4f); // 대사 지속 시간
+        Invoke("spchBubbleFadeout", 0f);
+        yield return new WaitForSeconds(1.0f);
+        */
 
         yield return new WaitForSeconds(2.0f);
 
-        spchCanvas.gameObject.SetActive(true);
+
+        spchCanvas.gameObject.SetActive(true); // 이줄 없애면 말풍선 안뜨니까 그대로 두기
 
         language = GameObject.Find("GPSMgr").GetComponent<GPSMgr>().Language_Update();
 
@@ -185,27 +202,28 @@ public class GuideMgr : MonoBehaviour
         }
         
         spchBubble.gameObject.SetActive(true);
-        Invoke("spchBubbleFadein", 0f);
 
+        Invoke("spchBubbleFadein", 0f);
         
         while (!RayMgr.isBubbleClicked){
             yield return new WaitForSeconds(0.5f);
         }
         RayMgr.isBubbleClicked = false;
 
+        Invoke("spchBubbleFadeout", 0f);
+        yield return new WaitForSeconds(1.0f);
+        
+
         // 0706 학교에서 너무 멀리 떨어져 있는 지 확인 / 0713 위치 정보가 업데이트 되지 않고 있으면 종료
         if (!isWithinCollegeArea() || GPSMgr.overNsecsNotLoadedLocation)
         {
 
             // 너무 멀리 떨어져 있으면 메인화면으로 돌아감
-            Invoke("spchBubbleFadeout", 0f);
-            spchBubble.gameObject.SetActive(false);
-            yield return new WaitForSeconds(1.0f);
-
             GPSMgr.didFoundRoute = false;
             GPSMgr.route = null;
             GPSMgr.overNsecsNotLoadedLocation = false;
             GPSMgr.secsNotLoadedLocation = 0;
+
 
             if (!isWithinCollegeArea())
             {
@@ -232,11 +250,14 @@ public class GuideMgr : MonoBehaviour
                 
             }
             spchBubble.gameObject.SetActive(true);
+
             Invoke("spchBubbleFadein", 0f);
 
             // 안내문 설정
+            guideUI.gameObject.SetActive(true);
             guideBack.gameObject.SetActive(true);
             guideUI.fontSize = 40;
+
 
             
             if (language == "korean")
@@ -248,22 +269,18 @@ public class GuideMgr : MonoBehaviour
                 guideUI.text = "Back main page soon.";
             }
 
+
             yield return new WaitForSeconds(2.4f);
 
             Invoke("spchBubbleFadeout", 0f);
-            yield return new WaitForSeconds(0.36f);
-            spchBubble.gameObject.SetActive(false);
-
             yield return new WaitForSeconds(2.0f);
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         } else
         {
             // 기존 정상작동 코드
-            Invoke("spchBubbleFadeout", 0f);
-            yield return new WaitForSeconds(0.36f);
-            spchBubble.gameObject.SetActive(false);
-            yield return new WaitForSeconds(1.0f);
+        
+
 
             
             if (language == "korean")
@@ -275,12 +292,12 @@ public class GuideMgr : MonoBehaviour
                 spchText.text = "Okay, Let's go!";
             }
             spchBubble.gameObject.SetActive(true);
+
             Invoke("spchBubbleFadein", 0f);
             yield return new WaitForSeconds(2.4f); // between in-out
             Invoke("spchBubbleFadeout", 0f);
-            yield return new WaitForSeconds(0.36f);
-            spchBubble.gameObject.SetActive(false);
-            yield return new WaitForSeconds(0.1f); // between active false-true
+            yield return new WaitForSeconds(0.6f); // between active false-true
+
 
             if (language == "korean")
             {
@@ -292,14 +309,14 @@ public class GuideMgr : MonoBehaviour
             }
             
             spchBubble.gameObject.SetActive(true);
+
             Invoke("spchBubbleFadein", 0f);
             yield return new WaitForSeconds(2.4f);
             Invoke("spchBubbleFadeout", 0f);
-            yield return new WaitForSeconds(0.36f);
-            spchBubble.gameObject.SetActive(false);
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(1.0f);
 
             Mascot_anim.SetBool("isStartGuide", true);
+
 
             if (language == "korean")
             {
@@ -311,15 +328,14 @@ public class GuideMgr : MonoBehaviour
             }
             
             spchBubble.gameObject.SetActive(true);
+
             Invoke("spchBubbleFadein", 0f);
             yield return new WaitForSeconds(2.4f);
             Invoke("spchBubbleFadeout", 0f);
-            yield return new WaitForSeconds(0.36f);
-            spchBubble.gameObject.SetActive(false);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.6f);
 
 
-            guideInfo.text = "start guide coroutine2";
+            //guideInfo.text = "start guide coroutine2";
             nowPointNum = 0;
             int nowPointNumSaver = 0;
 
@@ -334,7 +350,7 @@ public class GuideMgr : MonoBehaviour
                 {
                     yield return new WaitForSeconds(0.5f);
                 }
-                guideInfo.text = "np:" + nowPointNum + "/ nps:" + nowPointNumSaver + "/ lp:" + lastPointNum;
+                //guideInfo.text = "np:" + nowPointNum + "/ nps:" + nowPointNumSaver + "/ lp:" + lastPointNum;
                 // nowPointnum은 Guide_Part 코루틴 안에서 바꿔줄 예정
                 StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[i], route[i + 1]));
 
@@ -347,7 +363,7 @@ public class GuideMgr : MonoBehaviour
                 yield return new WaitForSeconds(5f);
             }
 
-            guideInfo.text = "end guiding";
+            //guideInfo.text = "end guiding";
             StartCoroutine(Guide_End());
         }
         
@@ -379,16 +395,16 @@ public class GuideMgr : MonoBehaviour
             //guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));
             //guideInfo.text += "\n"+(float)GPSMgr.LAT+" - "+eLAT;
 
-      
-            guideInfo.text = "np:"+nowPointNum+"/ lp:"+lastPointNum;
+            //guideInfo.text = "np:"+nowPointNum+"/ lp:"+lastPointNum;
+
             // 사용자와의 거리 확인
             float dist = Vector3.Distance( ARCamera.transform.position, Mascot_MR.transform.position );
-            guideInfo.text += "\ndistance :"+dist;
+            //guideInfo.text += "\ndistance :"+dist;
 
             if (dist > dist_disable) {
                 // dist_disable 보다 멀리 떨어질 경우 : 모든 코루틴 종료 및 ui 안내
                 //guideInfo.text += "\n dist_disable";
-                //guideUI.gameObject.SetActive(true);
+                guideUI.gameObject.SetActive(true);
                 guideBack.gameObject.SetActive(true);
                 if (language == "korean")
                 {
@@ -419,13 +435,10 @@ public class GuideMgr : MonoBehaviour
                 // 현재 씬 리로드
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
-
-                
-
             } else if (dist > dist_warning ) {
                 // if dist_warning 보다 멀리 떨어질 경우 : 일단 ui로 안내
                 //guideInfo.text += "\n dist_warning";
-                //guideUI.gameObject.SetActive(true);
+                guideUI.gameObject.SetActive(true);
                 guideBack.gameObject.SetActive(true);
                 if (language == "korean")
                 {
@@ -437,7 +450,6 @@ public class GuideMgr : MonoBehaviour
                 }
                 
                 spchBubble.gameObject.SetActive(false);
-                // 이후 추가!!
 
             } else if (dist > dist_wait) {
                 
@@ -447,7 +459,7 @@ public class GuideMgr : MonoBehaviour
                       Vector3.Distance(Mascot_MR.transform.position, DestinationMgr.destination.position)  ){
                     //guideInfo.text += "\n dist_wait";
                     guideUI.text = "";
-                    //guideUI.gameObject.SetActive(false);
+                    guideUI.gameObject.SetActive(false);
                     guideBack.gameObject.SetActive(false);
                     
                     Mascot_anim.SetBool("isMove", false);
@@ -476,7 +488,7 @@ public class GuideMgr : MonoBehaviour
                 } else {
                     //guideInfo.text += "\n dist_run";
                     guideUI.text = "";
-                    //guideUI.gameObject.SetActive(false);
+                    guideUI.gameObject.SetActive(false);
                     guideBack.gameObject.SetActive(false);
 
                     Mascot_anim.SetBool("isMove", true);
@@ -513,7 +525,7 @@ public class GuideMgr : MonoBehaviour
                 // 가까이에 있을 경우 : 목표지점으로 걷는다
                 //guideInfo.text += "\n dist_walk";
                 guideUI.text = "";
-                //guideUI.gameObject.SetActive(false);
+                guideUI.gameObject.SetActive(false);
                 guideBack.gameObject.SetActive(false);
 
                 Mascot_anim.SetBool("isMove", true);
@@ -568,6 +580,7 @@ public class GuideMgr : MonoBehaviour
         // 말풍선 설정
 
         Mascot_anim.SetBool("isTalk", true);
+
         if (language == "korean")
         {
             spchText.text = endSpch + "에 도착했어!";
@@ -578,12 +591,12 @@ public class GuideMgr : MonoBehaviour
         }
         
         spchBubble.gameObject.SetActive(true);
+
         Invoke("spchBubbleFadein", 0f);
         yield return new WaitForSeconds (2.4f);
         Invoke("spchBubbleFadeout", 0f);
-        yield return new WaitForSeconds (0.36f);
-        spchBubble.gameObject.SetActive(false);
-        yield return new WaitForSeconds (0.1f);
+        yield return new WaitForSeconds (0.4f);
+
 
         if (language == "korean")
         {
@@ -595,7 +608,9 @@ public class GuideMgr : MonoBehaviour
         }
         
         spchBubble.gameObject.SetActive(true);
+
         Invoke("spchBubbleFadein", 0f);
+        yield return new WaitForSeconds (0.4f);
 
         // 종료후 메인으로
         for (int i = 10 ; i > 0 ; i--){
@@ -610,6 +625,9 @@ public class GuideMgr : MonoBehaviour
             }
             
         }
+
+        Invoke("spchBubbleFadeout", 0f);
+        yield return new WaitForSeconds (0.4f);
 
         // 현재 씬 리로드
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -674,18 +692,26 @@ public class GuideMgr : MonoBehaviour
 
 
     void spchBubbleFadeout(){
+        Debug.Log("ARGUIDE_guide : invoke spchbubblefadeout");
         spchBubble.transform.localScale = new Vector3(1.0f, 1.0f, 0);
         spchBubble.transform.localPosition = new Vector3(0, 0, 0);
         for (int i=1 ; i <= 10 ; i ++){
             Invoke("spchBubbleSmaller", 0.04f*i);
         }  
+        Invoke("spchBubbleTurnOff", 0.4f);
     }
     void spchBubbleSmaller(){        
         spchBubble.transform.localScale = Vector3.Lerp( spchBubble.transform.localScale, new Vector3(0.2f, 0.2f, 0), 0.3f );
         spchBubble.transform.localPosition = Vector3.Lerp( spchBubble.transform.localPosition, new Vector3(0, -0.2f, 0), 0.3f);
     }
 
+    void spchBubbleTurnOff() {
+        spchBubble.gameObject.SetActive(false);
+    }
+
     void spchBubbleFadein(){
+        Debug.Log("ARGUIDE_guide : invoke spchbubblefadein");
+        spchBubble.gameObject.SetActive(true);
         spchBubble.transform.localScale = new Vector3(0.2f, 0.2f, 0);
         spchBubble.transform.localPosition = new Vector3(0, -0.2f, 0);
         for (int i=1 ; i <= 10 ; i ++){
@@ -695,6 +721,11 @@ public class GuideMgr : MonoBehaviour
     void spchBubbleBigger(){
         spchBubble.transform.localScale = Vector3.Lerp( spchBubble.transform.localScale, new Vector3(1.0f, 1.0f, 0), 0.3f );
         spchBubble.transform.localPosition = Vector3.Lerp( spchBubble.transform.localPosition, new Vector3(0, 0, 0), 0.3f);
+    }
+
+    void spchBubbleTurnOn(){
+        Debug.Log("ARGUIDE_guide : spchbubble setactive");
+        spchBubble.gameObject.SetActive(true);
     }
 
     

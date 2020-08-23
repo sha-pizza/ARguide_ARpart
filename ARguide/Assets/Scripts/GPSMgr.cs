@@ -34,14 +34,18 @@ public class GPSMgr : MonoBehaviour
     public GameObject Button3;  // Button3
     public GameObject RawImage; // rawimage
     public GameObject Inputobj; // Input
+    public GameObject MapPart; // map-backgroundimg and route object
+    public MapRouteMgr RouteMaker; // active false 안해줘도댐 왜냐면 MapPart의 child이기 때문에
+
+    // 백그라운드 이미지
+    public Image backgroundImage;
 
 
     // 경로 찾았는지
     // 0530SA : guide시작할 때 접근해야해서 프라이빗 -> 퍼블릿스태틱으로 변경했습니다
     public static bool didFoundRoute = false;
 
-    // 백그라운드 이미지
-    public Image backgroundImage;
+    
 
     // VAR : GPS및 방위 관련 
     public static string GPSstatus = "";
@@ -89,6 +93,7 @@ public class GPSMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("ARGUIDE_gps : start gpsmgr");
         // 자바 클래스, 인스턴스 생성
         // 0601SA : Exception처리함
         var jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -296,8 +301,56 @@ public class GPSMgr : MonoBehaviour
         m_JavaObject.Call("findRoute", dropdown2.value);
     }
 
+    // 목적지까지의 경로 표시 버튼
+    public void Draw_Route()
+    {
+        // 경로 double 배열을 MaprouteMgr로 보냄
+        
+        //double[] routeToDraw = {37.2970, 126.9700, 37.2965, 126.9725, 37.2930, 126.9730, 37.2945, 126.9755, 37.295, 126.9745};
+        //RouteMaker.drawRoute(routeToDraw);
+        Debug.Log("GPSdropdown : "+dropdown2.options[dropdown2.value].text);
+
+        // 가능할경우 받아오고, 없을 경우 exception 처리하여 길이 0 되도록
+        double[] route;
+        try{
+            var routeTmp = m_JavaObject.Call<double[]>("getRoute");
+            route = routeTmp;
+        } catch (Exception e){
+            double[] routeTmp = {};
+            route = routeTmp;
+            Debug.Log("ARGUIDE_gps : route : exception");
+        }
+        
+        Debug.Log("ARGUIDE_gps : routelen : "+route.Length);
+        Debug.Log("ARGUIDE_gps : findestin : "+finalDestination);
+        Debug.Log("ARGUIDE_gps : route0 : "+route[0]);
+        
+        // 입력 없음 경로 없음 : 아무것도 하지 말기
+        // 입력 있음 경로 40 이상 : 너무 먼 것 같으니 목적지만 표시
+        // 입력 있음 경로 40 이하 : 경로 그리기
+        string dropdowntxt = dropdown2.options[dropdown2.value].text;
+
+        if (route.Length < 1){
+            if (dropdowntxt == "검색 결과가 없습니다. 다른 검색어로 다시 검색을 시도해주세요." || dropdowntxt == "검색어를 먼저 입력해주세요."){
+                Debug.Log("ARGUIDE_gps : drawroute : no input");
+            } else {
+                Debug.Log("ARGUIDE_gps : drawroute : error");
+            }
+        } else if (route.Length >= 40){
+            double lastlat = route[route.Length-2];
+            double lastlon = route[route.Length-1];
+            RouteMaker.drawDestin(lastlat, lastlon);
+
+        } else {
+            RouteMaker.drawRoute(route); // 실제 루트 그리기
+        }
+
+    }
+
+    // 하단 안내 시작하기 버튼
     public void Get_Route()
     {
+        Debug.Log("ARGUIDE_gps : getroute : and start guide!!");
         var routeTmp = m_JavaObject.Call<double[]>("getRoute");
         
         // route 전처리
@@ -315,6 +368,8 @@ public class GPSMgr : MonoBehaviour
         for (int i = 0 ; i < routeLen ; i++ ){
             route[i] = routeTmp[i];
         }
+
+        Debug.Log("ARGUIDE_gps : getroute : success to get route");
 
     
 
@@ -335,12 +390,15 @@ public class GPSMgr : MonoBehaviour
         backgroundImage.gameObject.SetActive(false);
         findRouteBtn.gameObject.SetActive(false);
         dropdown2.gameObject.SetActive(false);
+        MapPart.gameObject.SetActive(false);
         Button2.SetActive(false);
         Button3.SetActive(false);
         RawImage.SetActive(false);
         Inputobj.SetActive(false);
 
         didFoundRoute = true;
+
+        Debug.Log("ARGUIDE_gps : getroute : camera on");
         /*
         if (didFoundRoute){
             //GPSText.text += "\ndidfoundroute !!";
