@@ -483,5 +483,11 @@ public class GPSMgr : MonoBehaviour
     public void Erase_TapToStart(){
         TapToStart.gameObject.SetActive(false);
     }
+
+    //언어 변수를 설정하는 메소드
+    public string Language_Update() {
+        var language = m_JavaObject.Call<string>("getLanguage");
+        return language;
+    }
 }
 
