@@ -290,7 +290,7 @@ public class DB {
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('Engineering Hall 22 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. In the building 22, there are various labs, ADIC center, presentation room, design room, advanced lecture room, and seminar room.')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('Engineering Hall 23 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. Building 23 has various research facilities, professor's lab, campus management team, and seminar room.')");
+                    "(building, message) values ('Engineering Hall 23 ', 'The first engineering building is divided into dongs 21 and 23, and is connected in the form of ‘ㄷ’. Building 23 has various research facilities, professor''s lab, campus management team, and seminar room.')");
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('Engineering Building 25 ', 'The 2nd Engineering Building is divided into 25 and 27, and is connected in the form of ‘ㄷ’. The building 25 is equipped with various labs, laboratories and meeting rooms.')");
             destinationDatabase.execSQL("insert into " + table +
