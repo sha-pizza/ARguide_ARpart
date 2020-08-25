@@ -188,6 +188,10 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
             }
         }
 
+        if (destination.length() == 0) {
+            flag = true;
+        }
+
         //건물이름으로 검색하는 경우
         if(flag==true){
             Cursor cursor = database.rawQuery("select name, number, latitude, longitude from '" + table_name + "' where name like '%" + destination + "%'", null);
