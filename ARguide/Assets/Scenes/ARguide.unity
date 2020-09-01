@@ -3804,8 +3804,8 @@ MonoBehaviour:
   dist_disable: 10
   Mascot_MRPrefab: {fileID: 3714055763462171053, guid: 3f5de1ee3ad1457468177d1c334bef66,
     type: 3}
-  Mascot_walkSpeed: 5
-  Mascot_runSpeed: 8
+  Mascot_walkSpeed: 25
+  Mascot_runSpeed: 40
 --- !u!4 &692200604
 Transform:
   m_ObjectHideFlags: 0
