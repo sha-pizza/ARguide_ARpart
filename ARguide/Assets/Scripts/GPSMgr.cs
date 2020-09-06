@@ -75,18 +75,7 @@ public class GPSMgr : MonoBehaviour
     private Transform ARCameraTransform;
 
     public static float Heading;              // 이 각도로 배치한 사물은 북쪽을 가르킵니다!arcamera 각도 교정용
-    /* >> DEPRECATED
-    public GameObject obj_Compass;      // 나침반
-    public GameObject obj_GuideArrow;   // 방향안내용
 
-    private IEnumerator GPSloader;
-
-    [Header ("나침반 오브젝트")]
-    [SerializeField] public GameObject compassObj;
-
-    [Header ("안내용 화살표")]
-    [SerializeField] public GameObject guideArrow;
-    */
 
 
     // Start is called before the first frame update
@@ -128,21 +117,6 @@ public class GPSMgr : MonoBehaviour
         ARCameraTransform = ARCamera.transform;
         // Debug.Log("camera : "+ARCameraTransform.eulerAngles.y);
 
-        // 받아온 gps 방향정보 띄워주는 텍스트
-        //GPSText = transform.Find("Canvas").Find("GPSText").GetComponent<Text>();
-        GPSText = GameObject.Find("DebugCanvas/GPSText").GetComponent<Text>();
-        GPSText.text = "";
-
-        // targetLATLON 받아오는 InputField 및 버튼과 디버깅용 텍스트오브젝트 불러오기
-        /* >> DEPRECATED
-        enteredLAT = transform.Find("Canvas").Find("LATInput").GetComponent<InputField>();
-        enteredLON = transform.Find("Canvas").Find("LONInput").GetComponent<InputField>();
-        enterBtn = transform.Find("Canvas").Find("Button").GetComponent<Button>();
-        enterBtn.onClick.AddListener(Check_enteredValue);
-        enterStatus = transform.Find("Canvas").Find("Enterstatus").GetComponent<Text>();
-        guideStatus = transform.Find("Canvas").Find("Guidestatus").GetComponent<Text>();
-        */
-
         // GPS 측정 시작
         Input.location.Start(0.01f, 0.01f); // Accuracy of 0.01 m
         Input.compass.enabled = true;
@@ -151,9 +125,9 @@ public class GPSMgr : MonoBehaviour
         // Checks if the GPS is enabled by the user (-> Allow location )
         int wait = 1000; // Per default
         if(!Input.location.isEnabledByUser){
-            GPSstatus = "GPS not available !!";     
+            GPSstatus = "GPS not available";     
         } else {
-            GPSstatus = "";
+            GPSstatus = "GPS available";
             while(Input.location.status == LocationServiceStatus.Initializing && wait>0){
                 wait--;
             }

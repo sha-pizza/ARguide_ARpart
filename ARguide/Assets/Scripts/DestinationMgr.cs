@@ -25,7 +25,6 @@ public class DestinationMgr : MonoBehaviour
         ARCameraTransform = GameObject.Find("First Person Camera").transform;
         
 
-        //camtext = GameObject.Find("DebugCanvas/Routeinfo").GetComponent<Text>();
 
         IEnumerator destinM = destinationMover();
         StartCoroutine(destinM);

@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class DebugScript : MonoBehaviour
 {
-    [Header("DebugScript : GPS 및 ARcamera정보 로그찍기")]
+    [Header("DebugScript : GPS, 가이드상태, 경로 등의 정보 로그찍기")]
     public Transform Nothing;
+
+    private Text DebugText;
+    
 
 
     private Text cameraInfo;
@@ -20,11 +23,8 @@ public class DebugScript : MonoBehaviour
     void Start()
     {
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
-        //cameraInfo = transform.Find("Camerainfo").GetComponent<Text>();
-        GPSInfo = transform.Find("GPSinfo").GetComponent<Text>();
-
+        DebugText = transform.Find("DebugText").GetComponent<Text>();
         StartCoroutine(Debugchecker());
-
     }
 
     // Update is called once per frame
@@ -34,34 +34,35 @@ public class DebugScript : MonoBehaviour
     }
 
     IEnumerator Debugchecker () {
+        string DebugStr;
+        
         while(true){
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
+            // set debugText
+            // GPSstatus : ~ / LatLon : ~, ~
+            DebugStr = "";
+            DebugStr += "GPSstatus : " + GPSMgr.GPSstatus + "/ LatLon : "+ (float)GPSMgr.LAT + ", " + (float)GPSMgr.LON ;
+            DebugStr += "\nGuidestatus : " + GuideMgr.Guidestatus;
+
+            DebugText.text = DebugStr;
+
+            /*
             // set gps info
             if (GPSMgr.GPSstatus.Length == 0){
                 //GPSInfo.text = "GPS is available ! vC:"+GPSMgr.validCount;
                 //GPSInfo.text += "\nstatus: "+Input.location.status;
                 //GPSInfo.text += "\nLAT: "+GPSMgr.LAT;
-                GPSInfo.text = "LAT: "+GPSMgr.LAT;
-                GPSInfo.text += "\nLON: "+GPSMgr.LON;
+                //GPSInfo.text = "LAT: "+GPSMgr.LAT;
+                //GPSInfo.text += "\nLON: "+GPSMgr.LON;
                 //GPSInfo.text += "\ncompAccu: "+GPSMgr.compass_headingAccu;
                 //GPSInfo.text += "\ncompHead: "+GPSMgr.compass_trueHeading;
             } else {
                 GPSInfo.text = GPSMgr.GPSstatus;
-            }
+            }*/
             
 
 
 
-
-            // set camera info
-            /*
-            cameraInfo.text = "posX: "+ARCamera.transform.position.x;
-            cameraInfo.text += "\nposY: "+ARCamera.transform.position.y;
-            cameraInfo.text += "\nposZ: "+ARCamera.transform.position.z;
-            cameraInfo.text += "\nrotX: "+ARCamera.transform.eulerAngles.x;
-            cameraInfo.text += "\nrotY: "+ARCamera.transform.eulerAngles.y;
-            cameraInfo.text += "\nrotZ: "+ARCamera.transform.eulerAngles.z;
-            */
         }
     }
 }
