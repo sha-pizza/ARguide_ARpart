@@ -24,7 +24,7 @@ public class MapRouteMgr : MonoBehaviour
     void Start()
     {
         // MapPart > RoutePart > routemaker
-        // routemaker : 1100px * 800px
+        // routemaker : 1200px * 800px
         // RoutePart의 크기는 화면 크기에 따라 유동적
         // Start()에서 routemaker의 부모인 RoutePart 의 사이즈 확인하고 scale 설정
 
@@ -38,8 +38,8 @@ public class MapRouteMgr : MonoBehaviour
         Debug.Log("ARGUIDE_maproute : parwidth:"+parentWidth);
 
         // 화면 사이즈에 맞게 set scale
-        routePointRect.localScale = new Vector3(parentWidth/1100, (float)(parentWidth/1100*1.26), parentWidth/1100);
-        routeLineRect.localScale = new Vector3(parentWidth/1100, parentWidth/1100, parentWidth/1100);
+        routePointRect.localScale = new Vector3(parentWidth/1200, (float)(parentWidth/1200*1.26), parentWidth/1200);
+        routeLineRect.localScale = new Vector3(parentWidth/1200, parentWidth/1200, parentWidth/1200);
 
         //double[] routeToDraw = {37.2970, 126.9700, 37.2965, 126.9725, 37.2930, 126.9730, 37.2945, 126.9755, 37.295, 126.9745};
         //drawRoute(routeToDraw);
@@ -71,7 +71,7 @@ public class MapRouteMgr : MonoBehaviour
         string tester = "calculed route : ";
         for (int i=0 ; i<routeLen ; i=i+2){
             calculed_route[i] = (route[i] - 37.298) * 100000;   // 조건
-            calculed_route[i+1] = (route[i+1] - 126.969) * 100000;
+            calculed_route[i+1] = (route[i+1] - 126.968) * 100000;
             tester = tester + (int)calculed_route[i] + "," + (int)calculed_route[i+1] + " / "; 
         }
         Debug.Log("ARGUIDE_maproute : "+tester);
@@ -107,7 +107,7 @@ public class MapRouteMgr : MonoBehaviour
 
         // 원래의 위도경도 테스트출력
         float realLat = (float)(c_lat/100000+37.298);
-        float realLon = (float)(c_lon/100000+126.969);
+        float realLon = (float)(c_lon/100000+126.968);
         Debug.Log("ARGUIDE_maproute : setRoutePoint - realP("+realLat+","+realLon+")");
         
         // 오브젝트 생성하고 route 게임오브젝트 자식으로 설정
@@ -154,7 +154,7 @@ public class MapRouteMgr : MonoBehaviour
         
         // 계산
         double c_lat = (d_lat - 37.298) * 100000;
-        double c_lon = (d_lon - 126.969) * 100000;
+        double c_lon = (d_lon - 126.968) * 100000;
 
         // 오브젝트 놓기
         setRoutePoint(c_lat, c_lon, rEnd_failfindobj);
