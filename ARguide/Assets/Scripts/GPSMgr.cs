@@ -42,7 +42,6 @@ public class GPSMgr : MonoBehaviour
 
 
     // 경로 찾았는지
-    // 0530SA : guide시작할 때 접근해야해서 프라이빗 -> 퍼블릿스태틱으로 변경했습니다
     public static bool didFoundRoute = false;
 
     
@@ -76,18 +75,7 @@ public class GPSMgr : MonoBehaviour
     private Transform ARCameraTransform;
 
     public static float Heading;              // 이 각도로 배치한 사물은 북쪽을 가르킵니다!arcamera 각도 교정용
-    /* >> DEPRECATED
-    public GameObject obj_Compass;      // 나침반
-    public GameObject obj_GuideArrow;   // 방향안내용
 
-    private IEnumerator GPSloader;
-
-    [Header ("나침반 오브젝트")]
-    [SerializeField] public GameObject compassObj;
-
-    [Header ("안내용 화살표")]
-    [SerializeField] public GameObject guideArrow;
-    */
 
 
     // Start is called before the first frame update
@@ -129,21 +117,6 @@ public class GPSMgr : MonoBehaviour
         ARCameraTransform = ARCamera.transform;
         // Debug.Log("camera : "+ARCameraTransform.eulerAngles.y);
 
-        // 받아온 gps 방향정보 띄워주는 텍스트
-        //GPSText = transform.Find("Canvas").Find("GPSText").GetComponent<Text>();
-        GPSText = GameObject.Find("DebugCanvas/GPSText").GetComponent<Text>();
-        GPSText.text = "";
-
-        // targetLATLON 받아오는 InputField 및 버튼과 디버깅용 텍스트오브젝트 불러오기
-        /* >> DEPRECATED
-        enteredLAT = transform.Find("Canvas").Find("LATInput").GetComponent<InputField>();
-        enteredLON = transform.Find("Canvas").Find("LONInput").GetComponent<InputField>();
-        enterBtn = transform.Find("Canvas").Find("Button").GetComponent<Button>();
-        enterBtn.onClick.AddListener(Check_enteredValue);
-        enterStatus = transform.Find("Canvas").Find("Enterstatus").GetComponent<Text>();
-        guideStatus = transform.Find("Canvas").Find("Guidestatus").GetComponent<Text>();
-        */
-
         // GPS 측정 시작
         Input.location.Start(0.01f, 0.01f); // Accuracy of 0.01 m
         Input.compass.enabled = true;
@@ -152,9 +125,9 @@ public class GPSMgr : MonoBehaviour
         // Checks if the GPS is enabled by the user (-> Allow location )
         int wait = 1000; // Per default
         if(!Input.location.isEnabledByUser){
-            GPSstatus = "GPS not available !!";     
+            GPSstatus = "GPS not available";     
         } else {
-            GPSstatus = "";
+            GPSstatus = "GPS available";
             while(Input.location.status == LocationServiceStatus.Initializing && wait>0){
                 wait--;
             }
@@ -328,6 +301,7 @@ public class GPSMgr : MonoBehaviour
         // 입력 없음 경로 없음 : 아무것도 하지 말기
         // 입력 있음 경로 40 이상 : 너무 먼 것 같으니 목적지만 표시
         // 입력 있음 경로 40 이하 : 경로 그리기
+        // 0824SA : 테스팅 위해 경로 150이하일때 표시하는걸로 수정
         string dropdowntxt = dropdown2.options[dropdown2.value].text;
 
         if (route.Length < 1){
@@ -336,7 +310,7 @@ public class GPSMgr : MonoBehaviour
             } else {
                 Debug.Log("ARGUIDE_gps : drawroute : error");
             }
-        } else if (route.Length >= 40){
+        } else if (route.Length >= 150){
             double lastlat = route[route.Length-2];
             double lastlon = route[route.Length-1];
             RouteMaker.drawDestin(lastlat, lastlon);
@@ -350,7 +324,15 @@ public class GPSMgr : MonoBehaviour
     // 하단 안내 시작하기 버튼
     public void Get_Route()
     {
-        Debug.Log("ARGUIDE_gps : getroute : and start guide!!");
+        // 목적지가 정해져있는지 확인
+        Debug.Log("ARGUIDE_gps : getroute : check finaldestination");
+        if ( finalDestination == ""){
+            Debug.Log("ARGUIDE_gps : getroute : finaldestination does not exist");
+            return;
+        } else {
+            Debug.Log("ARGUIDE_gps : getroute : finaldestination exist - start guide!!");
+        }
+
         var routeTmp = m_JavaObject.Call<double[]>("getRoute");
         
         // route 전처리

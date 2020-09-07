@@ -27,6 +27,9 @@ public class GuideMgr : MonoBehaviour
     public double dist_warning = 7.0;          // 마스코트가 유저와 이만큼 떨어져 있을 경우 종료 방지 위해 안내
     public double dist_disable = 10.0;         // 마스코트가 유저와 이만큼 떨어져 있을 경우 비활성화 및 컨텐츠 종료
 
+    // 가이드 상태
+    public static string Guidestatus = "";
+
 
 
 
@@ -59,27 +62,24 @@ public class GuideMgr : MonoBehaviour
 
 
     // 하단 ui
-  
-    private Text guideInfo;
-
     private Text guideUI;
     private GameObject guideBack;
+
+    
 
 
     // 학교와 너무 멀리 떨어져 있을 때 에러처리를 위한 상수
     private const double COLLEGE_LAT = 37.293889;
     private const double COLLEGE_LON = 126.974904;
-    private const double DISTANCE_LIMIT = 0.009; // 성균관대역보다 약간 먼 거리 (경우에 따라 수정)
-
+    //private const double DISTANCE_LIMIT = 0.009; // 성균관대역보다 약간 먼 거리 (경우에 따라 수정)
+    private const double DISTANCE_LIMIT = 0.75; // 베타버전 원거리 허용
 
 
     // Start is called before the first frame update
     void Start()
     {
-
-        
-
         Debug.Log("ARGUIDE_guide : start()");
+        Guidestatus = "Start()";
 
         // 카메라 받기
         ARCamera = GameObject.Find("First Person Camera").GetComponent<Camera>();
@@ -91,13 +91,13 @@ public class GuideMgr : MonoBehaviour
         Mascot_samplecollider = transform.Find("SampleMR/MASCOT_MR_sample/root_1").GetComponent<Collider>();
 
         // 하단 ui 오브젝트 받기
-        guideUI = GameObject.Find("DebugCanvas/GuideUI/GuideUIText").GetComponent<Text>();
-        guideBack = GameObject.Find("DebugCanvas/GuideUI");
+        guideUI = GameObject.Find("UICanvas/GuideUI/GuideUIText").GetComponent<Text>();
+        guideBack = GameObject.Find("UICanvas/GuideUI");
 
         guideUI.gameObject.SetActive(false);
         guideBack.gameObject.SetActive(false);
 
-        // 디버깅용 텍스트 찾기 - 디버깅용이므로 주석 처리해둠
+        // 디버깅용 텍스트 찾기 - 
         try{
             //guideInfo = GameObject.Find("DebugCanvas/Guideinfo").GetComponent<Text>(); 
         } catch(Exception e){
@@ -131,6 +131,7 @@ public class GuideMgr : MonoBehaviour
     // 평면 찾아 마스코트 설치
     private IEnumerator Guide_FindPlane(){
         Debug.Log("ARGUIDE_guide : start coroutine : findplane");
+        Guidestatus = "Guide_FindPlane()";
 
         while (!MR_sample.isOnPlane){
             yield return new WaitForSeconds(0.05f);
@@ -176,6 +177,7 @@ public class GuideMgr : MonoBehaviour
     // Coroutine to start guide
     private IEnumerator Guide_Start(){
         Debug.Log("ARGUIDE_guide : start coroutine : guide_start");
+        Guidestatus = "Guide_Start()";
         
         /*
         // Mascot : 대사 작성 시 아래 복붙
@@ -335,9 +337,9 @@ public class GuideMgr : MonoBehaviour
             yield return new WaitForSeconds(0.6f);
 
 
-            //guideInfo.text = "start guide coroutine2";
+        
             nowPointNum = 0;
-            int nowPointNumSaver = 0;
+        
 
             // 0->2 안내 np=0 nps=0
             // 0->2 안내 코루틴 끝날 때 np+2 / np=2 nps=0
@@ -350,8 +352,8 @@ public class GuideMgr : MonoBehaviour
                 {
                     yield return new WaitForSeconds(0.5f);
                 }
-                //guideInfo.text = "np:" + nowPointNum + "/ nps:" + nowPointNumSaver + "/ lp:" + lastPointNum;
                 // nowPointnum은 Guide_Part 코루틴 안에서 바꿔줄 예정
+                Guidestatus = "Guide_Part() : now on" + nowPointNum + "/" + lastPointNum + "routepoint / move to latlon : " + route[i] + ", " + route[i + 1];
                 StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[i], route[i + 1]));
 
             }
@@ -363,7 +365,6 @@ public class GuideMgr : MonoBehaviour
                 yield return new WaitForSeconds(5f);
             }
 
-            //guideInfo.text = "end guiding";
             StartCoroutine(Guide_End());
         }
         
@@ -375,14 +376,10 @@ public class GuideMgr : MonoBehaviour
     // Coroutine to guide each part of route
     private IEnumerator Guide_Part(double sLAT, double sLON, double eLAT, double eLON){
         // start LAT LON , end LAT LON value of part
-        //guideInfo.text = "\nkeep guide";
         yield return new WaitForSeconds(1.0f); 
 
 
         Mascot_anim.SetBool("isMove", true);
-        /*guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
-        guideInfo.text += "\nlat abs : "+Mathf.Abs((float)(GPSMgr.LAT - eLAT));
-        guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));*/
                     
 
         // 마스코트가 while 타겟오브젝트와 충분히 가까이 있지 않은 동안
@@ -390,12 +387,6 @@ public class GuideMgr : MonoBehaviour
         // Lerp회전 하면서 MoveToward한다
         while (  ( Mathf.Abs((float)(GPSMgr.LAT - eLAT)) > minD ) && ( Mathf.Abs((float)(GPSMgr.LON - eLON)) > minD ) ){
             yield return new WaitForSeconds(0.05f);
-            //guideInfo.text = "start guide part "+nowPointNum+"/"+lastPointNum;
-            //guideInfo.text += "\nlat abs : "+Mathf.Abs((float)(GPSMgr.LAT - eLAT));
-            //guideInfo.text += "\nlon abs : "+Mathf.Abs((float)(GPSMgr.LON - eLON));
-            //guideInfo.text += "\n"+(float)GPSMgr.LAT+" - "+eLAT;
-
-            //guideInfo.text = "np:"+nowPointNum+"/ lp:"+lastPointNum;
 
             // 사용자와의 거리 확인
             float dist = Vector3.Distance( ARCamera.transform.position, Mascot_MR.transform.position );
@@ -557,7 +548,8 @@ public class GuideMgr : MonoBehaviour
     // Coroutine to end guide process
     private IEnumerator Guide_End(){
         yield return new WaitForSeconds(0.5f);
-        //guideInfo.text = "end guide and give info about "+GPSMgr.finalDestination;
+        Guidestatus = "Guide_End()";
+
 
         string endSpch = GPSMgr.finalDestination;
         string endInfo = "";
