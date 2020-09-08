@@ -362,7 +362,7 @@ public class GuideMgr : MonoBehaviour
 
             while (nowPointNum != lastPointNum)
             {
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(1f);
             }
 
             StartCoroutine(Guide_End());
