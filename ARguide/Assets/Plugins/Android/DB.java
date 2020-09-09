@@ -314,6 +314,316 @@ public class DB {
             destinationDatabase.execSQL("insert into " + table +
                     "(building, message) values ('Industry-University Cooperation Center ', 'The Industry-Academy Cooperation Center has an industry-academia cooperation group, a laboratory, and a seminar room, and there are about 40 start-up incubators and practice rooms.')");
 
+        }	else if(table.equals("DestinationTable_CH")){
+            Destination nine = new Destination("生命工学馆 61 入口1",61,37.296027, 126.975013);
+            Destination thirteen = new Destination("第2工学馆 26 入口1",26,37.295502, 126.977375);
+            Destination fourteen = new Destination("第1工学馆 23 入口1",23,37.294118, 126.977206);
+            Destination fifteen = new Destination("第1工学馆 22 入口1", 22, 37.29409879, 126.97723441);
+            Destination sixteen = new Destination("第1工学馆 23 入口2", 23, 37.2942313, 126.9764795);
+            Destination seventeen = new Destination("第1工学馆 23 入口3", 23,37.2941511, 126.9762426);
+            Destination eighteen = new Destination("第1工学馆 21 入口1", 21, 37.293762, 126.976144);
+            Destination nineteen = new Destination("第1工学馆 21 入口2", 21,37.293580, 126.976874);
+            Destination twenty = new Destination("第1工学馆 22 入口2", 22, 37.293582, 126.976878);
+            Destination twentyone = new Destination("半导体馆 入口", 40, 37.29173541, 126.97755157);
+            Destination twentytwo = new Destination("化学馆 入口", 33, 37.29173541, 126.97755157);
+            Destination twentythree = new Destination("药学馆 入口", 53, 37.29196334, 126.97662929);
+            Destination twentyfive = new Destination("医学馆 入口", 71, 37.29232035, 126.97337907);
+            Destination thirtyone = new Destination("第1科学馆 31 入口1", 31, 37.294285, 126.975016);
+            Destination thirtytwo = new Destination("第1科学馆 31 入口2", 31, 37.294526, 126.974397);
+            Destination thirtythree = new Destination("第2科学馆 32 入口1", 32, 37.29476503, 126.97466907);
+            Destination thirtyfour = new Destination("第2科学馆 32 入口2", 32, 37.294922, 126.974995);
+            Destination thirtyfive = new Destination("第2科学馆 32 入口3", 32, 37.294751, 126.975431);
+            Destination thirtysix = new Destination("第1科学馆 31 入口3", 31, 37.2947687, 126.9755243);
+            Destination thirtyseven = new Destination("第1工学馆 23 入口4", 23, 37.2944154, 126.9762365);
+            Destination thirtyeight = new Destination("第1工学馆 23 入口5", 23, 37.2942944, 126.9760368);
+            Destination thirtynine = new Destination("第2工学馆 25 入口1", 25, 37.2948579, 126.9765595);
+            Destination fourty = new Destination("第2工学馆 26 入口2", 26, 37.294859, 126.977274);
+            Destination fourtyone = new Destination("第2工学馆 27 入口1", 27, 37.2954567, 126.9766503);
+            Destination fourtytwo = new Destination("第2工学馆 27 入口2", 27, 37.295334, 126.976217);
+            Destination fourtyfour = new Destination("基础学问馆 入口1", 51, 37.2953845, 126.9745237);
+            Destination fourtyfive = new Destination("基础学问馆 入口2", 51, 37.295558, 126.974670);
+            Destination fourtysix = new Destination("基础学问馆 入口3", 51, 37.29550025, 126.9737743);
+            Destination fourtyseven = new Destination("生命工学馆 61 入口2", 61, 37.29570906, 126.97382614);
+
+            //건물번호 없는 건물 및 교문은 건물번호 0번
+            Destination one = new Destination("后门", 0, 37.29636733, 126.97064236);
+            Destination two = new Destination("信馆宿舍 A 入口", 0, 37.296380, 126.972022);
+            Destination three = new Destination("信馆宿舍 B 入口1", 0, 37.296217, 126.972279);
+            Destination four = new Destination("信馆宿舍 B 入口2", 0, 37.296120, 126.972864);
+            Destination five = new Destination("仁馆宿舍 入口", 0, 37.296703, 126.973822);
+            Destination six = new Destination("义馆宿舍 入口", 0, 37.296829, 126.974607);
+            Destination seven = new Destination("礼馆宿舍 入口1", 0, 37.2966323, 126.975143);
+            Destination eight = new Destination("礼馆宿舍 入口2", 0, 37.296475, 126.975491);
+            Destination ten = new Destination("产学合作中心 入口1", 0, 37.295789, 126.975611);
+            Destination eleven = new Destination("产学合作中心 入口2", 0, 37.296107, 126.975762);
+            Destination twelve = new Destination("学校门", 0, 37.296291, 126.976485);
+            Destination twentyfour = new Destination("正门", 0, 37.29084496, 126.97419212);
+            Destination twentysix = new Destination("福祉会馆",0,37.29398199, 126.97265598);
+            Destination twentyseven = new Destination("学生会馆 入口1", 0, 37.29428292, 126.97382114);
+            Destination twentyeight = new Destination("学生会馆 入口2", 0, 37.29369471, 126.9737552);
+            Destination twentynine = new Destination("三星学术信息馆 入口1", 0, 37.293572, 126.974835);
+            Destination thirty = new Destination("三星学术信息馆 入口2", 0, 37.29421496, 126.97501682);
+            Destination fourtythree = new Destination("产学合作中心 入口3", 0, 37.2954208, 126.9759323);
+
+            //ATM은 건물번호 1번
+            Destination ATM1 = new Destination("ATM1", 1, 37.2963872, 126.971013); // 후문쪽 ATM
+            Destination ATM2 = new Destination("ATM2" ,1, 37.29420377, 126.97619748); // 공학관 ATM
+            Destination ATM3 = new Destination("ATM3", 1, 37.29373614, 126.97380615); // 학생회관 ATM
+
+
+            Destination[] buildings = new Destination[47];
+            buildings[0] = one;
+            buildings[1] = two;
+            buildings[2] = three;
+            buildings[3] = four;
+            buildings[4] = five;
+            buildings[5] = six;
+            buildings[6] = seven;
+            buildings[7] = eight;
+            buildings[8] = nine;
+            buildings[9] = ten;
+            buildings[10] = eleven;
+            buildings[11] = twelve;
+            buildings[12] = thirteen;
+            buildings[13] = fourteen;
+            buildings[14] = fifteen;
+            buildings[15] = sixteen;
+            buildings[16] = seventeen;
+            buildings[17] = eighteen;
+            buildings[18] = nineteen;
+            buildings[19] = twenty;
+            buildings[20] = twentyone;
+            buildings[21] = twentytwo;
+            buildings[22] = twentythree;
+            buildings[23] = twentyfour;
+            buildings[24] = twentyfive;
+            buildings[25] = twentysix;
+            buildings[26] = twentyseven;
+            buildings[27] = twentyeight;
+            buildings[28] = twentynine;
+            buildings[29] = thirty;
+            buildings[30] = thirtyone;
+            buildings[31] = thirtytwo;
+            buildings[32] = thirtythree;
+            buildings[33] = thirtyfour;
+            buildings[34] = thirtyfive;
+            buildings[35] = thirtysix;
+            buildings[36] = thirtyseven;
+            buildings[37] = thirtyeight;
+            buildings[38] = thirtynine;
+            buildings[39] = fourty;
+            buildings[40] = fourtyone;
+            buildings[41] = fourtytwo;
+            buildings[42] = fourtythree;
+            buildings[43] = fourtyfour;
+            buildings[44] = fourtyfive;
+            buildings[45] = fourtysix;
+            buildings[46] = fourtyseven;
+
+            Destination[] ATMs = new Destination[3];
+            ATMs[0] = ATM1;
+            ATMs[1] = ATM2;
+            ATMs[2] = ATM3;
+
+            for (int i = 0 ; i < buildings.length ; i++) {
+                destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
+                        + buildings[i].getName() + "', " + buildings[i].getNumber() + ", " + buildings[i].getLatitude() + ", " + buildings[i].getLongitude() + ")");
+            }
+
+            for (int i = 0 ; i < ATMs.length ; i++) {
+                destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
+                        + ATMs[i].getName() + "', " + ATMs[i].getNumber() + ", " +ATMs[i].getLatitude() + ", " + ATMs[i].getLongitude() + ")");
+            }
+
+        } else if (table.equals("EndingMessageTable_CH")){
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('学生会馆 入口 ', '学生大厅是总务处，学生大厅的自助餐厅，各种会所室，成大报纸和新闻类（例如成均时代）的所在地。如果您对俱乐部感兴趣，请访问学生大厅！')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('福祉会馆 ', '福利中心是一个放置各种学校设施的地方，例如教职工食堂，咨询中心，保健中心，邮局，银行等。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1工学馆 21 ', '工程大楼1被分为21至23号建筑物，并被分为“ㄷ”字符。 21号楼设有各种实验室，例如信息和通信/软件/技术管理办公室，行政办公室，CAD实验室以及诸如智能休息室和智能画廊之类的设施。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1工学馆 22 ', '工程大楼1被分为21至23号建筑物，并被分为“ㄷ”字符。 22号楼设有各种研究室，ADIC中心，演示室，设计室，高科技演讲室和研讨室等设施。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1工学馆 23 ', '工程大楼1被分为21至23号建筑物，并被分为“ㄷ”字符。 23号楼设有各种研究设施，教授实验室，校园管理团队和研讨室。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第2工学馆 25 ', '工程大楼2被分为25到27号大楼，并以“ㄷ”的形式连接。 25号楼设有各种实验室，实验室和会议室等设施。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第2工学馆 26 ', '工程大楼2被分为25到27号大楼，并以“ㄷ”的形式连接。 26号楼设有公共工程餐厅，休息室，商店和阅览室等便利设施，以及高科技演讲室和研究室。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第2工学馆 27 ', '工程大楼2被分为25到27号大楼，并以“ㄷ”的形式连接。 27号楼设有工程教育创新中心，成均吉语言学院，空间科学与技术研究中心，初创公司办公室以及各种研讨室，实验室和演讲室。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1科学馆 31 ','1号科学馆是自然科学学院使用的主要空间。它与第一科学馆，第二科学馆，基础科学馆和生物技术馆相连，使您可以在建筑物内自由移动。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1科学馆 32 ', '第2科学馆是自然科学学院主要使用的空间。第一科学馆，基础研究馆和生物技术馆相互连接，因此您可以在建筑物内自由移动。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('化学馆 入口 ', '化学馆是连接药房和半导体馆的综合演讲大楼。它配备了研究所需的最先进的设备，例如高科技教室，实验室，休息室，超级计算机实验室，同位素实验室和细胞培养实验室。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('半导体馆 入口 ', '半导体大厅是连接药房和半导体大厅的综合演讲大楼，配备了最先进的设施，如高科技演讲室，研究室和练习室以及工作站室，数字内容工作室和软件工作室。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('三星学术信息馆 ', '三星学术信息中心拥有近62万本图书，其中约42万本国内图书和20万本国际图书，并且正在充当适合信息社会和基本功能的多功能图书馆。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('基础学问馆 ', '基本的教学楼包括行政空间，例如大学/大学行政办公室，演讲室和研究室。 1号科学馆，2号科学馆和生物技术馆相互连接，因此您可以在建筑物内自由移动。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('生命工学馆 ', '生物技术厅是主要供生物技术学院的学生使用的空间。生物技术大楼连接到第一科学大楼，第二科学大楼和基础科学大楼，因此您可以在大楼内自由移动。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('产学合作中心 ', '产学合作中心设有产学合作中心，研究实验室和研讨室，以及40个孵化室和实习室。')");
+
+        } else if(table.equals("DestinationTable_JP")){
+            Destination nine = new Destination("生命工学館 61, 入口1",61,37.296027, 126.975013);
+            Destination thirteen = new Destination("第2工学館 26, 入口1",26,37.295502, 126.977375);
+            Destination fourteen = new Destination("第1工学館 23, 入口1",23,37.294118, 126.977206);
+            Destination fifteen = new Destination("第1工学館 22, 入口1", 22, 37.29409879, 126.97723441);
+            Destination sixteen = new Destination("第1工学館 23, 入口2", 23, 37.2942313, 126.9764795);
+            Destination seventeen = new Destination("第1工学館 23, 入口3", 23,37.2941511, 126.9762426);
+            Destination eighteen = new Destination("第1工学館 21, 入口1", 21, 37.293762, 126.976144);
+            Destination nineteen = new Destination("第1工学館 21, 入口2", 21,37.293580, 126.976874);
+            Destination twenty = new Destination("第1工学館 22, 入口2", 22, 37.293582, 126.976878);
+            Destination twentyone = new Destination("半導体館 入口", 40, 37.29173541, 126.97755157);
+            Destination twentytwo = new Destination("化学館 入口", 33, 37.29173541, 126.97755157);
+            Destination twentythree = new Destination("薬学管 入口", 53, 37.29196334, 126.97662929);
+            Destination twentyfive = new Destination("医学館 入口", 71, 37.29232035, 126.97337907);
+            Destination thirtyone = new Destination("第1科学館 31 入口1", 31, 37.294285, 126.975016);
+            Destination thirtytwo = new Destination("第1科学館 31 入口2", 31, 37.294526, 126.974397);
+            Destination thirtythree = new Destination("第2科学館 32 入口1", 32, 37.29476503, 126.97466907);
+            Destination thirtyfour = new Destination("第2科学館 32 入口2", 32, 37.294922, 126.974995);
+            Destination thirtyfive = new Destination("第2科学館 32 入口3", 32, 37.294751, 126.975431);
+            Destination thirtysix = new Destination("第1科学館 31 入口3", 31, 37.2947687, 126.9755243);
+            Destination thirtyseven = new Destination("第1工学館 23 入口4", 23, 37.2944154, 126.9762365);
+            Destination thirtyeight = new Destination("第1工学館 23 入口5", 23, 37.2942944, 126.9760368);
+            Destination thirtynine = new Destination("第2工学館 25 入口1", 25, 37.2948579, 126.9765595);
+            Destination fourty = new Destination("第2工学館 26 入口2", 26, 37.294859, 126.977274);
+            Destination fourtyone = new Destination("第2工学館 27 入口1", 27, 37.2954567, 126.9766503);
+            Destination fourtytwo = new Destination("第2工学館 27 入口2", 27, 37.295334, 126.976217);
+            Destination fourtyfour = new Destination("基礎学問管 入口1", 51, 37.2953845, 126.9745237);
+            Destination fourtyfive = new Destination("基礎学問管 入口2", 51, 37.295558, 126.974670);
+            Destination fourtysix = new Destination("基礎学問管 入口3", 51, 37.29550025, 126.9737743);
+            Destination fourtyseven = new Destination("生命工学館 61 入口2", 61, 37.29570906, 126.97382614);
+
+            //건물번호 없는 건물 및 교문은 건물번호 0번
+            Destination one = new Destination("後門", 0, 37.29636733, 126.97064236);
+            Destination two = new Destination("信館(寮) A 入口", 0, 37.296380, 126.972022);
+            Destination three = new Destination("信館(寮) B 入口1", 0, 37.296217, 126.972279);
+            Destination four = new Destination("信館(寮) B 入口2", 0, 37.296120, 126.972864);
+            Destination five = new Destination("仁館(寮) 入口", 0, 37.296703, 126.973822);
+            Destination six = new Destination("義館(寮) 入口", 0, 37.296829, 126.974607);
+            Destination seven = new Destination("禮館(寮) 入口1", 0, 37.2966323, 126.975143);
+            Destination eight = new Destination("禮館(寮) 入口2", 0, 37.296475, 126.975491);
+            Destination ten = new Destination("産学協力センター 入口1", 0, 37.295789, 126.975611);
+            Destination eleven = new Destination("産学協力センター 入口2", 0, 37.296107, 126.975762);
+            Destination twelve = new Destination("教門", 0, 37.296291, 126.976485);
+            Destination twentyfour = new Destination("正門", 0, 37.29084496, 126.97419212);
+            Destination twentysix = new Destination("福祉会館",0,37.29398199, 126.97265598);
+            Destination twentyseven = new Destination("学生会館 入口1", 0, 37.29428292, 126.97382114);
+            Destination twentyeight = new Destination("学生会館 入口2", 0, 37.29369471, 126.9737552);
+            Destination twentynine = new Destination("Samsung 学術情報館 入口1", 0, 37.293572, 126.974835);
+            Destination thirty = new Destination("Samsung 学術情報館 入口2", 0, 37.29421496, 126.97501682);
+            Destination fourtythree = new Destination("産学協力センター 入口3", 0, 37.2954208, 126.9759323);
+
+            //ATM은 건물번호 1번
+            Destination ATM1 = new Destination("ATM1", 1, 37.2963872, 126.971013); // 후문쪽 ATM
+            Destination ATM2 = new Destination("ATM2" ,1, 37.29420377, 126.97619748); // 공학관 ATM
+            Destination ATM3 = new Destination("ATM3", 1, 37.29373614, 126.97380615); // 학생회관 ATM
+
+
+            Destination[] buildings = new Destination[47];
+            buildings[0] = one;
+            buildings[1] = two;
+            buildings[2] = three;
+            buildings[3] = four;
+            buildings[4] = five;
+            buildings[5] = six;
+            buildings[6] = seven;
+            buildings[7] = eight;
+            buildings[8] = nine;
+            buildings[9] = ten;
+            buildings[10] = eleven;
+            buildings[11] = twelve;
+            buildings[12] = thirteen;
+            buildings[13] = fourteen;
+            buildings[14] = fifteen;
+            buildings[15] = sixteen;
+            buildings[16] = seventeen;
+            buildings[17] = eighteen;
+            buildings[18] = nineteen;
+            buildings[19] = twenty;
+            buildings[20] = twentyone;
+            buildings[21] = twentytwo;
+            buildings[22] = twentythree;
+            buildings[23] = twentyfour;
+            buildings[24] = twentyfive;
+            buildings[25] = twentysix;
+            buildings[26] = twentyseven;
+            buildings[27] = twentyeight;
+            buildings[28] = twentynine;
+            buildings[29] = thirty;
+            buildings[30] = thirtyone;
+            buildings[31] = thirtytwo;
+            buildings[32] = thirtythree;
+            buildings[33] = thirtyfour;
+            buildings[34] = thirtyfive;
+            buildings[35] = thirtysix;
+            buildings[36] = thirtyseven;
+            buildings[37] = thirtyeight;
+            buildings[38] = thirtynine;
+            buildings[39] = fourty;
+            buildings[40] = fourtyone;
+            buildings[41] = fourtytwo;
+            buildings[42] = fourtythree;
+            buildings[43] = fourtyfour;
+            buildings[44] = fourtyfive;
+            buildings[45] = fourtysix;
+            buildings[46] = fourtyseven;
+
+            Destination[] ATMs = new Destination[3];
+            ATMs[0] = ATM1;
+            ATMs[1] = ATM2;
+            ATMs[2] = ATM3;
+
+            for (int i = 0 ; i < buildings.length ; i++) {
+                destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
+                        + buildings[i].getName() + "', " + buildings[i].getNumber() + ", " + buildings[i].getLatitude() + ", " + buildings[i].getLongitude() + ")");
+            }
+
+            for (int i = 0 ; i < ATMs.length ; i++) {
+                destinationDatabase.execSQL("insert into " + table + "(name, number, latitude, longitude) values ('"
+                        + ATMs[i].getName() + "', " + ATMs[i].getNumber() + ", " +ATMs[i].getLatitude() + ", " + ATMs[i].getLongitude() + ")");
+            }
+
+        } else if (table.equals("EndingMessageTable_JP")){
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('学生会館 ', '学生会館は総合行政室、 学生会館食堂、あらゆるサークル部屋と大学新聞社、成均 Timesの メディア部がある場所です。もしサークルに興味があるなら、学生会館に入ってみてね！')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('福祉会館 ', '福祉会館は教職員食堂、カウンセリングセンター、健康センター、郵便局、銀行、などのあらゆる校内設備がある場所です。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1工学館 21 ', '第1工学館は21棟から23棟までに分けられ、「コ」の字型に区分されています。 21棟には情報通信/ソフトウェア/工科大学行政室をはじめとする行政室 、CAD研究室など、様々な研究室とスマートラウンジ、スマートギャラリーのような施設を備えています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1工学館 22 ', '第1工学館は21棟から23棟までに分けられ、「コ」の字型に区分されています。 21棟には情報通信/ソフトウェア/工科大学行政室をはじめとする行政室 、CAD研究室など、様々な研究室とスマートラウンジ、スマートギャラリーのような施設を備えています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1工学館 23 ', '第1工学館は21棟から23棟までに分けられ、「コ」の字型に区分されています。 21棟には情報通信/ソフトウェア/工科大学行政室をはじめとする行政室 、CAD研究室など、様々な研究室とスマートラウンジ、スマートギャラリーのような施設を備えています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第2工学館 25 ', '第2工学館は25棟から27棟までに分けられ「コ」字型に繋がっています。 25棟には、様々な研究室や 実験室、会議室などの施設を備えています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第2工学館 26 ', '第2工学館は25棟から27棟までに分けられ「コ」字型に繋がっています。26棟には工科大学の食堂をはじめとする休憩室と売店、閲覧室などの設備と先端講義室、研究スペースがあります。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第2工学館 27 ', '第2工学館は25棟から27棟までに分けられ「コ」字型に繋がっています。27棟には工学教育革新センターと成均語学院、宇宙科学技術研究所、創業企業のオフィスなどが位置し、様々なセミナー室、研究室、講義室を備えています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第1科学館 31 ','第1科学館は自然科学大学が主に使用されるスペースです。第1科学館から第2科学館、基礎学問管、生命工学館まで、建物内で自由に移動することができます。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('第2科学館 32 ', '第2科学館は自然科学大学が主に使用されるスペースです。第1科学館と基礎学問管、生命工学館が一つに繋がっていて、建物内で自由に移動することができます。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('化学管 ', '化学管は薬学管と半導体管をつなぐ総合講義棟です。ここでは、先端の教室や研究室、ラウンジなどの空間とスーパーコンピューター室、同位体研究所、細胞培養室などの研究に必要な最新式の設備を備えています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('半導体管 ', '半導体管は薬学管と半導体管をつなぐ総合講義棟で、先端教室と研究室と研究室などの学業や研究スペースとワークステーション室、デジタルコンテンツスタジオ、SWスタジオなどの最新設備を備えています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('Samsung 学術情報館 ', 'Samsung 学術情報館は、国内の本が約42万冊、国外の本が約20万冊で62万冊に近い本を所蔵しており、基本的な図書館の機能だけでなく、情報化社会にふさわしい多機能図書館の役割を果たしています。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('基礎学問管 ', '基礎学問管は学部/師範大学行政室などの行政空間と教室、研究室などがあります。第1科学館と第2科学館、生命工学館が一つに繋がっていて 、建物内で自由に移動することができます。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('生命工学館 ', '生命工学館は、バイオテクノロジーの大学の学生が主に利用する空間です。生命工学館は、第1科学館と、第2科学館、基礎学問管が一つに繋がっていて、建物内で自由に移動することができます。')");
+            destinationDatabase.execSQL("insert into " + table +
+                    "(building, message) values ('産学協力センター ', '産学協力センターは、産学協力団と研究室、セミナー室があり、40以上の創業保育企業と実習室などがあります。')");
+
         }
     }
 }

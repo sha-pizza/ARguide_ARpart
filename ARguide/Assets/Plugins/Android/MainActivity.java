@@ -105,13 +105,13 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
         }
         else if (lang.equals("zh")) {
             language = Language.CHINESE;
-            table_name = "DestinationTable_EN"; // 이후에 중국어 지원되면 수정
-            message_table_name = "EndingMessageTable_EN";
+            table_name = "DestinationTable_CH"; // 이후에 중국어 지원되면 수정
+            message_table_name = "EndingMessageTable_CH";
         }
         else if (lang.equals("ja")) {
             language = Language.JAPANESE;
-            table_name = "DestinationTable_EN"; // 이후에 일본어 지원되면 수정
-            message_table_name = "EndingMessageTable_EN";
+            table_name = "DestinationTable_JP"; // 이후에 일본어 지원되면 수정
+            message_table_name = "EndingMessageTable_JP";
         }
         else {
             language = Language.OTHERS;
@@ -294,7 +294,13 @@ public class MainActivity extends UnityPlayerActivity /*implements AutoPermissio
     public String getLanguage(){
         if(language == Language.KOREAN){
             return "korean";
-        }else{
+        }
+      if(language == Language.CHINESE){
+            return "chinese";
+        }
+       if(language == Language.JAPANESE){
+            return "japanese";
+        }  else{
             return "english";
         }
 

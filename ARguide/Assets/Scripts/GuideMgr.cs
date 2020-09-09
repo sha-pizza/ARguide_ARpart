@@ -198,6 +198,12 @@ public class GuideMgr : MonoBehaviour
         if (language == "korean")
         {
             spchText.text = "안녕!\n안내를 시작하려면\n말풍선을 눌러줘!";
+        } else if (language == "chinese")
+        {
+            spchText.text = "你好!\n 点按气泡以开始指导";
+        } else if (language == "japanese")
+        {
+            spchText.text = "おはよう！\n　案内を始めるために\nフキダシを押して";
         }
         else {
             spchText.text = "Hello!\nTo start the guide\nTap the message!";
@@ -233,6 +239,14 @@ public class GuideMgr : MonoBehaviour
                 {
                     spchText.text = "학교와 너무 멀리\n떨어져 있어서\n가이드를\n진행할 수 없어 !\n다시 시도해 줘 !";
                 }
+                else if (language == "chinese")
+                {
+                    spchText.text = "Because it is\ntoo far from \nUniversity,\nWe can't guide !\nTry Again !";
+                }
+                else if (language == "japanese")
+                {
+                    spchText.text = "Because it is\ntoo far from \nUniversity,\nWe can't guide !\nTry Again !";
+                }
                 else
                 {
                     spchText.text = "Because it is\ntoo far from \nUniversity,\nWe can't guide !\nTry Again !";
@@ -245,9 +259,17 @@ public class GuideMgr : MonoBehaviour
                 {
                     spchText.text = "위치 정보가\n업데이트 되지 않아\n가이드를\n진행할 수 없어 !\n건물 밖에서\n다시 시도해 줘 !";
                 }
+                else if (language == "chinese")
+                {
+                    spchText.text = "Because Location info\nis not updated,\nTry again Outside of buliding!";
+                }
+                else if (language == "japanese")
+                {
+                    spchText.text = "Because Location info\nis not updated,\nTry again Outside of buliding!";
+                }
                 else
                 {
-                    spchText.text = "Because Location info!\nis not updated,\nTry again Outside of buliding!";
+                    spchText.text = "Because Location info\nis not updated,\nTry again Outside of buliding!";
                 }
                 
             }
@@ -265,6 +287,14 @@ public class GuideMgr : MonoBehaviour
             if (language == "korean")
             {
                 guideUI.text = "곧 메인화면으로 돌아갑니다.";
+            }
+            else if (language == "chinese")
+            {
+                guideUI.text = "Back main page soon.";
+            }
+            else if (language == "japanese")
+            {
+                guideUI.text = "Back main page soon.";
             }
             else
             {
@@ -289,6 +319,14 @@ public class GuideMgr : MonoBehaviour
             {
                 spchText.text = "좋아,출발해보자!";
             }
+            else if (language == "chinese")
+            {
+                spchText.text = "好吧走吧";
+            }
+            else if (language == "japanese")
+            {
+                spchText.text = "よし、出発！";
+            }
             else
             {
                 spchText.text = "Okay, Let's go!";
@@ -304,6 +342,14 @@ public class GuideMgr : MonoBehaviour
             if (language == "korean")
             {
                 spchText.text = "너무 멀어지면\n종료될 수도 있으니까\n조심해야해!";
+            }
+            else if (language == "chinese")
+            {
+                spchText.text = "小心，\n因为如果距离太远，\n它可能会结束！";
+            }
+            else if (language == "japanese")
+            {
+                spchText.text = "私と離れたら\n案内が終わるかもしれないから\n気お付けてね！";
             }
             else
             {
@@ -323,6 +369,14 @@ public class GuideMgr : MonoBehaviour
             if (language == "korean")
             {
                 spchText.text = "어디보자...";
+            }
+            else if (language == "chinese")
+            {
+                spchText.text = "让我们来看看...";
+            }
+            else if (language == "japanese")
+            {
+                spchText.text = "どれどれ…";
             }
             else
             {
@@ -401,6 +455,14 @@ public class GuideMgr : MonoBehaviour
                 {
                     guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n곧 서비스가 종료됩니다.";
                 }
+                else if (language == "chinese")
+                {
+                    guideUI.text = "It is too far \nfrom mascot!\nService will quit.";
+                }
+                else if (language == "japanese")
+                {
+                    guideUI.text = "It is too far \nfrom mascot!\nService will quit.";
+                }
                 else
                 {
                     guideUI.text = "It is too far \nfrom mascot!\nService will quit.";
@@ -415,6 +477,14 @@ public class GuideMgr : MonoBehaviour
                     if (language == "korean")
                     {
                         guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n" + i + "초후 서비스가 종료됩니다.";
+                    }
+                    else if (language == "chinese")
+                    {
+                        guideUI.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
+                    }
+                    else if (language == "japanese")
+                    {
+                        guideUI.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
                     }
                     else
                     {
@@ -434,6 +504,14 @@ public class GuideMgr : MonoBehaviour
                 if (language == "korean")
                 {
                     guideUI.text = "마스코트 캐릭터\n가까이로 이동해 주세요.\n더 멀어질 경우\n서비스가 종료될 수 있습니다.";
+                }
+                else if (language == "chinese")
+                {
+                    guideUI.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
+                }
+                else if (language == "japanese")
+                {
+                    guideUI.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
                 }
                 else
                 {
@@ -466,6 +544,14 @@ public class GuideMgr : MonoBehaviour
                     if (language == "korean")
                     {
                         spchText.text = "얼른와 !";
+                    }
+                    else if (language == "chinese")
+                    {
+                        spchText.text = "来吧！";
+                    }
+                    else if (language == "japanese")
+                    {
+                        spchText.text = "速くついてきて!";
                     }
                     else
                     {
@@ -577,6 +663,14 @@ public class GuideMgr : MonoBehaviour
         {
             spchText.text = endSpch + "에 도착했어!";
         }
+        else if (language == "chinese")
+        {
+            spchText.text = "您已经到达" + endSpch;
+        }
+        else if (language == "japanese")
+        {
+            spchText.text = endSpch + "に到着したよ！";
+        }
         else
         {
             spchText.text = "We arrived to " + endSpch;
@@ -594,6 +688,14 @@ public class GuideMgr : MonoBehaviour
         {
             spchText.text = "이 장소에 대한 설명은 \n아래 ui를 참고해 줘 !";
         }
+        else if (language == "chinese")
+        {
+            spchText.text = "To know explanation of here \nSee below UI !";
+        }
+        else if (language == "japanese")
+        {
+            spchText.text = "To know explanation of here \nSee below UI !";
+        }
         else
         {
             spchText.text = "To know explanation of here \nSee below UI !";
@@ -610,6 +712,14 @@ public class GuideMgr : MonoBehaviour
             if (language == "korean")
             {
                 guideUI.text = endInfo + "\n" + i + "초후 안내를 종료합니다.";
+            }
+            else if (language == "chinese")
+            {
+                guideUI.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
+            }
+            else if (language == "japanese")
+            {
+                guideUI.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
             }
             else
             {
