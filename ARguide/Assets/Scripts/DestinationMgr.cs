@@ -13,6 +13,8 @@ public class DestinationMgr : MonoBehaviour
 
     private Transform ARCameraTransform;     // AR 카메라의 transform 컴포넌트
 
+    public static bool didEnableDestinObj = false;
+
     //private Text camtext;
     public int Bumper = 12;
 
@@ -26,22 +28,34 @@ public class DestinationMgr : MonoBehaviour
         
 
 
-        IEnumerator destinM = destinationMover();
-        StartCoroutine(destinM);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        // guideMgr 시작된 후 시작
+        if (GPSMgr.didFoundRoute && GuideMgr.didGuideStart && !didEnableDestinObj){    
+            didEnableDestinObj = true;
+            Debug.Log("ARGUIDE_destin : enable destinmover");
+            IEnumerator destinM = destinationMover();
+            StartCoroutine(destinM);
+        }
         
     }
 
     private IEnumerator destinationMover(){
+        // wait for guideMgr set itself
+        yield return new WaitForSeconds(2f);
+
+        Debug.Log("ARGUIDE_destin : destinmover corout start");
         while (true){
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.1f);
+
             //destinationMgr 오브젝트가 북쪽을 바라보도록 수정
             transform.position = new Vector3(ARCameraTransform.position.x, 0, ARCameraTransform.position.z);
             transform.rotation = Quaternion.Euler(0, GPSMgr.Heading, 0);
+
             //현재 파트의 목표지점으로 destination 오브젝트 이동
             double targetLAT = GuideMgr.route[GuideMgr.nowPointNum] - (float)GPSMgr.LAT;
             double targetLON = GuideMgr.route[(GuideMgr.nowPointNum)+1] - (float)GPSMgr.LON;
@@ -63,5 +77,6 @@ public class DestinationMgr : MonoBehaviour
             */
             
         }
+        
     }
 }

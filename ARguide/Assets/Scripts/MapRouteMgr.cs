@@ -103,12 +103,12 @@ public class MapRouteMgr : MonoBehaviour
 
     // 경로의 각 노드 포인트 찍기 (연산된 lat, 연산된 lon, 설치할 게임오브젝트)
     public void setRoutePoint(double c_lat, double c_lon, GameObject obj){
-        Debug.Log("ARGUIDE_maproute : setRoutePoint - calculedP("+c_lat+","+c_lon+") - "+obj);
+        //Debug.Log("ARGUIDE_maproute : setRoutePoint - calculedP("+c_lat+","+c_lon+") - "+obj);
 
         // 원래의 위도경도 테스트출력
         float realLat = (float)(c_lat/100000+37.298);
         float realLon = (float)(c_lon/100000+126.968);
-        Debug.Log("ARGUIDE_maproute : setRoutePoint - realP("+realLat+","+realLon+")");
+        //Debug.Log("ARGUIDE_maproute : setRoutePoint - realP("+realLat+","+realLon+")");
         
         // 오브젝트 생성하고 route 게임오브젝트 자식으로 설정
         GameObject newpoint = Instantiate(obj, new Vector3(0,0,0), Quaternion.identity);

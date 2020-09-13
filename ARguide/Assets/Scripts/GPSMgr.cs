@@ -296,7 +296,8 @@ public class GPSMgr : MonoBehaviour
         
         Debug.Log("ARGUIDE_gps : routelen : "+route.Length);
         Debug.Log("ARGUIDE_gps : findestin : "+finalDestination);
-        Debug.Log("ARGUIDE_gps : route0 : "+route[0]);
+        Debug.Log("ARGUIDE_gps : route_start : "+route[0]+","+route[1]);
+        Debug.Log("ARGUIDE_gps : route_end : "+route[route.Length-2]+","+route[route.Length-1]);
         
         // 입력 없음 경로 없음 : 아무것도 하지 말기
         // 입력 있음 경로 40 이상 : 너무 먼 것 같으니 목적지만 표시
@@ -316,6 +317,7 @@ public class GPSMgr : MonoBehaviour
             RouteMaker.drawDestin(lastlat, lastlon);
 
         } else {
+            Debug.Log("ARGUIDE_gps : drawroute : start draw from "+route[0]+","+route[1]+" to "+route[route.Length-2]+","+route[route.Length-1]);
             RouteMaker.drawRoute(route); // 실제 루트 그리기
         }
 
@@ -338,20 +340,24 @@ public class GPSMgr : MonoBehaviour
         // route 전처리
 
         // route 길이 찾기
+        /*
         int routeLen = 0;
         for (int i = 0 ; i < routeTmp.Length ; i++){
             Debug.Log("!!route!! : " + routeTmp[i]);
             routeLen = i;
             
         }
-        route = new double[routeLen];
+        */
+        route = new double[routeTmp.Length];
+        Debug.Log("ARGUIDE_gps : getroute : routelength :"+route.Length);
 
         // route 옮기기
-        for (int i = 0 ; i < routeLen ; i++ ){
+        for (int i = 0 ; i < routeTmp.Length ; i++ ){
             route[i] = routeTmp[i];
         }
 
         Debug.Log("ARGUIDE_gps : getroute : success to get route");
+        Debug.Log("ARGUIDE_gps : getroute : get route from "+route[0]+","+route[1]+" to "+route[route.Length-2]+","+route[route.Length-1]);
 
     
 

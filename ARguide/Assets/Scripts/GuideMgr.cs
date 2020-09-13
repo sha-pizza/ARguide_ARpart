@@ -21,7 +21,7 @@ public class GuideMgr : MonoBehaviour
     int lastPointNum;                   // 마지막 좌표! 전체 좌표들의 개수와도 같다
     
     [Header ("안내 관련 값")]
-    private double minD = 0.000100;              // 목표 좌표의 +=minD 거리에 도달하면 도착한것으로!
+    private double minD = 0.0001;              // 목표 좌표의 +=minD 거리에 도달하면 도착한것으로!
 
     public double dist_wait = 2.4;             // 마스코트가 유저와 이만큼 떨어져 있을 경우 기다림
     public double dist_warning = 7.0;          // 마스코트가 유저와 이만큼 떨어져 있을 경우 종료 방지 위해 안내
@@ -37,7 +37,7 @@ public class GuideMgr : MonoBehaviour
     private Camera ARCamera;                // AR 카메라
     private Transform ARCameraTransform;     // AR 카메라의 transform 컴포넌트
 
-    private bool didGuideStart = false;
+    public static bool didGuideStart = false;
 
     [Header("명륜이 프리팹")]
     [SerializeField] public GameObject Mascot_MRPrefab;
@@ -116,10 +116,12 @@ public class GuideMgr : MonoBehaviour
             didGuideStart = true;
         
             // 경로 가져오기
-            route = GPSMgr.route;
+            route = GPSMgr.route;            
 
             // 전체 좌표 수 계산
             lastPointNum = route.Length;
+            Debug.Log("ARGUIDE_guide : route length is ... "+lastPointNum);
+            Debug.Log("ARGUIDE_guide : route is ~ from "+route[0]+","+route[1]+" to "+route[route.Length-2]+","+route[route.Length-1]);
 
             // 가이드 코루틴 시작 (바닥면 찾기부터!)
             IEnumerator guide_findplane = Guide_FindPlane();
@@ -407,7 +409,7 @@ public class GuideMgr : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                 }
                 // nowPointnum은 Guide_Part 코루틴 안에서 바꿔줄 예정
-                Guidestatus = "Guide_Part() : now on" + nowPointNum + "/" + lastPointNum + "routepoint / move to latlon : " + route[i] + ", " + route[i + 1];
+                Guidestatus = "Guide_Part() : now on" + nowPointNum + " / " + lastPointNum + "routepoint \nMove to latlon : " + route[i] + ", " + route[i + 1];
                 StartCoroutine(Guide_Part(GPSMgr.LAT, GPSMgr.LON, route[i], route[i + 1]));
 
             }
@@ -439,7 +441,7 @@ public class GuideMgr : MonoBehaviour
         // 마스코트가 while 타겟오브젝트와 충분히 가까이 있지 않은 동안
         // DestinationMgr 의 Destination 오브젝트를 향해
         // Lerp회전 하면서 MoveToward한다
-        while (  ( Mathf.Abs((float)(GPSMgr.LAT - eLAT)) > minD ) && ( Mathf.Abs((float)(GPSMgr.LON - eLON)) > minD ) ){
+        while (  ( Mathf.Abs((float)(GPSMgr.LAT - eLAT)) > minD ) || ( Mathf.Abs((float)(GPSMgr.LON - eLON)) > minD ) ){
             yield return new WaitForSeconds(0.05f);
 
             // 사용자와의 거리 확인
