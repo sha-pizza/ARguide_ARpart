@@ -33,7 +33,6 @@ public class GuideMgr : MonoBehaviour
 
 
 
-
     private Camera ARCamera;                // AR 카메라
     private Transform ARCameraTransform;     // AR 카메라의 transform 컴포넌트
 
@@ -143,6 +142,8 @@ public class GuideMgr : MonoBehaviour
                                                         ARCameraTransform.position, 0.3f);            
         }
 
+        
+
         Debug.Log("ARGUIDE_guide : instantiate mascot object");
 
         // 마스코트 생성후 방향설정
@@ -197,6 +198,10 @@ public class GuideMgr : MonoBehaviour
 
         language = GameObject.Find("GPSMgr").GetComponent<GPSMgr>().Language_Update();
 
+        //AudioMgr.playSound(AudioMgr.music, AudioMgr.musicPlayer);
+        //AudioMgr.playSound1();
+
+        playSound(0);
         if (language == "korean")
         {
             spchText.text = "안녕!\n안내를 시작하려면\n말풍선을 눌러줘!";
@@ -313,10 +318,10 @@ public class GuideMgr : MonoBehaviour
         } else
         {
             // 기존 정상작동 코드
-        
 
 
-            
+
+            playSound(1);
             if (language == "korean")
             {
                 spchText.text = "좋아,출발해보자!";
@@ -340,7 +345,7 @@ public class GuideMgr : MonoBehaviour
             Invoke("spchBubbleFadeout", 0f);
             yield return new WaitForSeconds(0.6f); // between active false-true
 
-
+            playSound(2);
             if (language == "korean")
             {
                 spchText.text = "너무 멀어지면\n종료될 수도 있으니까\n조심해야해!";
@@ -367,7 +372,7 @@ public class GuideMgr : MonoBehaviour
 
             Mascot_anim.SetBool("isStartGuide", true);
 
-
+            playSound(3);
             if (language == "korean")
             {
                 spchText.text = "어디보자...";
@@ -543,6 +548,7 @@ public class GuideMgr : MonoBehaviour
                     var rotation = Quaternion.LookRotation(lookpos);
                     Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f);
 
+                    playSound(4);
                     if (language == "korean")
                     {
                         spchText.text = "얼른와 !";
@@ -685,7 +691,7 @@ public class GuideMgr : MonoBehaviour
         Invoke("spchBubbleFadeout", 0f);
         yield return new WaitForSeconds (0.4f);
 
-
+        playSound(5);
         if (language == "korean")
         {
             spchText.text = "이 장소에 대한 설명은 \n아래 ui를 참고해 줘 !";
@@ -832,7 +838,10 @@ public class GuideMgr : MonoBehaviour
         spchBubble.gameObject.SetActive(true);
     }
 
-    
+    void playSound(int audioIndex)
+    {
+        GameObject.Find("Audio Source").GetComponent<AudioMgr>().playSound(audioIndex);
+    }
 
 
 
