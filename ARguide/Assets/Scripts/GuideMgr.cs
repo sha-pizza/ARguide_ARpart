@@ -74,6 +74,9 @@ public class GuideMgr : MonoBehaviour
     private const double DISTANCE_LIMIT = 0.75; // 베타버전 원거리 허용
 
 
+    // 0928 명륜이 기다릴 때 얼른와가 반복해서 나오는 버그 수정하기 위하여 추가 
+    private bool didComeQuickSoundPlayed = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -548,7 +551,11 @@ public class GuideMgr : MonoBehaviour
                     var rotation = Quaternion.LookRotation(lookpos);
                     Mascot_MR.transform.rotation = Quaternion.Lerp(Mascot_MR.transform.rotation, rotation, 0.3f);
 
-                    playSound(4);
+                    if (!didComeQuickSoundPlayed)
+                    {
+                        playSound(4);
+                        didComeQuickSoundPlayed = true;
+                    }
                     if (language == "korean")
                     {
                         spchText.text = "얼른와 !";
@@ -630,7 +637,9 @@ public class GuideMgr : MonoBehaviour
                 Mascot_MR.transform.position = Vector3.MoveTowards (Mascot_MR.transform.position, 
                                                                     DestinationMgr.destination.position,
                                                                     Mascot_walkSpeed * Time.deltaTime);
-                
+
+                // 0928 명륜이 기다릴 때 얼른와가 반복해서 나오는 버그 수정하기 위하여 추가
+                didComeQuickSoundPlayed = false;
             }   
 
         }
