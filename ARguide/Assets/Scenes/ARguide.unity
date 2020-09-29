@@ -3628,7 +3628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Nothing: {fileID: 0}
-  dist_wait: 2.4000000953674316
+  dist_wait: 3.2
   dist_warning: 8
   dist_disable: 10
   Mascot_MRPrefab: {fileID: 3714055763462171053, guid: 3f5de1ee3ad1457468177d1c334bef66,
