@@ -210,7 +210,7 @@ public class GuideMgr : MonoBehaviour
             spchText.text = "안녕!\n안내를 시작하려면\n말풍선을 눌러줘!";
         } else if (language == "chinese")
         {
-            spchText.text = "你好!\n 点按气泡以开始指导";
+            spchText.text = "你好!\n 点击话泡泡开始指导";
         } else if (language == "japanese")
         {
             spchText.text = "おはよう！\n　案内を始めるために\nフキダシを押して";
@@ -355,7 +355,7 @@ public class GuideMgr : MonoBehaviour
             }
             else if (language == "chinese")
             {
-                spchText.text = "小心，\n因为如果距离太远，\n它可能会结束！";
+                spchText.text = "小心，\n如果距离太远，\n导航会结束！";
             }
             else if (language == "japanese")
             {
@@ -382,7 +382,7 @@ public class GuideMgr : MonoBehaviour
             }
             else if (language == "chinese")
             {
-                spchText.text = "让我们来看看...";
+                spchText.text = "我来看看...";
             }
             else if (language == "japanese")
             {
@@ -562,7 +562,7 @@ public class GuideMgr : MonoBehaviour
                     }
                     else if (language == "chinese")
                     {
-                        spchText.text = "来吧！";
+                        spchText.text = "快来吧！";
                     }
                     else if (language == "japanese")
                     {
@@ -707,7 +707,7 @@ public class GuideMgr : MonoBehaviour
         }
         else if (language == "chinese")
         {
-            spchText.text = "To know explanation of here \nSee below UI !";
+            spchText.text = "以获取有关此地点的说明 \n请参考下面的用户界面！";
         }
         else if (language == "japanese")
         {

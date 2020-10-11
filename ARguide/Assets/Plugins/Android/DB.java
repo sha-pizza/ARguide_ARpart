@@ -437,37 +437,37 @@ public class DB {
 
         } else if (table.equals("EndingMessageTable_CH")){
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('学生会馆 入口 ', '学生大厅是总务处，学生大厅的自助餐厅，各种会所室，成大报纸和新闻类（例如成均时代）的所在地。如果您对俱乐部感兴趣，请访问学生大厅！')");
+                    "(building, message) values ('学生会馆 入口 ', '综合行政室、学生食堂、社团空间、成大新闻等位于学生会馆里。如果您对参加社团感兴趣，可以试试进去看！')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('福祉会馆 ', '福利中心是一个放置各种学校设施的地方，例如教职工食堂，咨询中心，保健中心，邮局，银行等。')");
+                    "(building, message) values ('福祉会馆 ', '教职工食堂、心理辅导中心、保健中心、邮局、银行等各种设施位于福祉会馆。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第1工学馆 21 ', '工程大楼1被分为21至23号建筑物，并被分为“ㄷ”字符。 21号楼设有各种实验室，例如信息和通信/软件/技术管理办公室，行政办公室，CAD实验室以及诸如智能休息室和智能画廊之类的设施。')");
+                    "(building, message) values ('第1工学馆 21 ', '第1工学馆被分为21号栋至23号栋， 具有像韩文“ㄷ”字母的构造。21号栋设有信息和通信/软件/技术管理办公室、CAD实验室、各种实验室、智能休息室和智能画廊之类的设施。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第1工学馆 22 ', '工程大楼1被分为21至23号建筑物，并被分为“ㄷ”字符。 22号楼设有各种研究室，ADIC中心，演示室，设计室，高科技演讲室和研讨室等设施。')");
+                    "(building, message) values ('第1工学馆 22 ', '第1工学馆被分为21号栋至23号栋， 具有像韩文“ㄷ”字母的构造。22号栋设有各种研究室、ADIC中心、演示室、设计室、高科技演讲室和研讨室等设施。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第1工学馆 23 ', '工程大楼1被分为21至23号建筑物，并被分为“ㄷ”字符。 23号楼设有各种研究设施，教授实验室，校园管理团队和研讨室。')");
+                    "(building, message) values ('第1工学馆 23 ', '第1工学馆被分为21号栋至23号栋， 具有像韩文“ㄷ”字母的构造。23号栋设有各种研究设施、教授实验室、校园管理团队和研讨室。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第2工学馆 25 ', '工程大楼2被分为25到27号大楼，并以“ㄷ”的形式连接。 25号楼设有各种实验室，实验室和会议室等设施。')");
+                    "(building, message) values ('第2工学馆 25 ', '第2工学馆被分为25号栋至27号栋， 具有像韩文“ㄷ”字母的构造。25号栋设有各种实验室、实验室和会议室等设施。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第2工学馆 26 ', '工程大楼2被分为25到27号大楼，并以“ㄷ”的形式连接。 26号楼设有公共工程餐厅，休息室，商店和阅览室等便利设施，以及高科技演讲室和研究室。')");
+                    "(building, message) values ('第2工学馆 26 ', '第2工学馆被分为25号栋至27号栋， 具有像韩文“ㄷ”字母的构造。26号栋设有学生食堂、休息室、商店和阅览室等便利设施，以及高科技演讲室和研究室。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第2工学馆 27 ', '工程大楼2被分为25到27号大楼，并以“ㄷ”的形式连接。 27号楼设有工程教育创新中心，成均吉语言学院，空间科学与技术研究中心，初创公司办公室以及各种研讨室，实验室和演讲室。')");
+                    "(building, message) values ('第2工学馆 27 ', '第2工学馆被分为25号栋至27号栋， 具有像韩文“ㄷ”字母的构造。27号栋设有工程教育创新中心，成均语学院，宇宙科学与技术研究中心，初创公司办公室以及各种研讨室，实验室和演讲室。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第1科学馆 31 ','1号科学馆是自然科学学院使用的主要空间。它与第一科学馆，第二科学馆，基础科学馆和生物技术馆相连，使您可以在建筑物内自由移动。')");
+                    "(building, message) values ('第1科学馆 31 ','第1科学馆是自然科学学院使用的主要空间。第1科学馆，第2科学馆，基础学问馆和生命科学馆都连接在一起， 可以在建筑物内自由移动。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('第1科学馆 32 ', '第2科学馆是自然科学学院主要使用的空间。第一科学馆，基础研究馆和生物技术馆相互连接，因此您可以在建筑物内自由移动。')");
+                    "(building, message) values ('第1科学馆 32 ', '第2科学馆是自然科学学院使用的主要空间。第1科学馆，第2科学馆，基础学问馆和生命科学馆都连接在一起， 可以在建筑物内自由移动。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('化学馆 入口 ', '化学馆是连接药房和半导体馆的综合演讲大楼。它配备了研究所需的最先进的设备，例如高科技教室，实验室，休息室，超级计算机实验室，同位素实验室和细胞培养实验室。')");
+                    "(building, message) values ('化学馆 入口 ', '化学馆是连接药学馆和半导体馆的综合学科大楼。它配备了研究所需的最先进设备，例如高科技教室、实验室、休息室、超级计算机实验室、同位素实验室和细胞培养实验室。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('半导体馆 入口 ', '半导体大厅是连接药房和半导体大厅的综合演讲大楼，配备了最先进的设施，如高科技演讲室，研究室和练习室以及工作站室，数字内容工作室和软件工作室。')");
+                    "(building, message) values ('半导体馆 入口 ', '药学馆是与半导体馆连接着的综合学科大楼。配备了最先进的设施，如高科技演讲室，研究室和练习室以及工作站室，数字内容工作室和软件工作室。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('三星学术信息馆 ', '三星学术信息中心拥有近62万本图书，其中约42万本国内图书和20万本国际图书，并且正在充当适合信息社会和基本功能的多功能图书馆。')");
+                    "(building, message) values ('三星学术信息馆 ', '三星学术信息馆拥有近62万本图书，其中约42万国内图书和20万国际图书。除了图书馆的基本功能，三星学术信息馆也正有符合信息社会的多功能图书馆功能。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('基础学问馆 ', '基本的教学楼包括行政空间，例如大学/大学行政办公室，演讲室和研究室。 1号科学馆，2号科学馆和生物技术馆相互连接，因此您可以在建筑物内自由移动。')");
+                    "(building, message) values ('基础学问馆 ', '大学/大学行政室，演讲室和研究室位于基础学问馆。第1科学馆，第2科学馆和生命工学馆都连在一起，可以在建筑物内自由移动。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('生命工学馆 ', '生物技术厅是主要供生物技术学院的学生使用的空间。生物技术大楼连接到第一科学大楼，第二科学大楼和基础科学大楼，因此您可以在大楼内自由移动。')");
+                    "(building, message) values ('生命工学馆 ', '生命工学馆是主要是物技术学院的学生使用的空间。 第1科学馆，第2科学馆，基础学问馆和生命科学馆都连接在一起， 可以在建筑物内自由移动。')");
             destinationDatabase.execSQL("insert into " + table +
-                    "(building, message) values ('产学合作中心 ', '产学合作中心设有产学合作中心，研究实验室和研讨室，以及40个孵化室和实习室。')");
+                    "(building, message) values ('产学合作中心 ', '产学合作中心设有产学合作团、研究实验室、研讨室、以及40个孵化室和实习室。')");
 
         } else if(table.equals("DestinationTable_JP")){
             Destination nine = new Destination("生命工学館 61, 入口1",61,37.296027, 126.975013);
