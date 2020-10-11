@@ -47,10 +47,10 @@ public class MapRouteMgr : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         
-    }
+    }*/
 
     // 받은 더블 배열의 루트 그리기
     public void drawRoute(double[] route){
