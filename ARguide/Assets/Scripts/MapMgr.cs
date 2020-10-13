@@ -26,9 +26,12 @@ public class MapMgr : MonoBehaviour
     bool isChangedToMapState;
 
     // 지도 이미지 관련 값
-    ZoomMgr uiMapZoomMgr;
+    MapZoomMgr uiMapZoomMgr;
     float mapWidth;
     float mapHeight;
+
+    // 투어모드 관련
+    MapTourmodeMgr uiMapTouremodeMgr;
 
 
     [Header("Pins")]
@@ -89,10 +92,11 @@ public class MapMgr : MonoBehaviour
         TourmodeBtn = GameObject.Find("UICanvas/ui_Map/elem_Tourmode").GetComponent<Button>();            
         StartARBtn = GameObject.Find("UICanvas/ui_Map/elem_StartAR").GetComponent<Button>();        // 시작 시 active false
 
-        BackBtn.gameObject.SetActive(false);
-        StartARBtn.gameObject.SetActive(false);        
+              
 
-        uiMapZoomMgr = GameObject.Find("UICanvas/ui_Map/elem_Map").GetComponent<ZoomMgr>();
+        // Mgr 가져오기
+        uiMapZoomMgr = GameObject.Find("UICanvas/ui_Map/elem_Map").GetComponent<MapZoomMgr>();
+        uiMapTouremodeMgr = GameObject.Find("UICanvas/ui_Map/elem_Tourmode").GetComponent<MapTourmodeMgr>();
 
         // androidjavaobject 가져오기
         var jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -126,7 +130,12 @@ public class MapMgr : MonoBehaviour
         // onclick 설정
         SearchBtn.onClick.AddListener(TaskOnClick_SearchBtn);
         BackBtn.onClick.AddListener(TaskOnClick_BackBtn);
+        TourmodeBtn.onClick.AddListener(TaskOnClick_TourmodeBtn);
         StartARBtn.onClick.AddListener(TaskOnClick_StartARBtn);
+
+        // 사전 세팅
+        BackBtn.gameObject.SetActive(false);
+        StartARBtn.gameObject.SetActive(false);  
 
 
 
@@ -282,6 +291,17 @@ public class MapMgr : MonoBehaviour
         foreach (Transform child in Pin_entrance) {     Destroy(child.gameObject);  }
         foreach (Transform child in Route_point) {      Destroy(child.gameObject);  }
         foreach (Transform child in Route_line) {       Destroy(child.gameObject);  }
+
+
+    }
+
+    void TaskOnClick_TourmodeBtn(){
+        Debug.Log("ARGUIDE_Map : ToumodeBtn clicked"); 
+
+        // 투어모드 경로 포인트들 중 가장 가까운 것을 찾아 전체 경로 만들기
+        double[] tourRoute = uiMapTouremodeMgr.create_Tourroute();
+
+        
 
 
     }

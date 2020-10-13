@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ZoomMgr : MonoBehaviour
+public class MapZoomMgr : MonoBehaviour
 {
     [Header("배경 지도의 줌인, 줌아웃, 이동 및 포함된 핀 사이즈 조절 스크립트")]
     public float nothing;
@@ -16,7 +16,7 @@ public class ZoomMgr : MonoBehaviour
 
 
     [Header("배경 지도의 줌인, 줌아웃 속도")]
-    [SerializeField] float zoomModifierSpeed = 0.001f;
+    [SerializeField] float zoomModifierSpeed = 0.002f;
     Vector2 firstTouchPrevPos, secondTouchPrevPos;
     float touchesPrevPosDifference;
     float touchesCurrPosDifference;

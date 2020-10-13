@@ -5033,17 +5033,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nothing: 0
+  mapRect: {fileID: 0}
   displayWidth: 0
   displayHeight: 0
   mapWidth: 0
   mapHeight: 0
   zoomModifierSpeed: 0.001
+  firstTouchPrevPos: {x: 0, y: 0}
+  secondTouchPrevPos: {x: 0, y: 0}
+  touchesPrevPosDifference: 0
+  touchesCurrPosDifference: 0
+  zoomModifier: 0
   zoomValue: 1.5
   minZoomValue: 1
   maxZoomValue: 3
   dragModifierSpeed: 1
   dragXValue: 0
   dragYValue: 0
+  Pin_building: {fileID: 0}
+  Pin_entrance: {fileID: 0}
+  Route_point: {fileID: 0}
+  Route_line: {fileID: 0}
 --- !u!1 &746484934
 GameObject:
   m_ObjectHideFlags: 0
