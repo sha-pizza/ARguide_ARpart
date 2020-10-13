@@ -16,6 +16,9 @@ public class GuideMgr : MonoBehaviour
     //double[] route;        
     //public static double[] route = {37.295400, 126.976000, 37.295400, 126.976200}; 
     public static double[] route;
+
+    // stateMgr에서 받아오는 state
+    StateMgr.state arguide_state;
            
     public static int nowPointNum = 0;  // 현재 향하는 좌표! nowPoint0일때 rount0,1지점으로 향한다
     int lastPointNum;                   // 마지막 좌표! 전체 좌표들의 개수와도 같다
@@ -112,13 +115,14 @@ public class GuideMgr : MonoBehaviour
     void Update()
     {
         // 경로가 찾아진 경우 안내 시작!
-        if (GPSMgr.didFoundRoute && !didGuideStart){    
+        arguide_state = StateMgr.getState();
+        if (arguide_state==StateMgr.state.GUIDE && GPSMgr.didFoundRoute && !didGuideStart){    
         //if (!didGuideStart){
             Debug.Log("ARGUIDE_guide : didFoundRoute & didGuideStart");
             didGuideStart = true;
         
             // 경로 가져오기
-            route = GPSMgr.route;            
+            route = MapMgr.route;            
 
             // 전체 좌표 수 계산
             lastPointNum = route.Length;

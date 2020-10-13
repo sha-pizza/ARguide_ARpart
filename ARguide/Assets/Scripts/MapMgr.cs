@@ -65,6 +65,8 @@ public class MapMgr : MonoBehaviour
     List<SearchResult> resultlist = new List<SearchResult>();
     // 경로 검색 중인지 표시
     bool isSearchingRoute = false;
+    // 경로 저장용
+    public static double[] route;
 
 
 
@@ -124,6 +126,7 @@ public class MapMgr : MonoBehaviour
         // onclick 설정
         SearchBtn.onClick.AddListener(TaskOnClick_SearchBtn);
         BackBtn.onClick.AddListener(TaskOnClick_BackBtn);
+        StartARBtn.onClick.AddListener(TaskOnClick_StartARBtn);
 
 
 
@@ -377,9 +380,11 @@ public class MapMgr : MonoBehaviour
     }
 
 
-    
 
     
+    /*
+    ** map ui 3 : map_show_route
+    */
 
     // 입구 핀에 온클릭 설정, 누를 시 입구이름으로 TaskOnClick 실행되도록 함
     public GameObject setPin_entrance(GameObject Pin){
@@ -454,7 +459,6 @@ public class MapMgr : MonoBehaviour
         Destroy(loadingobj);
 
         // 경로 받아오기
-        double[] route;
         try{
             var routeTmp = m_JavaObject.Call<double[]>("getRoute");
             route = routeTmp;
@@ -506,14 +510,11 @@ public class MapMgr : MonoBehaviour
             drawRouteLine(calculed_route[i], calculed_route[i+1], calculed_route[i+2], calculed_route[i+3]);   
         }
 
-        // TODO : 라인그리기
-        // TODO : 안내 시작 버튼 활성화
-        
-        
+        // 경로가 있을 경우
+        // 안내 시작 버튼 활성화 및 기타 값 설정
+        StartARBtn.gameObject.SetActive(true);      
 
-        isSearchingRoute = false;
-
-        
+        isSearchingRoute = false;        
     }
 
     // 경로의 각 포인트 그리기 (연산된 lat, 연산된 lon, 설치할 게임오브젝트)
@@ -554,6 +555,21 @@ public class MapMgr : MonoBehaviour
         // 라인 방향설정
         float angle = Mathf.Atan2(e_point.y-s_point.y , e_point.x-s_point.x) * Mathf.Rad2Deg;
         lineRT.localRotation = Quaternion.Euler(0,0,angle);
+
+    }
+
+    void TaskOnClick_StartARBtn(){
+        Debug.Log("ARGUIDE_Map : start AR btn clicked : "); 
+
+        if (route.Length != 0){
+            StateMgr.requestStateChange(StateMgr.state.MAP, StateMgr.state.GUIDE);
+            Debug.Log("ARGUIDE_Map : start AR :  "); 
+        } else {
+            Debug.Log("ARGUIDE_Map : cant start AR : routelen is 0 "); 
+        }
+        
+
+
 
     }
 

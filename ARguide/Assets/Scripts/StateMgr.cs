@@ -54,8 +54,8 @@ public class StateMgr : MonoBehaviour
         Mgr_Map = GameObject.Find("MapMgr").GetComponent<MapMgr>();
         Mgr_Guide = GameObject.Find("GuideMgr").GetComponent<GuideMgr>();
 
-        Mgr_Map.gameObject.SetActive(false);
-        Mgr_Guide.gameObject.SetActive(false);
+        IEnumerator setmgrs = setMgrs();
+        StartCoroutine(setmgrs);
 
     }
 
@@ -68,6 +68,12 @@ public class StateMgr : MonoBehaviour
         }
     }
     */
+
+    IEnumerator setMgrs(){
+        yield return new WaitForSeconds(0.1f);
+        Mgr_Map.gameObject.SetActive(false);
+        Mgr_Guide.gameObject.SetActive(false);
+    }
    
     // getter & setter of ARGUIDE_STATE
     public static state getState(){
@@ -93,10 +99,26 @@ public class StateMgr : MonoBehaviour
 
             // mgr 수정
             Mgr_Map.gameObject.SetActive(true);
-               
+            return true;
+        
+        } else if (arguide_state == state.MAP && nextS == state.GUIDE){
+            Debug.Log("ARGUIDE_stateMgr : allow change : "+arguide_state+" -> "+nextS);
+            arguide_state = nextS;
+
+            // ui전환
+            UI_Map.SetActive(false);
+            UI_AR.SetActive(true);
+
+            // 값 수정
+            GPSMgr.didFoundRoute = true;
+            GuideMgr.route = MapMgr.route;
+
+            // mgr 수정
+            Mgr_Map.gameObject.SetActive(false);
+            Mgr_Guide.gameObject.SetActive(true);
 
             return true;
-        } 
+        }
 
         // prohibit else cases
         else {
