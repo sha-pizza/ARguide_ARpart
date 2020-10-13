@@ -27,8 +27,8 @@ public class MapMgr : MonoBehaviour
 
     // 지도 이미지 관련 값
     MapZoomMgr uiMapZoomMgr;
-    float mapWidth;
-    float mapHeight;
+    public static float mapWidth;
+    public static float mapHeight;
 
     // 투어모드 관련
     MapTourmodeMgr uiMapTouremodeMgr;
@@ -216,7 +216,7 @@ public class MapMgr : MonoBehaviour
 
     // 개별 핀을 그리고, 이름을 붙여줌
     // 이름이 없는 핀의 경우 이름 없이 그려짐 (catch)
-    public GameObject drawPin(double LAT, double LON, Transform Pinparent, GameObject Pin_obj, string Pinname){
+    public static GameObject drawPin(double LAT, double LON, Transform Pinparent, GameObject Pin_obj, string Pinname){
         double calculedLAT = (LAT-37.2945)*(mapHeight/21)*1000;
         double calculedLON = (LON-126.974)*(mapWidth/18)*1000;
         //Debug.Log("ARGUIDE_Map : draw pin  : "+(float)calculedLAT+","+(float)calculedLON); 
@@ -291,18 +291,34 @@ public class MapMgr : MonoBehaviour
         foreach (Transform child in Pin_entrance) {     Destroy(child.gameObject);  }
         foreach (Transform child in Route_point) {      Destroy(child.gameObject);  }
         foreach (Transform child in Route_line) {       Destroy(child.gameObject);  }
-
-
     }
 
     void TaskOnClick_TourmodeBtn(){
         Debug.Log("ARGUIDE_Map : ToumodeBtn clicked"); 
+        
+        // 빌딩 끄기, 뒤로가기버튼 활성화, 검색창 '투어 모드', 안내시작버튼 활성화
+        BackBtn_SetActive(true);
+        SearchInput.text = "투어 모드";
+        Pin_building.gameObject.SetActive(false);
+        StartARBtn.gameObject.SetActive(true);
 
         // 투어모드 경로 포인트들 중 가장 가까운 것을 찾아 전체 경로 만들기
         double[] tourRoute = uiMapTouremodeMgr.create_Tourroute();
 
-        
+        // 경로가 성공적으로 구성되었을 경우 지도에 해당 루트 표시
+        if (tourRoute.Length != 0){
+            // 루트 초기화
+            foreach (Transform child in Route_point) {      Destroy(child.gameObject);  }
+            foreach (Transform child in Route_line) {       Destroy(child.gameObject);  }
+            // 투어에서 지나치는 빌딩그리기
+            uiMapTouremodeMgr.draw_Tour_building(Pin_entrance);
+            drawRoute(tourRoute, Route_point, Route_line);
 
+        } else {
+            Debug.Log("ARGUIDE_Map : ToumodeBtn : fail to get route");
+            SearchInput.text = "투어 모드 로드에 실패하였습니다.";
+            return; 
+        }
 
     }
 
@@ -456,6 +472,7 @@ public class MapMgr : MonoBehaviour
         StartCoroutine(getroute);
     }
 
+    // 경로 요청 및 가져온 경로 그리기
     IEnumerator Get_Route (Transform Pin_Obj, int Pin_Index){
         isSearchingRoute = true;
         // 경로 요청
@@ -494,8 +511,7 @@ public class MapMgr : MonoBehaviour
         Debug.Log("ARGUIDE_Map : route_start : "+route[0]+","+route[1]);
         Debug.Log("ARGUIDE_Map : route_end : "+route[route.Length-2]+","+route[route.Length-1]);
 
-        // 경로 그리기
-        int routeLen = route.Length;
+        // 경로 초기화
         // route line, point 의 모든 자식 삭제
         foreach (Transform child in Route_line) {
             Destroy(child.gameObject);
@@ -503,32 +519,9 @@ public class MapMgr : MonoBehaviour
         foreach (Transform child in Route_point) {
             Destroy(child.gameObject);
         }
+        // 경로 그리기
+        drawRoute(route, Route_point, Route_line);
        
-        // 받은 좌표 배열 연산
-        double[] calculed_route = new double[routeLen]; // 조건에 따라 연산된 루트
-        string tester = "calculed route : ";
-        for (int i=0 ; i<routeLen ; i=i+2){
-            calculed_route[i] = (route[i] - 37.2945) * (mapHeight/21) * 1000;   // 조건
-            calculed_route[i+1] = (route[i+1] - 126.974) * (mapWidth/18) * 1000;
-            tester = tester + (int)calculed_route[i] + "," + (int)calculed_route[i+1] + " / "; 
-        }
-        Debug.Log("ARGUIDE_Map : calculed route : "+tester);
-
-        // 처음부터 마지막 포인트까지 그리기
-        for (int i=0 ; i<routeLen ; i=i+2) { 
-            if (i==0){
-                // 경로의 첫 번째 노드
-                drawRoutePoint(calculed_route[i], calculed_route[i+1], rStart_obj);
-            } else {
-                // 경로의 중간~마지막 노드
-                drawRoutePoint(calculed_route[i], calculed_route[i+1], rMid_obj);
-            }  
-        }
-
-        // 라인 그리기
-        for (int i=0 ; i<routeLen-2 ; i=i+2) { 
-            drawRouteLine(calculed_route[i], calculed_route[i+1], calculed_route[i+2], calculed_route[i+3]);   
-        }
 
         // 경로가 있을 경우
         // 안내 시작 버튼 활성화 및 기타 값 설정
@@ -537,46 +530,52 @@ public class MapMgr : MonoBehaviour
         isSearchingRoute = false;        
     }
 
-    // 경로의 각 포인트 그리기 (연산된 lat, 연산된 lon, 설치할 게임오브젝트)
-    public void drawRoutePoint(double c_lat, double c_lon, GameObject obj){
-        //Debug.Log("ARGUIDE_maproute : setRoutePoint - calculedP("+c_lat+","+c_lon+") - "+obj);
+    // 경로 그리기
+    public void drawRoute(double[] route, Transform pointParent, Transform lineParent){
+        // 처음부터 마지막 포인트까지 그리기
+        for (int i=0 ; i<route.Length ; i=i+2) { 
+            if (i==0){
+                // 경로의 첫 번째 노드
+                drawPin(route[i], route[i+1], Route_point, rStart_obj, "");
+            } else {
+                // 경로의 중간~마지막 노드
+                drawPin(route[i], route[i+1], Route_point, rMid_obj, "");
+            }  
+        }
 
-        // 원래의 위도경도 테스트출력
-        float realLat = (float)((c_lat/1000)/(mapHeight/21)+37.2945);
-        float realLon = (float)((c_lon/1000)/(mapWidth/18)+126.974);
-        Debug.Log("ARGUIDE_maproute : setRoutePoint - realP("+realLat+","+realLon+")");
-        
-        // 오브젝트 생성하고 route 게임오브젝트 자식으로 설정
-        GameObject newpoint = Instantiate(obj, new Vector3(0,0,0), Quaternion.identity);
-        newpoint.transform.SetParent(Route_point);
+        // 받은 좌표 배열 연산
+        double[] calculed_route = new double[route.Length]; // 조건에 따라 연산된 루트
+        for (int i=0 ; i<route.Length ; i=i+2){
+            calculed_route[i] = (route[i] - 37.2945) * (mapHeight/21) * 1000;   // 조건
+            calculed_route[i+1] = (route[i+1] - 126.974) * (mapWidth/18) * 1000;
+        }
+        Debug.Log("ARGUIDE_Map : calculed route : "+calculed_route.ToString());
+        Debug.Log("ARGUIDE_Map : original route : "+route.ToString());
 
-        // 적당한 위치로 이동 : localposition 수정
-        RectTransform pointRT = newpoint.GetComponent<RectTransform>();
-        pointRT.localPosition = new Vector3((float)c_lon, (float)c_lat, 0);
-        pointRT.localRotation = Quaternion.identity;
-        //Debug.Log("point1 localpos : "+pointRT.localPosition.x+" / "+pointRT.localPosition.y);
+        // 라인 그리기
+        for (int i=0 ; i<route.Length-2 ; i=i+2) { 
+            // startPoint 부터 endPoint까지 라인 그리기
+            Vector3 s_point = new Vector3((float)calculed_route[i+1], (float)calculed_route[i], 0);
+            Vector3 e_point = new Vector3((float)calculed_route[i+3], (float)calculed_route[i+2], 0);
+            // 개별 라인 생성
+            GameObject newline = Instantiate(rLine_obj, new Vector3(0,0,0), Quaternion.identity);
+            newline.transform.parent = Route_line.transform;
+            RectTransform lineRT = newline.GetComponent<RectTransform>();
+            // 라인 위치를 startPoint위치로 설정
+            lineRT.localPosition = s_point;
+            lineRT.localScale = new Vector3(1,1,1);
+            // 라인 길이 설정
+            float distance = Vector3.Distance(s_point, e_point);
+            lineRT.sizeDelta = new Vector2(lineRT.sizeDelta.x, distance);
+            // 라인 방향설정
+            float angle = Mathf.Atan2(e_point.y-s_point.y , e_point.x-s_point.x) * Mathf.Rad2Deg;
+            lineRT.localRotation = Quaternion.Euler(0,0,angle);
+            
+        }
+
     }
 
-    // 경로의 각 포인트 사이에 선 긋기 (시작lat, 시작lon, 끝lat, 끝lon)
-    public void drawRouteLine(double s_lat, double s_lon, double e_lat, double e_lon){
-        // startPoint 부터 endPoint까지 라인 그리기
-        Vector3 s_point = new Vector3((float)s_lon, (float)(s_lat), 0);
-        Vector3 e_point = new Vector3((float)e_lon, (float)(e_lat), 0);
-        // 개별 라인 생성
-        GameObject newline = Instantiate(rLine_obj, new Vector3(0,0,0), Quaternion.identity);
-        newline.transform.parent = Route_line.transform;
-        RectTransform lineRT = newline.GetComponent<RectTransform>();
-        // 라인 위치를 startPoint위치로 설정
-        lineRT.localPosition = s_point;
-        lineRT.localScale = new Vector3(1,1,1);
-        // 라인 길이 설정
-        float distance = Vector3.Distance(s_point, e_point);
-        lineRT.sizeDelta = new Vector2(lineRT.sizeDelta.x, distance);
-        // 라인 방향설정
-        float angle = Mathf.Atan2(e_point.y-s_point.y , e_point.x-s_point.x) * Mathf.Rad2Deg;
-        lineRT.localRotation = Quaternion.Euler(0,0,angle);
 
-    }
 
     void TaskOnClick_StartARBtn(){
         Debug.Log("ARGUIDE_Map : start AR btn clicked : "); 

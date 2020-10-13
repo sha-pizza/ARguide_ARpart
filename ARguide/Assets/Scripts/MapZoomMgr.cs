@@ -168,11 +168,11 @@ public class MapZoomMgr : MonoBehaviour
     // 실제 값 적용
     void ApplyChange(){
         mapRect.position = new Vector2 (dragXValue, dragYValue);
-        Debug.Log("ARGUIDE_mapZoom : dragValue : "+dragXValue+","+dragYValue);    
+        //Debug.Log("ARGUIDE_mapZoom : dragValue : "+dragXValue+","+dragYValue);    
 
         // 실제 지도 사이즈 조절
         mapRect.localScale =  new Vector3(zoomValue, zoomValue, zoomValue); 
-        Debug.Log("ARGUIDE_mapZoom : zoomValue : "+zoomValue);
+        //Debug.Log("ARGUIDE_mapZoom : zoomValue : "+zoomValue);
         //Debug.Log("ARGUIDE_mapZoom : zoomModifier : "+zoomModifier);
 
     }

@@ -1826,6 +1826,7 @@ GameObject:
   m_Component:
   - component: {fileID: 249364255}
   - component: {fileID: 249364256}
+  - component: {fileID: 249364257}
   m_Layer: 0
   m_Name: elem_Tourmode
   m_TagString: Untagged
@@ -1899,6 +1900,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &249364257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249364254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a768b7f5200f8b4c87c761585dff8ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tourRoute_point_obj: {fileID: 8863946948324914072, guid: 03eb8c61f9a7a1b47989b1ab90514efa,
+    type: 3}
 --- !u!1 &271593908
 GameObject:
   m_ObjectHideFlags: 0
@@ -5029,31 +5044,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 739278447}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 236de9895fa1d9d41a6575d668bd8fb8, type: 3}
+  m_Script: {fileID: 11500000, guid: 42bd2d1240e25fc4c9619b45186abd0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   nothing: 0
-  mapRect: {fileID: 0}
   displayWidth: 0
   displayHeight: 0
   mapWidth: 0
   mapHeight: 0
-  zoomModifierSpeed: 0.001
-  firstTouchPrevPos: {x: 0, y: 0}
-  secondTouchPrevPos: {x: 0, y: 0}
-  touchesPrevPosDifference: 0
-  touchesCurrPosDifference: 0
-  zoomModifier: 0
+  zoomModifierSpeed: 0.002
   zoomValue: 1.5
   minZoomValue: 1
   maxZoomValue: 3
   dragModifierSpeed: 1
   dragXValue: 0
   dragYValue: 0
-  Pin_building: {fileID: 0}
-  Pin_entrance: {fileID: 0}
-  Route_point: {fileID: 0}
-  Route_line: {fileID: 0}
 --- !u!1 &746484934
 GameObject:
   m_ObjectHideFlags: 0
