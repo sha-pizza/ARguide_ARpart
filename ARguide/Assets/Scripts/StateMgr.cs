@@ -35,6 +35,9 @@ public class StateMgr : MonoBehaviour
     private static MapMgr Mgr_Map;
     private static GuideMgr Mgr_Guide;
 
+    // 기타 Mgr들
+    private static MapZoomMgr Mgr_MapZoom;
+
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +56,8 @@ public class StateMgr : MonoBehaviour
         Mgr_Intro = GameObject.Find("IntroMgr").GetComponent<IntroMgr>();
         Mgr_Map = GameObject.Find("MapMgr").GetComponent<MapMgr>();
         Mgr_Guide = GameObject.Find("GuideMgr").GetComponent<GuideMgr>();
+
+        Mgr_MapZoom = GameObject.Find("UICanvas/ui_Map/elem_Map").GetComponent<MapZoomMgr>();
 
         IEnumerator setmgrs = setMgrs();
         StartCoroutine(setmgrs);
@@ -73,6 +78,8 @@ public class StateMgr : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         Mgr_Map.gameObject.SetActive(false);
         Mgr_Guide.gameObject.SetActive(false);
+
+        Mgr_MapZoom.enabled = false;
     }
    
     // getter & setter of ARGUIDE_STATE
@@ -99,6 +106,7 @@ public class StateMgr : MonoBehaviour
 
             // mgr 수정
             Mgr_Map.gameObject.SetActive(true);
+            Mgr_MapZoom.enabled = true;
             return true;
         
         } else if (arguide_state == state.MAP && nextS == state.GUIDE){
