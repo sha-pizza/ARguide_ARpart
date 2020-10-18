@@ -60,8 +60,18 @@ public class MapMgr : MonoBehaviour
     InputField SearchInput;
     Button SearchBtn;
     public Button BackBtn;
+    
     public Button TourmodeBtn;
+    RectTransform TourmodeBtnRect;
+
     Button StartARBtn;
+    RectTransform StartARBtnRect;
+
+    Button StartARtourBtn;
+    RectTransform StartARtourBtnRect;
+
+    RectTransform AlertRect;
+    Text AlertText;
 
 
     // 검색 결과 리스트
@@ -71,6 +81,9 @@ public class MapMgr : MonoBehaviour
     // 경로 저장용
     public static double[] route;
 
+    // 하단 버튼 위치
+    Vector2 btn_inactivePos = new Vector2(0, -400);
+    Vector2 btn_activePos = new Vector2(0, 0);
 
 
     
@@ -89,10 +102,20 @@ public class MapMgr : MonoBehaviour
         SearchInput = GameObject.Find("UICanvas/ui_Map/elem_Search/SearchInput").GetComponent<InputField>();
         SearchBtn = GameObject.Find("UICanvas/ui_Map/elem_Search/SearchBtn").GetComponent<Button>();
         BackBtn = GameObject.Find("UICanvas/ui_Map/elem_Search/BackBtn").GetComponent<Button>();    // 시작 시 active false
-        TourmodeBtn = GameObject.Find("UICanvas/ui_Map/elem_Tourmode").GetComponent<Button>();            
-        StartARBtn = GameObject.Find("UICanvas/ui_Map/elem_StartAR").GetComponent<Button>();        // 시작 시 active false
 
-              
+        TourmodeBtn = GameObject.Find("UICanvas/ui_Map/elem_Tourmode").GetComponent<Button>();            
+        TourmodeBtnRect = GameObject.Find("UICanvas/ui_Map/elem_Tourmode/Button").GetComponent<RectTransform>();
+
+        StartARtourBtn = GameObject.Find("UICanvas/ui_Map/elem_StartARtour").GetComponent<Button>();// 시작 시 active false
+        StartARtourBtnRect = GameObject.Find("UICanvas/ui_Map/elem_StartARtour/Button").GetComponent<RectTransform>();
+
+        StartARBtn = GameObject.Find("UICanvas/ui_Map/elem_StartAR").GetComponent<Button>();        // 시작 시 active false
+        StartARBtnRect = GameObject.Find("UICanvas/ui_Map/elem_StartAR/Button").GetComponent<RectTransform>();
+        
+        AlertRect = GameObject.Find("UICanvas/ui_Map/elem_Alert").GetComponent<RectTransform>();
+        AlertText = AlertRect.transform.Find("Text").GetComponent<Text>();
+        
+
 
         // Mgr 가져오기
         uiMapZoomMgr = GameObject.Find("UICanvas/ui_Map/elem_Map").GetComponent<MapZoomMgr>();
@@ -131,11 +154,14 @@ public class MapMgr : MonoBehaviour
         SearchBtn.onClick.AddListener(TaskOnClick_SearchBtn);
         BackBtn.onClick.AddListener(TaskOnClick_BackBtn);
         TourmodeBtn.onClick.AddListener(TaskOnClick_TourmodeBtn);
+        StartARtourBtn.onClick.AddListener(TackOnClick_StartARtourBtn);
         StartARBtn.onClick.AddListener(TaskOnClick_StartARBtn);
 
         // 사전 세팅
+        AlertRect.gameObject.SetActive(false);
         BackBtn.gameObject.SetActive(false);
-        StartARBtn.gameObject.SetActive(false);  
+        StartARtourBtnRect.localPosition = btn_inactivePos;   //StartARtourBtn.gameObject.SetActive(false);  
+        StartARBtnRect.localPosition = btn_inactivePos;   //StartARBtn.gameObject.SetActive(false);  
 
 
 
@@ -144,9 +170,12 @@ public class MapMgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // state 가 MAP으로 전환되었을 때 빌딩 핀 표시하고 onclick 설정
+        // state가 MAP으로 전환되었을 때 빌딩 핀 표시하고 onclick 설정
+        // TourmodeBtn이 등장하도록 설정
         arguide_state = StateMgr.getState();
         if (!isChangedToMapState && arguide_state == StateMgr.state.MAP){
+            
+            StartCoroutine ( uiLerp(TourmodeBtnRect, btn_inactivePos, btn_activePos, 0.15f, 1f) );
             draw_Pin_building();
             isChangedToMapState = true;
         }     
@@ -213,6 +242,7 @@ public class MapMgr : MonoBehaviour
         setPin_building( newPin22 );         
 
     }
+    
 
     // 개별 핀을 그리고, 이름을 붙여줌
     // 이름이 없는 핀의 경우 이름 없이 그려짐 (catch)
@@ -254,7 +284,8 @@ public class MapMgr : MonoBehaviour
             drawSearchedEntrance(resultlist);           // 검색된 입구 그리기
             SearchInput.text = destin;                  // 검색창 문구 수정
             Pin_building.gameObject.SetActive(false);   // 빌딩들 끄기
-            TourmodeBtn.gameObject.SetActive(false);    // 투어모드 버튼 숨기기
+
+            StartCoroutine ( uiLerp(TourmodeBtnRect, btn_activePos, btn_inactivePos, 0.15f, 1f) ); //TourmodeBtn.gameObject.SetActive(false);  // 투어모드 버튼 숨기기
             BackBtn_SetActive(true);                    // 뒤로가기버튼 활성화 및 ui 정리
             moveToSearchedEntrance();                   // 검색들 결과 위치로 지도 이동
         } else {
@@ -269,7 +300,8 @@ public class MapMgr : MonoBehaviour
         if (resultlist.Count != 0 && resultlist[0].lat!=0 && resultlist[0].lon!=0){
             drawSearchedEntrance(resultlist);           // 검색된 입구들 그리기
             Pin_building.gameObject.SetActive(false);   // 빌딩들 끄기
-            TourmodeBtn.gameObject.SetActive(false);    // 투어모드 버튼 숨기기
+            
+            StartCoroutine ( uiLerp(TourmodeBtnRect, btn_activePos, btn_inactivePos, 0.15f, 1f) ); //TourmodeBtn.gameObject.SetActive(false);  // 투어모드 버튼 숨기기
             BackBtn_SetActive(true);                    // 뒤로가기버튼 활성화 및 ui 정리
             moveToSearchedEntrance();                   // 검색들 결과 위치로 지도 이동
         } else {
@@ -281,11 +313,13 @@ public class MapMgr : MonoBehaviour
         // map ui 1 : map_show_buildings의 초기 상태로 되돌림
         Debug.Log("ARGUIDE_Map : backbtn"); 
         resultlist.Clear();
+
         BackBtn_SetActive(false);
         SearchInput.text = "";
         Pin_building.gameObject.SetActive(true);
-        TourmodeBtn.gameObject.SetActive(true);
-        StartARBtn.gameObject.SetActive(false);
+        StartCoroutine ( uiLerp(TourmodeBtnRect, btn_inactivePos, btn_activePos, 0.15f, 1f) ); //TourmodeBtn.gameObject.SetActive(true);
+        StartARBtnRect.localPosition = btn_inactivePos;   //StartARBtn.gameObject.SetActive(false);  
+        StartARtourBtnRect.localPosition = btn_inactivePos; 
 
         // Pin Route 초기화
         foreach (Transform child in Pin_entrance) {     Destroy(child.gameObject);  }
@@ -300,7 +334,11 @@ public class MapMgr : MonoBehaviour
         BackBtn_SetActive(true);
         SearchInput.text = "투어 모드";
         Pin_building.gameObject.SetActive(false);
-        StartARBtn.gameObject.SetActive(true);
+
+        StartCoroutine ( uiLerp(TourmodeBtnRect, btn_activePos, btn_inactivePos, 0.15f, 1f) );
+        StartCoroutine ( uiLerp(StartARtourBtnRect, btn_inactivePos, btn_activePos, 0.15f, 1f) );
+        
+        //StartARBtn.gameObject.SetActive(true);
 
         // 투어모드 경로 포인트들 중 가장 가까운 것을 찾아 전체 경로 만들기
         double[] tourRoute = uiMapTouremodeMgr.create_Tourroute();
@@ -313,12 +351,53 @@ public class MapMgr : MonoBehaviour
             // 투어에서 지나치는 빌딩그리기
             uiMapTouremodeMgr.draw_Tour_building(Pin_entrance);
             drawRoute(tourRoute, Route_point, Route_line);
+            route = tourRoute; // 경로 연결
 
         } else {
             Debug.Log("ARGUIDE_Map : ToumodeBtn : fail to get route");
             SearchInput.text = "투어 모드 로드에 실패하였습니다.";
             return; 
         }
+
+    }
+
+    void TackOnClick_StartARtourBtn(){
+        Debug.Log("ARGUIDE_Map : StartARtourBtn clicked"); 
+
+        // TODO : 시작점에 가까운지 확인하고, 가깝지 않은 경우 리턴 / 가까울 경우 현재위치 경로에 추가후 시작
+
+        double nowLAT = GPSMgr.LAT;
+        double nowLON = GPSMgr.LON;
+        /*
+        if (route.Length != 0){
+            StateMgr.requestStateChange(StateMgr.state.MAP, StateMgr.state.GUIDE);
+            Debug.Log("ARGUIDE_Map : start AR :  "); 
+        } else {
+            Debug.Log("ARGUIDE_Map : cant start AR : routelen is 0 "); 
+        }*/
+
+        if (route.Length == 0){
+            Debug.Log("ARGUIDE_Map : StartARtourBtn : cant start tourmode : routelen is 0 "); 
+            return;
+        } else if (Mathf.Abs((float)nowLAT-(float)route[0])> 0.0001f || Mathf.Abs((float)nowLON-(float)route[1])> 0.0001f){
+            Debug.Log("ARGUIDE_Map : StartARtourBtn : cant start tourmode : too far from startpoint");
+            StartCoroutine(uiAlert("시작 지점과 너무 멀리 떨어져 있습니다.\n시작 지점에 가까이 이동한 후 다시 시도해 주세요.", 3f, 2)); 
+            return;
+        }
+
+        // 경로에 현재 위치 추가
+        double[] routeedit = new double[route.Length+2];
+        routeedit[0] = nowLAT;
+        routeedit[1] = nowLON;
+        for (int i=2 ; i<routeedit.Length ; i++){
+            routeedit[i] = route[i-2];
+        }
+        route = routeedit;
+        Debug.Log("ARGUIDE_Map : StartARtourBtn : route :"+route[0]+", "+route[1]+", "+route[2]+", "+route[3]); 
+        
+
+        StateMgr.requestStateChange(StateMgr.state.MAP, StateMgr.state.GUIDE);
+        Debug.Log("ARGUIDE_Map : start AR tour :  "); 
 
     }
 
@@ -525,7 +604,7 @@ public class MapMgr : MonoBehaviour
 
         // 경로가 있을 경우
         // 안내 시작 버튼 활성화 및 기타 값 설정
-        StartARBtn.gameObject.SetActive(true);      
+        StartCoroutine ( uiLerp(StartARBtnRect, btn_inactivePos, btn_activePos, 0.15f, 1f) ); //StartARBtn.gameObject.SetActive(true);      
 
         isSearchingRoute = false;        
     }
@@ -586,12 +665,11 @@ public class MapMgr : MonoBehaviour
         } else {
             Debug.Log("ARGUIDE_Map : cant start AR : routelen is 0 "); 
         }
-        
-
-
+    
 
     }
 
+    
     
 
     public class SearchResult{
@@ -599,6 +677,45 @@ public class MapMgr : MonoBehaviour
         public double lat;
         public double lon;
         public int index;
+    }
+
+    // functions !
+
+
+    // ui 이동
+    IEnumerator uiLerp(RectTransform rect, Vector2 startpos, Vector2 endpos, float lerpvalue, float duration){
+        int movecount = (int)(duration/0.03f);
+        //Debug.Log("ARGUIDE_Map : moveCount : "+movecount);
+
+
+        rect.localPosition = startpos;
+        for (int i=0 ; i<movecount ; i++){
+            yield return new WaitForSeconds(0.03f);
+            rect.localPosition = Vector2.Lerp(rect.localPosition, endpos, lerpvalue);
+            //Debug.Log("ARGUIDE_Map : moveOn : "+rect.localPosition.y);
+        }
+        rect.localPosition = endpos;
+    }
+    
+
+    // ui 안내 alert
+    public IEnumerator uiAlert(string message, float duration, int linenum){
+        Debug.Log("ARGUIDE_Map : ui alert : "+message);
+
+        // 텍스트 세팅
+        AlertText.text = message;
+
+        // 사이즈 세팅
+        float alertWidth = AlertText.preferredWidth + 100;
+        float alertHeight = 60 + linenum*60;
+        Debug.Log("ARGUIDE_Map : ui alert : alertw&h : "+alertWidth+", "+alertHeight );
+        AlertRect.sizeDelta = new Vector2(alertWidth, alertHeight); 
+
+        // duration 만큼 보여주고 사라지기
+        AlertRect.gameObject.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        AlertRect.gameObject.SetActive(false);
+        
     }
 
 

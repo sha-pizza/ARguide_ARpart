@@ -94,7 +94,7 @@ public class MapZoomMgr : MonoBehaviour
         if (Route_point.childCount > 0){
             ProcessPinsize(Route_point);
         }
-        // TODO : Route_Line 추가
+      
 
     }
 
@@ -131,7 +131,7 @@ public class MapZoomMgr : MonoBehaviour
 
         
 
-        //TODO : 가장자리에서 줌아웃 시 지도 뒤 카메라가 보이는 문제 발생 이후 수정 필요!!
+    
     }
 
     
