@@ -80,6 +80,7 @@ public class MapMgr : MonoBehaviour
     bool isSearchingRoute = false;
     // 경로 저장용
     public static double[] route;
+    public static string finalDestination;
 
     // 하단 버튼 위치
     Vector2 btn_inactivePos = new Vector2(0, -400);
@@ -543,7 +544,10 @@ public class MapMgr : MonoBehaviour
         } else {
             Debug.Log("ARGUIDE_Map : onclick entrance : cant find index of selected entrance : "+Pin_Index); 
             return;
-        }     
+        }   
+
+        // finaldestination 설정  
+        finalDestination = Pin_Obj.transform.GetChild(0).GetComponent<Text>().text;
 
         // 경로 요청후 3초 대기, 경로 가져와서 보여주기
         // 안내 시작하기 버튼 활성화

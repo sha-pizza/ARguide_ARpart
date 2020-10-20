@@ -16,6 +16,7 @@ public class GuideMgr : MonoBehaviour
     //double[] route;        
     //public static double[] route = {37.295400, 126.976000, 37.295400, 126.976200}; 
     public static double[] route;
+    public string finalDestination;
 
     // stateMgr에서 받아오는 state
     StateMgr.state arguide_state;
@@ -122,12 +123,34 @@ public class GuideMgr : MonoBehaviour
             didGuideStart = true;
         
             // 경로 가져오기
-            route = MapMgr.route;            
+            route = MapMgr.route;     
+            // finaldestination 가져오기
+            string destin = MapMgr.finalDestination;  
+            string editedDestin = "";  
+
+            // '입구' 글자 자르기
+            if (destin != ""){
+                for (int i = 0 ; i < destin.Length ; i++){
+                    if (destin[i] == '입'){
+                        break;
+                    } else {
+                        editedDestin += destin[i];
+                    }
+                }
+            }
+            finalDestination = editedDestin;
 
             // 전체 좌표 수 계산
             lastPointNum = route.Length;
             Debug.Log("ARGUIDE_guide : route length is ... "+lastPointNum);
             Debug.Log("ARGUIDE_guide : route is ~ from "+route[0]+","+route[1]+" to "+route[route.Length-2]+","+route[route.Length-1]);
+
+            
+            // 엔딩메세지 디버그용
+            string endSpch = finalDestination;
+            string endInfo = "";
+            endInfo = GPSMgr.m_JavaObject.Call<String>("getEndingMessage", endSpch);
+            Debug.Log("ARGUIDE_guide : endinfo debug : "+finalDestination+"->"+endInfo);
 
             // 가이드 코루틴 시작 (바닥면 찾기부터!)
             IEnumerator guide_findplane = Guide_FindPlane();
@@ -658,7 +681,7 @@ public class GuideMgr : MonoBehaviour
         Guidestatus = "Guide_End()";
 
 
-        string endSpch = GPSMgr.finalDestination;
+        string endSpch = finalDestination;
         string endInfo = "";
 
         // 엔딩메세지 받아오기
