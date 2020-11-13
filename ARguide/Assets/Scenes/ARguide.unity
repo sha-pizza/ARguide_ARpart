@@ -5281,6 +5281,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Nothing: {fileID: 0}
+  finalDestination: 
+  finalDestinInfo: 
   dist_wait: 3.2
   dist_warning: 8
   dist_disable: 10
@@ -9379,8 +9381,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 150, y: 0}
+  m_SizeDelta: {x: -300, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1312345631
 MonoBehaviour:
@@ -9402,7 +9404,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 70
+    m_FontSize: 40
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1

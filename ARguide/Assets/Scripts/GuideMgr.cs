@@ -17,6 +17,7 @@ public class GuideMgr : MonoBehaviour
     //public static double[] route = {37.295400, 126.976000, 37.295400, 126.976200}; 
     public static double[] route;
     public string finalDestination;
+    public string finalDestinInfo;
 
     // stateMgr에서 받아오는 state
     StateMgr.state arguide_state;
@@ -65,8 +66,8 @@ public class GuideMgr : MonoBehaviour
 
 
     // 하단 ui
-    private Text guideUI;
-    private GameObject guideBack;
+    private Text guideUIText;
+    private GameObject guideUI;
 
     
 
@@ -97,11 +98,11 @@ public class GuideMgr : MonoBehaviour
         Mascot_samplecollider = transform.Find("SampleMR/MASCOT_MR_sample/root_1").GetComponent<Collider>();
 
         // 하단 ui 오브젝트 받기
-        guideUI = GameObject.Find("UICanvas/GuideUI/GuideUIText").GetComponent<Text>();
-        guideBack = GameObject.Find("UICanvas/GuideUI");
+        guideUIText = GameObject.Find("UICanvas/GuideUI/GuideUIText").GetComponent<Text>();
+        guideUI = GameObject.Find("UICanvas/GuideUI");
 
+        guideUIText.gameObject.SetActive(false);
         guideUI.gameObject.SetActive(false);
-        guideBack.gameObject.SetActive(false);
 
         // 디버깅용 텍스트 찾기 - 
         try{
@@ -150,6 +151,9 @@ public class GuideMgr : MonoBehaviour
             string endSpch = finalDestination;
             string endInfo = "";
             endInfo = GPSMgr.m_JavaObject.Call<String>("getEndingMessage", endSpch);
+
+            // 받아온 엔딩메세지 저장해두기
+            finalDestinInfo = endInfo;
             Debug.Log("ARGUIDE_guide : endinfo debug : "+finalDestination+"->"+endInfo);
 
             // 가이드 코루틴 시작 (바닥면 찾기부터!)
@@ -195,8 +199,10 @@ public class GuideMgr : MonoBehaviour
         spchBubble = Mascot_MR.transform.Find("root/speechCanvas/speechBubble");
         spchText = Mascot_MR.transform.Find("root/speechCanvas/speechBubble/speechText").GetComponent<Text>();
 
-        // 말풍선 캔버스 꺼두기
-        spchCanvas.gameObject.SetActive(false);            
+        // 말풍선 오브젝트 꺼두기 
+        Invoke("spchBubbleTurnOff", 0f);
+        
+                 
 
         // 마스코트 애님컨트롤러 설정
         Mascot_anim = Mascot_MR.GetComponent<Animator>();
@@ -204,6 +210,10 @@ public class GuideMgr : MonoBehaviour
         // 가이드 코루틴 시작
         IEnumerator guide_start = Guide_Start();
         StartCoroutine(guide_start);
+
+        // 엔딩메세지 디버그용 코루틴
+        //IEnumerator debug_guide_end = Guide_End();
+        //StartCoroutine(debug_guide_end);
     
     }
 
@@ -222,9 +232,6 @@ public class GuideMgr : MonoBehaviour
         */
 
         yield return new WaitForSeconds(2.0f);
-
-
-        spchCanvas.gameObject.SetActive(true); // 이줄 없애면 말풍선 안뜨니까 그대로 두기
 
         language = GameObject.Find("GPSMgr").GetComponent<GPSMgr>().Language_Update();
 
@@ -315,27 +322,27 @@ public class GuideMgr : MonoBehaviour
             Invoke("spchBubbleFadein", 0f);
 
             // 안내문 설정
+            guideUIText.gameObject.SetActive(true);
             guideUI.gameObject.SetActive(true);
-            guideBack.gameObject.SetActive(true);
-            guideUI.fontSize = 40;
+            guideUIText.fontSize = 40;
 
 
             
             if (language == "korean")
             {
-                guideUI.text = "곧 메인화면으로 돌아갑니다.";
+                guideUIText.text = "곧 메인화면으로 돌아갑니다.";
             }
             else if (language == "chinese")
             {
-                guideUI.text = "Back main page soon.";
+                guideUIText.text = "Back main page soon.";
             }
             else if (language == "japanese")
             {
-                guideUI.text = "Back main page soon.";
+                guideUIText.text = "Back main page soon.";
             }
             else
             {
-                guideUI.text = "Back main page soon.";
+                guideUIText.text = "Back main page soon.";
             }
 
 
@@ -486,23 +493,23 @@ public class GuideMgr : MonoBehaviour
             if (dist > dist_disable) {
                 // dist_disable 보다 멀리 떨어질 경우 : 모든 코루틴 종료 및 ui 안내
                 //guideInfo.text += "\n dist_disable";
-                guideUI.gameObject.SetActive(true);
-                guideBack.gameObject.SetActive(true);
+                guideUIText.gameObject.SetActive(true);
+                guideUIText.gameObject.SetActive(true);
                 if (language == "korean")
                 {
-                    guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n곧 서비스가 종료됩니다.";
+                    guideUIText.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n곧 서비스가 종료됩니다.";
                 }
                 else if (language == "chinese")
                 {
-                    guideUI.text = "It is too far \nfrom mascot!\nService will quit.";
+                    guideUIText.text = "It is too far \nfrom mascot!\nService will quit.";
                 }
                 else if (language == "japanese")
                 {
-                    guideUI.text = "It is too far \nfrom mascot!\nService will quit.";
+                    guideUIText.text = "It is too far \nfrom mascot!\nService will quit.";
                 }
                 else
                 {
-                    guideUI.text = "It is too far \nfrom mascot!\nService will quit.";
+                    guideUIText.text = "It is too far \nfrom mascot!\nService will quit.";
                 }
                 
                 spchBubble.gameObject.SetActive(false);
@@ -513,19 +520,19 @@ public class GuideMgr : MonoBehaviour
                     yield return new WaitForSeconds(0.9f);
                     if (language == "korean")
                     {
-                        guideUI.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n" + i + "초후 서비스가 종료됩니다.";
+                        guideUIText.text = "마스코트 캐릭터와\n너무 멀리 떨어졌습니다!\n" + i + "초후 서비스가 종료됩니다.";
                     }
                     else if (language == "chinese")
                     {
-                        guideUI.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
+                        guideUIText.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
                     }
                     else if (language == "japanese")
                     {
-                        guideUI.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
+                        guideUIText.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
                     }
                     else
                     {
-                        guideUI.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
+                        guideUIText.text = "It is too far \nfrom mascot!\nService will quit after " + i + "seconds";
                     }
                     
                 }
@@ -536,23 +543,23 @@ public class GuideMgr : MonoBehaviour
             } else if (dist > dist_warning ) {
                 // if dist_warning 보다 멀리 떨어질 경우 : 일단 ui로 안내
                 //guideInfo.text += "\n dist_warning";
+                guideUIText.gameObject.SetActive(true);
                 guideUI.gameObject.SetActive(true);
-                guideBack.gameObject.SetActive(true);
                 if (language == "korean")
                 {
-                    guideUI.text = "마스코트 캐릭터\n가까이로 이동해 주세요.\n더 멀어질 경우\n서비스가 종료될 수 있습니다.";
+                    guideUIText.text = "마스코트 캐릭터\n가까이로 이동해 주세요.\n더 멀어질 경우\n서비스가 종료될 수 있습니다.";
                 }
                 else if (language == "chinese")
                 {
-                    guideUI.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
+                    guideUIText.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
                 }
                 else if (language == "japanese")
                 {
-                    guideUI.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
+                    guideUIText.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
                 }
                 else
                 {
-                    guideUI.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
+                    guideUIText.text = "Move close to \nthe mascot character.\nif you far more,\nservice can be quit.";
                 }
                 
                 spchBubble.gameObject.SetActive(false);
@@ -564,9 +571,9 @@ public class GuideMgr : MonoBehaviour
                 if ( Vector3.Distance(ARCamera.transform.position, DestinationMgr.destination.position) >
                       Vector3.Distance(Mascot_MR.transform.position, DestinationMgr.destination.position)  ){
                     //guideInfo.text += "\n dist_wait";
-                    guideUI.text = "";
+                    guideUIText.text = "";
+                    guideUIText.gameObject.SetActive(false);
                     guideUI.gameObject.SetActive(false);
-                    guideBack.gameObject.SetActive(false);
                     
                     Mascot_anim.SetBool("isMove", false);
                     Mascot_anim.SetBool("isMoveFast", false);
@@ -606,9 +613,9 @@ public class GuideMgr : MonoBehaviour
 
                 } else {
                     //guideInfo.text += "\n dist_run";
-                    guideUI.text = "";
+                    guideUIText.text = "";
+                    guideUIText.gameObject.SetActive(false);
                     guideUI.gameObject.SetActive(false);
-                    guideBack.gameObject.SetActive(false);
 
                     Mascot_anim.SetBool("isMove", true);
                     Mascot_anim.SetBool("isMoveFast", true);
@@ -643,9 +650,9 @@ public class GuideMgr : MonoBehaviour
             } else {
                 // 가까이에 있을 경우 : 목표지점으로 걷는다
                 //guideInfo.text += "\n dist_walk";
-                guideUI.text = "";
+                guideUIText.text = "";
+                guideUIText.gameObject.SetActive(false);
                 guideUI.gameObject.SetActive(false);
-                guideBack.gameObject.SetActive(false);
 
                 Mascot_anim.SetBool("isMove", true);
                 Mascot_anim.SetBool("isMoveFast", false);
@@ -680,18 +687,15 @@ public class GuideMgr : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Guidestatus = "Guide_End()";
 
-
+        // 도착 장소 및 받아둔 엔딩메세지 가져오기
         string endSpch = finalDestination;
-        string endInfo = "";
-
-        // 엔딩메세지 받아오기
-        endInfo = GPSMgr.m_JavaObject.Call<String>("getEndingMessage", endSpch);
+        string endInfo = finalDestinInfo;
 
         // 안내문 설정
-        guideBack.gameObject.SetActive(true);
-        guideUI.fontSize = 40;
-        
-        guideUI.text = endInfo;
+        guideUI.gameObject.SetActive(true);
+        guideUIText.gameObject.SetActive(true);
+        guideUIText.fontSize = 40;
+        guideUIText.text = endInfo;
 
         // 유저 바라보기
         var lookpos = ARCameraTransform.position - Mascot_MR.transform.position;
@@ -755,19 +759,19 @@ public class GuideMgr : MonoBehaviour
             yield return new WaitForSeconds(0.9f);
             if (language == "korean")
             {
-                guideUI.text = endInfo + "\n" + i + "초후 안내를 종료합니다.";
+                guideUIText.text = endInfo + "\n" + i + "초후 안내를 종료합니다.";
             }
             else if (language == "chinese")
             {
-                guideUI.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
+                guideUIText.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
             }
             else if (language == "japanese")
             {
-                guideUI.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
+                guideUIText.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
             }
             else
             {
-                guideUI.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
+                guideUIText.text = endInfo + "\n" + "After" + i + "seconds, guide will quit.";
             }
             
         }
