@@ -113,7 +113,7 @@ public class IntroMgr : MonoBehaviour
 
     IEnumerator uiLerp(RectTransform rect, Vector2 startpos, Vector2 endpos, float lerpvalue, float duration){
         int movecount = (int)(duration/0.03f);
-        Debug.Log("ARGUIDE_Intro : moveCount : "+movecount);
+        //Debug.Log("ARGUIDE_Intro : moveCount : "+movecount);
 
         for (int i=0 ; i<movecount ; i++){
             yield return new WaitForSeconds(0.03f);

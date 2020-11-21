@@ -214,7 +214,7 @@ public class MapZoomMgr : MonoBehaviour
 
             dragXValue = mapRect.position.x;
             dragYValue = mapRect.position.y;
-            Debug.Log("ARGUIDE_mapZoom : zoomToTarget : "+zoomValue);
+            //Debug.Log("ARGUIDE_mapZoom : zoomToTarget : "+zoomValue);
         }
 
         

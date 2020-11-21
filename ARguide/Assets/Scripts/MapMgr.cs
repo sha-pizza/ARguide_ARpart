@@ -188,7 +188,7 @@ public class MapMgr : MonoBehaviour
 
     // 빌딩 핀 표시하고 onclick 설정
     public void draw_Pin_building(){
-        Debug.Log("ARGUIDE_Map : start drawing"); 
+        Debug.Log("ARGUIDE_Map : drawy builing pins"); 
 
         GameObject newPin01 = drawPin(37.296335, 126.972532, Pin_building, Pin_building_obj, "신관" );
         GameObject newPin02 = drawPin(37.296897, 126.973854, Pin_building, Pin_building_obj, "인관" );
@@ -258,9 +258,9 @@ public class MapMgr : MonoBehaviour
 
         try {
             newPin.transform.GetChild(0).GetComponent<Text>().text = Pinname;
-            Debug.Log("ARGUIDE_Map : draw pin ! Pinname is : "+Pinname+", "+(float)calculedLON+", "+(float)calculedLAT); 
+            //Debug.Log("ARGUIDE_Map : draw pin ! Pinname is : "+Pinname+", "+(float)calculedLON+", "+(float)calculedLAT);
         } catch {
-            Debug.Log("ARGUIDE_Map : draw pin without Pinname : "+Pinname); 
+            //Debug.Log("ARGUIDE_Map : draw pin without Pinname : "+Pinname); 
         }
 
         return newPin;
@@ -458,7 +458,7 @@ public class MapMgr : MonoBehaviour
         for (int i = 0; i<result.Count ; i++){
             GameObject newPin = drawPin(result[i].lat, result[i].lon, Pin_entrance, Pin_entrance_obj, result[i].name);
             setPin_entrance(newPin);
-            Debug.Log("ARGUIDE_Map : draw"+result[i].name+" - "+result[i].lat);
+            //Debug.Log("ARGUIDE_Map : draw"+result[i].name+" - "+result[i].lat);
         }
     }
 
@@ -589,10 +589,8 @@ public class MapMgr : MonoBehaviour
         }
 
         
-        Debug.Log("ARGUIDE_Map : findestin : "+Pin_Obj.GetChild(0).GetComponent<Text>().text);
-        Debug.Log("ARGUIDE_Map : routelen : "+route.Length);
-        Debug.Log("ARGUIDE_Map : route_start : "+route[0]+","+route[1]);
-        Debug.Log("ARGUIDE_Map : route_end : "+route[route.Length-2]+","+route[route.Length-1]);
+        Debug.Log("ARGUIDE_Map : findestin : "+Pin_Obj.GetChild(0).GetComponent<Text>().text+" / routelen : "+route.Length);
+        Debug.Log("ARGUIDE_Map : route_start : "+route[0]+","+route[1]+" / route_end : "+route[route.Length-2]+","+route[route.Length-1]);
 
         // 경로 초기화
         // route line, point 의 모든 자식 삭제
@@ -632,8 +630,8 @@ public class MapMgr : MonoBehaviour
             calculed_route[i] = (route[i] - 37.2945) * (mapHeight/21) * 1000;   // 조건
             calculed_route[i+1] = (route[i+1] - 126.974) * (mapWidth/18) * 1000;
         }
-        Debug.Log("ARGUIDE_Map : calculed route : "+calculed_route.ToString());
-        Debug.Log("ARGUIDE_Map : original route : "+route.ToString());
+        //Debug.Log("ARGUIDE_Map : calculed route : "+calculed_route.ToString());
+        //Debug.Log("ARGUIDE_Map : original route : "+route.ToString());
 
         // 라인 그리기
         for (int i=0 ; i<route.Length-2 ; i=i+2) { 

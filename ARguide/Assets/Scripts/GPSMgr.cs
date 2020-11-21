@@ -164,7 +164,7 @@ public class GPSMgr : MonoBehaviour
         
     }
 
-    // GPS 좌표와 각도를 계속 로드해 ui에 표시해주는 코루틴
+    // GPS 좌표와 각도를 waitTime마다 갱샌하는 메서드
     private IEnumerator LoadGPS(float waitTime){
         while (Input.location.isEnabledByUser){
             // 정해진 초마다 gps 체크

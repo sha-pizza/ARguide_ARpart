@@ -210,10 +210,13 @@ public class GuideMgr : MonoBehaviour
         // 가이드 코루틴 시작
         IEnumerator guide_start = Guide_Start();
         StartCoroutine(guide_start);
+        
 
         // 엔딩메세지 디버그용 코루틴
-        //IEnumerator debug_guide_end = Guide_End();
-        //StartCoroutine(debug_guide_end);
+        /*
+        IEnumerator debug_guide_end = Guide_End();
+        StartCoroutine(debug_guide_end);
+        */
     
     }
 
